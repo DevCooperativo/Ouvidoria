@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{904A4FC6-9D2A-4BEC-BEBC-A9813B078D9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouvidoria.Domain", "src\Ouvidoria.Domain\Ouvidoria.Domain.csproj", "{771C08AB-32EE-4D08-960B-8F80E4CC5E70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouvidoria.DTO", "src\Ouvidoria.DTO\Ouvidoria.DTO.csproj", "{33867761-642E-4240-86F2-1F02D12F7025}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouvidoria.Infrastructure", "src\Ouvidoria.Infrastructure\Ouvidoria.Infrastructure.csproj", "{A163B144-9BD1-46AC-9EEB-C702D82BB597}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouvidoria.Interfaces", "src\Ouvidoria.Interfaces\Ouvidoria.Interfaces.csproj", "{53D89B70-9FFC-48DB-9C54-CC48C2A0CC7A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouvidoria.Services", "src\Ouvidoria.Services\Ouvidoria.Services.csproj", "{A137ED35-8B03-4685-A7AF-680F9EBC17C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ouvidoria.Web", "src\Ouvidoria.Web\Ouvidoria.Web.csproj", "{949642E6-C92C-478B-9C6B-4E244381FD23}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{771C08AB-32EE-4D08-960B-8F80E4CC5E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{771C08AB-32EE-4D08-960B-8F80E4CC5E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{771C08AB-32EE-4D08-960B-8F80E4CC5E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{771C08AB-32EE-4D08-960B-8F80E4CC5E70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33867761-642E-4240-86F2-1F02D12F7025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33867761-642E-4240-86F2-1F02D12F7025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33867761-642E-4240-86F2-1F02D12F7025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33867761-642E-4240-86F2-1F02D12F7025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A163B144-9BD1-46AC-9EEB-C702D82BB597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A163B144-9BD1-46AC-9EEB-C702D82BB597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A163B144-9BD1-46AC-9EEB-C702D82BB597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A163B144-9BD1-46AC-9EEB-C702D82BB597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53D89B70-9FFC-48DB-9C54-CC48C2A0CC7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53D89B70-9FFC-48DB-9C54-CC48C2A0CC7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53D89B70-9FFC-48DB-9C54-CC48C2A0CC7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53D89B70-9FFC-48DB-9C54-CC48C2A0CC7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A137ED35-8B03-4685-A7AF-680F9EBC17C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A137ED35-8B03-4685-A7AF-680F9EBC17C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A137ED35-8B03-4685-A7AF-680F9EBC17C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A137ED35-8B03-4685-A7AF-680F9EBC17C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{949642E6-C92C-478B-9C6B-4E244381FD23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{949642E6-C92C-478B-9C6B-4E244381FD23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{949642E6-C92C-478B-9C6B-4E244381FD23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{949642E6-C92C-478B-9C6B-4E244381FD23}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{771C08AB-32EE-4D08-960B-8F80E4CC5E70} = {904A4FC6-9D2A-4BEC-BEBC-A9813B078D9D}
+		{33867761-642E-4240-86F2-1F02D12F7025} = {904A4FC6-9D2A-4BEC-BEBC-A9813B078D9D}
+		{A163B144-9BD1-46AC-9EEB-C702D82BB597} = {904A4FC6-9D2A-4BEC-BEBC-A9813B078D9D}
+		{53D89B70-9FFC-48DB-9C54-CC48C2A0CC7A} = {904A4FC6-9D2A-4BEC-BEBC-A9813B078D9D}
+		{A137ED35-8B03-4685-A7AF-680F9EBC17C8} = {904A4FC6-9D2A-4BEC-BEBC-A9813B078D9D}
+		{949642E6-C92C-478B-9C6B-4E244381FD23} = {904A4FC6-9D2A-4BEC-BEBC-A9813B078D9D}
+	EndGlobalSection
+EndGlobal

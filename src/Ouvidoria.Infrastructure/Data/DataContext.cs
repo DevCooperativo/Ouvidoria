@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Ouvidoria.Domain.Models;
 using Ouvidoria.Infrastructure.Data.Account;
+using Ouvidoria.Infrastructure.Data.EntityConfiguration;
 
 namespace Ouvidoria.Infrastructure.Data;
 
@@ -12,6 +13,8 @@ public class DataContext : IdentityDbContext<ApplicationUser>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.ApplyConfiguration(new ArquivoEntityConfiguration());
+        builder.ApplyConfiguration(new CidadaoEntityConfiguration());
+        builder.ApplyConfiguration(new AdministradorEntityConfiguration());
         builder.ApplyConfiguration(new EntidadeEntityConfiguration());
         builder.ApplyConfiguration(new RegistroEntityConfiguration());
         builder.ApplyConfiguration(new HistoricoRegistroEntityConfiguration());
@@ -19,6 +22,8 @@ public class DataContext : IdentityDbContext<ApplicationUser>
         base.OnModelCreating(builder);
     }
 
+    public DbSet<Cidadao> Cidadoes { get; set; }
+    public DbSet<Administrador> Administradores { get; set; }
     public DbSet<Arquivo> Arquivos { get; set; }
     public DbSet<Entidade> Entidades { get; set; }
     public DbSet<Registro> Registros { get; set; }

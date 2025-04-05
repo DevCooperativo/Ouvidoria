@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Ouvidoria.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initialmigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,21 +16,21 @@ namespace Ouvidoria.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Administrador",
+                name: "Administradores",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Nome = table.Column<string>(type: "longtext", nullable: false)
+                    Nome = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Administrador", x => x.Id);
+                    table.PrimaryKey("PK_Administradores", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -59,13 +59,10 @@ namespace Ouvidoria.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cpf = table.Column<string>(type: "longtext", nullable: false)
+                    TipoUsuario = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Telefone = table.Column<string>(type: "longtext", nullable: false)
+                    RealName = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Endereco = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    DataNascimento = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     UserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NormalizedUserName = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: true)
@@ -96,28 +93,28 @@ namespace Ouvidoria.Infrastructure.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Cidadao",
+                name: "Cidadoes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Cpf = table.Column<string>(type: "longtext", nullable: false)
+                    Cpf = table.Column<string>(type: "varchar(14)", maxLength: 14, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Telefone = table.Column<string>(type: "longtext", nullable: false)
+                    Telefone = table.Column<string>(type: "varchar(11)", maxLength: 11, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Endereco = table.Column<string>(type: "longtext", nullable: false)
+                    Endereco = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataNascimento = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     DataAtualizacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Nome = table.Column<string>(type: "longtext", nullable: false)
+                    Nome = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "longtext", nullable: false)
+                    Email = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Cidadao", x => x.Id);
+                    table.PrimaryKey("PK_Cidadoes", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -291,15 +288,15 @@ namespace Ouvidoria.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Registros", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Registros_Administrador_AdministradorId",
+                        name: "FK_Registros_Administradores_AdministradorId",
                         column: x => x.AdministradorId,
-                        principalTable: "Administrador",
+                        principalTable: "Administradores",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Registros_Cidadao_AutorId",
+                        name: "FK_Registros_Cidadoes_AutorId",
                         column: x => x.AutorId,
-                        principalTable: "Cidadao",
+                        principalTable: "Cidadoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -345,7 +342,6 @@ namespace Ouvidoria.Infrastructure.Migrations
                     Feedback = table.Column<string>(type: "varchar(400)", maxLength: 400, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataAtualizacao = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    RegistroId1 = table.Column<int>(type: "int", nullable: false),
                     RegistroId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -354,12 +350,6 @@ namespace Ouvidoria.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "FK_HistoricoRegistros_Registros_RegistroId",
                         column: x => x.RegistroId,
-                        principalTable: "Registros",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_HistoricoRegistros_Registros_RegistroId1",
-                        column: x => x.RegistroId1,
                         principalTable: "Registros",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -385,9 +375,9 @@ namespace Ouvidoria.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Notificacaos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Notificacaos_Cidadao_CidadaoId",
+                        name: "FK_Notificacaos_Cidadoes_CidadaoId",
                         column: x => x.CidadaoId,
-                        principalTable: "Cidadao",
+                        principalTable: "Cidadoes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -445,11 +435,6 @@ namespace Ouvidoria.Infrastructure.Migrations
                 name: "IX_HistoricoRegistros_RegistroId",
                 table: "HistoricoRegistros",
                 column: "RegistroId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_HistoricoRegistros_RegistroId1",
-                table: "HistoricoRegistros",
-                column: "RegistroId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notificacaos_CidadaoId",
@@ -514,10 +499,10 @@ namespace Ouvidoria.Infrastructure.Migrations
                 name: "Registros");
 
             migrationBuilder.DropTable(
-                name: "Administrador");
+                name: "Administradores");
 
             migrationBuilder.DropTable(
-                name: "Cidadao");
+                name: "Cidadoes");
 
             migrationBuilder.DropTable(
                 name: "Entidades");

@@ -1,7 +1,6 @@
-using Ouvidoria.Domain;
-using Ouvidoria.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Ouvidoria.Domain.Abstractions;
+using Ouvidoria.Domain.Abstractions.Repositories;
 
 namespace Ouvidoria.Infrastructure.Data.Repositories;
 

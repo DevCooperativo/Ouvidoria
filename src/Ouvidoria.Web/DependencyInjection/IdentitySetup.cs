@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Identity;
-using Ouvidoria.Domain.Abstractions;
 using Ouvidoria.Infrastructure.Data;
 using Ouvidoria.Infrastructure.Data.Account;
 
@@ -24,6 +23,7 @@ public static class IdentitySetup
             options.Password.RequireNonAlphanumeric = true;
             options.Password.RequireUppercase = true;
         })
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<DataContext>()
         .AddDefaultTokenProviders();
 
@@ -34,6 +34,28 @@ public static class IdentitySetup
             options.AccessDeniedPath = "/Account/AccessDenied";
         });
 
+        services.AddAuthorizationBuilder()
+            .AddPolicy("Administrador Policy", policy => policy.RequireRole(ApplicationUser.TipoAdministrador))
+            .AddPolicy("Cidadão Policy", policy => policy.RequireRole(ApplicationUser.TipoCidadao));
+
         return services;
     }
+
+    public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
+    {
+        var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+        string[] roles = new[] { ApplicationUser.TipoAdministrador, ApplicationUser.TipoCidadao };
+
+        foreach (var role in roles)
+        {
+            var roleExists = await roleManager.RoleExistsAsync(role);
+            if (!roleExists)
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+    }
+
+
 }

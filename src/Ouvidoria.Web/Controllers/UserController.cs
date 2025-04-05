@@ -2,18 +2,24 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Ouvidoria.DTO;
+using Ouvidoria.Interfaces;
 using Ouvidoria.Web.ViewModels.Usuario;
 
 namespace Ouvidoria.Web.Controllers;
 
-[Route("[controller]")]
 public class UserController : Controller
 {
     private readonly ILogger<UserController> _logger;
+    private readonly IUsuarioService _usuarioService;
+    private readonly ICidadaoService _cidadaoService;
+    private readonly IAdministradorService _administradorService;
 
-    public UserController(ILogger<UserController> logger)
+    public UserController(ILogger<UserController> logger, IUsuarioService usuarioService, ICidadaoService cidadaoService, IAdministradorService administradorService)
     {
         _logger = logger;
+        _usuarioService = usuarioService;
+        _cidadaoService = cidadaoService;
+        _administradorService = administradorService;
     }
 
     public IActionResult Index()
@@ -50,18 +56,22 @@ public class UserController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> RegistrarCidadao(RegistrarCidadaoViewModel registrarCidadaoViewModel)
+    public async Task<IActionResult> RegistrarCidadao([FromBody] RegistrarCidadaoViewModel cidadaoVM)
     {
-        if (!ModelState.IsValid) return View(registrarCidadaoViewModel);
+        if (!ModelState.IsValid) return View(cidadaoVM);
         try
         {
+            RegistrarCidadaoDTO cidadaoDTO = new(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Password, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.DataNascimento);
+
+            await _usuarioService.RegistrarCidadaoAsync(cidadaoDTO);
+            await _cidadaoService.CreateAsync(new CidadaoDTO(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.DataNascimento));
 
             return RedirectToAction("Login");
         }
         catch (Exception ex)
         {
             Console.Write(ex.Message);
-            return View(registrarCidadaoViewModel);
+            return View(cidadaoVM);
         }
     }
     [HttpGet]
@@ -72,20 +82,22 @@ public class UserController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> RegistrarAdministrador(RegistrarAdministradorViewModel registrarAdministradorViewModel)
+    public async Task<IActionResult> RegistrarAdministrador([FromBody] RegistrarAdministradorViewModel administradorVM)
     {
-        if (!ModelState.IsValid) return View(registrarAdministradorViewModel);
+        if (!ModelState.IsValid) return View(administradorVM);
         try
         {
-            RegistrarAdministradorDTO registrarAdministradorDTO = new(registrarAdministradorViewModel.UserName, registrarAdministradorViewModel.UserName, registrarAdministradorViewModel.Email, registrarAdministradorViewModel.Password);
+            RegistrarAdministradorDTO registrarAdministradorDTO = new(administradorVM.UserName, administradorVM.Email, administradorVM.Password);
 
+            await _usuarioService.RegistrarAdministradorAsync(registrarAdministradorDTO);
+            await _administradorService.CreateAsync(new AdministradorDTO(administradorVM.UserName, administradorVM.Email));
 
             return RedirectToAction("Login");
         }
         catch (Exception ex)
         {
             Console.Write(ex.Message);
-            return View(registrarAdministradorViewModel);
+            return View(administradorVM);
         }
     }
 

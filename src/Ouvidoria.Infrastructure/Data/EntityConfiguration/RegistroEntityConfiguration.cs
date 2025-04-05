@@ -13,7 +13,7 @@ public class RegistroEntityConfiguration : IEntityTypeConfiguration<Registro>
         builder.HasOne(d => d.Autor).WithMany().HasForeignKey(d => d.AutorId);
         builder.HasOne(d => d.Alvo).WithMany().HasForeignKey(d => d.AlvoId);
         builder.HasOne(d => d.Administrador).WithMany().HasForeignKey(d => d.AdministradorId);
-        builder.HasMany(d => d.Arquivos).WithOne().HasForeignKey(a => a.RegistroId);
-        builder.HasMany(d => d.Historico).WithOne().HasForeignKey(h => h.RegistroId);
+        builder.HasMany(d => d.Arquivos).WithOne(a => a.Registro).HasForeignKey(a => a.RegistroId);
+        builder.HasMany(d => d.Historico).WithOne(h => h.Registro).HasForeignKey(h => h.RegistroId);
     }
 }

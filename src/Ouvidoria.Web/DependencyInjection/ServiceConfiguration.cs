@@ -15,5 +15,8 @@ public static class ServiceConfiguration
         services.AddHttpClient<HomeController>();
 
         services.AddScoped<IDenunciaService, DenunciaService>();
+        services.AddScoped<IAdministradorService, AdministradorService>();
+        services.AddScoped<ICidadaoService, CidadaoService>();
+        services.AddScoped<IUsuarioService, UsuarioService>();
     }
 }

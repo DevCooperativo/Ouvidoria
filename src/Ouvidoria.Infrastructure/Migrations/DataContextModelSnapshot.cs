@@ -170,15 +170,17 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Administrador");
+                    b.ToTable("Administradores", (string)null);
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Arquivo", b =>
@@ -209,7 +211,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("RegistroId");
 
-                    b.ToTable("Arquivos");
+                    b.ToTable("Arquivos", (string)null);
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Cidadao", b =>
@@ -222,7 +224,8 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(14)
+                        .HasColumnType("varchar(14)");
 
                     b.Property<DateTime>("DataAtualizacao")
                         .HasColumnType("datetime(6)");
@@ -235,23 +238,27 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Endereco")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<string>("Telefone")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(11)
+                        .HasColumnType("varchar(11)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cidadao");
+                    b.ToTable("Cidadoes", (string)null);
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Entidade", b =>
@@ -285,7 +292,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Entidades");
+                    b.ToTable("Entidades", (string)null);
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.HistoricoRegistro", b =>
@@ -307,9 +314,6 @@ namespace Ouvidoria.Infrastructure.Migrations
                     b.Property<int>("RegistroId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RegistroId1")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -317,9 +321,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("RegistroId");
 
-                    b.HasIndex("RegistroId1");
-
-                    b.ToTable("HistoricoRegistros");
+                    b.ToTable("HistoricoRegistros", (string)null);
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Notificacao", b =>
@@ -358,7 +360,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("RegistroId");
 
-                    b.ToTable("Notificacaos");
+                    b.ToTable("Notificacaos", (string)null);
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Registro", b =>
@@ -407,10 +409,10 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("AutorId");
 
-                    b.ToTable("Registros");
+                    b.ToTable("Registros", (string)null);
                 });
 
-            modelBuilder.Entity("Ovidoria.Infrastructure.Data.Account.ApplicationUser", b =>
+            modelBuilder.Entity("Ouvidoria.Infrastructure.Data.Account.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("varchar(255)");
@@ -422,23 +424,12 @@ namespace Ouvidoria.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Cpf")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("DataNascimento")
-                        .HasColumnType("datetime(6)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -463,10 +454,14 @@ namespace Ouvidoria.Infrastructure.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<string>("RealName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Telefone")
+                    b.Property<string>("TipoUsuario")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -500,7 +495,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Ovidoria.Infrastructure.Data.Account.ApplicationUser", null)
+                    b.HasOne("Ouvidoria.Infrastructure.Data.Account.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -509,7 +504,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Ovidoria.Infrastructure.Data.Account.ApplicationUser", null)
+                    b.HasOne("Ouvidoria.Infrastructure.Data.Account.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -524,7 +519,7 @@ namespace Ouvidoria.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Ovidoria.Infrastructure.Data.Account.ApplicationUser", null)
+                    b.HasOne("Ouvidoria.Infrastructure.Data.Account.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -533,7 +528,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Ovidoria.Infrastructure.Data.Account.ApplicationUser", null)
+                    b.HasOne("Ouvidoria.Infrastructure.Data.Account.ApplicationUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -542,22 +537,18 @@ namespace Ouvidoria.Infrastructure.Migrations
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Arquivo", b =>
                 {
-                    b.HasOne("Ouvidoria.Domain.Models.Registro", null)
+                    b.HasOne("Ouvidoria.Domain.Models.Registro", "Registro")
                         .WithMany("Arquivos")
                         .HasForeignKey("RegistroId");
+
+                    b.Navigation("Registro");
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.HistoricoRegistro", b =>
                 {
-                    b.HasOne("Ouvidoria.Domain.Models.Registro", null)
+                    b.HasOne("Ouvidoria.Domain.Models.Registro", "Registro")
                         .WithMany("Historico")
                         .HasForeignKey("RegistroId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Ouvidoria.Domain.Models.Registro", "Registro")
-                        .WithMany()
-                        .HasForeignKey("RegistroId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

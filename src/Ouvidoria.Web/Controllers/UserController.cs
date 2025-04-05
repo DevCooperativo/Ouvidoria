@@ -56,7 +56,7 @@ public class UserController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> RegistrarCidadao([FromBody] RegistrarCidadaoViewModel cidadaoVM)
+    public async Task<IActionResult> RegistrarCidadao(RegistrarCidadaoViewModel cidadaoVM)
     {
         if (!ModelState.IsValid) return View(cidadaoVM);
         try
@@ -82,7 +82,7 @@ public class UserController : Controller
 
 
     [HttpPost]
-    public async Task<IActionResult> RegistrarAdministrador([FromBody] RegistrarAdministradorViewModel administradorVM)
+    public async Task<IActionResult> RegistrarAdministrador(RegistrarAdministradorViewModel administradorVM)
     {
         if (!ModelState.IsValid) return View(administradorVM);
         try

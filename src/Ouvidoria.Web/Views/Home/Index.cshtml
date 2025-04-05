@@ -1,1 +1,32 @@
-<h1>Hello world</h1>
+@{
+    ViewData["Title"] = "Sistema de Ouvidoria";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/style.css" />
+</head>
+<body>
+
+    <!-- Main Content -->
+    <main class="main">
+        <h2 class="titulo">Sistema de Ouvidoria</h2>
+        <p class="descricao">
+            Um jeito fácil e seguro de fazer denúncias ou solicitações, sem precisar ir até um lugar físico ou pegar fila!
+            <br />
+            Faça sua denúncia anonimamente, ou crie uma conta e se identifique.
+        </p>
+
+        <div class="botoes">
+            <a href="#" class="botao verde">Enviar anonimamente</a>
+            <a href="#" class="botao borda">Cadastrar-se →</a>
+        </div>
+    </main>
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Ouvidoria.Domain.Abstractions;
 using Ouvidoria.Infrastructure.Data;
-using Ovidoria.Infrastructure.Data.Account;
+using Ouvidoria.Infrastructure.Data.Account;
 
 namespace Ouvidoria.Web.DependencyInjection;
 public static class IdentitySetup

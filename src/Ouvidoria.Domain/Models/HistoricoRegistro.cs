@@ -18,7 +18,7 @@ public record HistoricoRegistro
         }
     }
     public DateTime DataAtualizacao { get; private set; }
-    public RegistroBase RegistroBase { get; private set; } = default!;
+    public Registro Registro { get; private set; } = default!;
     public int RegistroId { get; private set; }
 
     protected HistoricoRegistro() { }

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace Ovidoria.Infrastructure.Data.Account;
+namespace Ouvidoria.Infrastructure.Data.Account;
 
 public class ApplicationUser : IdentityUser
 {

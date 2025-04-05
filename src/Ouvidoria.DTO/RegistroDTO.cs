@@ -2,7 +2,7 @@ using Ouvidoria.Domain.Enums;
 
 namespace Ouvidoria.DTO;
 
-public record RegistroBaseDTO
+public record RegistroDTO
 {
     public int Id { get; }
     public string Tipo { get; } = string.Empty;
@@ -14,7 +14,7 @@ public record RegistroBaseDTO
     public int? AlvoId { get; }
     public AdministradorDTO Administrador { get; } = default!;
     public int AdministradorId { get; }
-    public IReadOnlyCollection<RegistroBaseDTO> Historico { get; } = [];
+    public IReadOnlyCollection<RegistroDTO> Historico { get; } = [];
     public IReadOnlyCollection<ArquivoDTO> Arquivos { get; } = [];
 
 

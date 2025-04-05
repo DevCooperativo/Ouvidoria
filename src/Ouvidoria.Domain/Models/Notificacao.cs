@@ -8,12 +8,12 @@ public class Notificacao : EntidadeBase
     public string Mensagem { get; private set; } = string.Empty;
     public Cidadao Cidadao { get; private set; } = default!;
     public int CidadaoId { get; private set; }
-    public RegistroBase Registro { get; private set; } = default!;
+    public Registro Registro { get; private set; } = default!;
     public int RegistroId { get; private set; }
 
 
     protected Notificacao() { }
-    public Notificacao(string mensagem, Cidadao cidadao, RegistroBase registro) : base()
+    public Notificacao(string mensagem, Cidadao cidadao, Registro registro) : base()
     {
         Mensagem = mensagem;
         Cidadao = cidadao;

@@ -9,10 +9,10 @@ public record HistoricoRegistroDTO
     public StatusEnum Status { get; }
     public string Feedback { get; } = string.Empty;
     public DateTime DataAtualizacao { get; }
-    public RegistroBaseDTO RegistroBase { get; }
+    public RegistroDTO RegistroBase { get; }
     public int RegistroId { get; }
 
-    public HistoricoRegistroDTO(int id, StatusEnum status, string feedback, DateTime dataAtualizacao, RegistroBaseDTO registroBase)
+    public HistoricoRegistroDTO(int id, StatusEnum status, string feedback, DateTime dataAtualizacao, RegistroDTO registroBase)
     {
         Id = id;
         Status = status;

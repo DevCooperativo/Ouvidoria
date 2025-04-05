@@ -13,7 +13,7 @@ public class DenunciaService : IDenunciaService
         throw new NotImplementedException();
     }
 
-    public Task CreateAsync(RegistroBaseDTO denuncia)
+    public Task CreateAsync(RegistroDTO denuncia)
     {
         throw new NotImplementedException();
     }
@@ -23,22 +23,22 @@ public class DenunciaService : IDenunciaService
         throw new NotImplementedException();
     }
 
-    public IEnumerable<RegistroBaseDTO> GetAllAsync()
+    public IEnumerable<RegistroDTO> GetAllAsync()
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<RegistroBaseDTO> GetAllVisible()
+    public IEnumerable<RegistroDTO> GetAllVisible()
     {
         throw new NotImplementedException();
     }
 
-    public Task<RegistroBaseDTO> GetDTOByIdAsync(int id)
+    public Task<RegistroDTO> GetDTOByIdAsync(int id)
     {
         throw new NotImplementedException();
     }
 
-    public Task UpdateAsync(RegistroBaseDTO denuncia)
+    public Task UpdateAsync(RegistroDTO denuncia)
     {
         throw new NotImplementedException();
     }

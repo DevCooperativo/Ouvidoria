@@ -1,8 +1,14 @@
 namespace Ouvidoria.DTO;
 
-public class AdministradorDTO : BaseUserDTO
+public record AdministradorDTO
 {
-    public AdministradorDTO(string nome, string email, string senha) : base(nome, email, senha)
+    public int Id { get; }
+    public string Nome { get; } = string.Empty;
+    public string Email { get; } = string.Empty;
+    public AdministradorDTO(int id, string nome, string email)
     {
+        Id = id;
+        Nome = nome;
+        Email = email;
     }
 }

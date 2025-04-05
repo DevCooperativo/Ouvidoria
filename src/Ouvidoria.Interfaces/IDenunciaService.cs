@@ -1,6 +1,8 @@
+using Ouvidoria.DTO;
+
 namespace Ouvidoria.Interfaces;
 
-public interface ICategoryService
+public interface IDenunciaService
 
 {
     IEnumerable<DenunciaDTO> GetAllAsync();

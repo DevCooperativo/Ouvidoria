@@ -5,11 +5,11 @@ namespace Ouvidoria.Interfaces;
 public interface IDenunciaService
 
 {
-    IEnumerable<DenunciaDTO> GetAllAsync();
-    Task CreateAsync(DenunciaDTO category);
-    Task UpdateAsync(DenunciaDTO category);
-    Task<DenunciaDTO> GetDTOByIdAsync(int id);
+    IEnumerable<RegistroBaseDTO> GetAllAsync();
+    Task CreateAsync(RegistroBaseDTO denuncia);
+    Task UpdateAsync(RegistroBaseDTO denuncia);
+    Task<RegistroBaseDTO> GetDTOByIdAsync(int id);
     Task DeleteAsync(int id);
     Task ChangeVisibility(int id);
-    IEnumerable<DenunciaDTO> GetAllVisible();
+    IEnumerable<RegistroBaseDTO> GetAllVisible();
 }

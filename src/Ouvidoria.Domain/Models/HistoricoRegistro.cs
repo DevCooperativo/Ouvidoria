@@ -7,7 +7,7 @@ public record HistoricoRegistro
 {
     public int Id { get; private set; }
     public StatusEnum Status { get; private set; }
-    private string _feedback;
+    private string _feedback = string.Empty;
     public string Feedback
     {
         get => _feedback; private set
@@ -18,7 +18,7 @@ public record HistoricoRegistro
         }
     }
     public DateTime DataAtualizacao { get; private set; }
-    public RegistroBase RegistroBase { get; private set; }
+    public RegistroBase RegistroBase { get; private set; } = default!;
     public int RegistroId { get; private set; }
 
     protected HistoricoRegistro() { }

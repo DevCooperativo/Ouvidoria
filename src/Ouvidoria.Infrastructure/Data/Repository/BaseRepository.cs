@@ -1,10 +1,11 @@
 using Ouvidoria.Domain;
 using Ouvidoria.Domain.Models;
 using Microsoft.EntityFrameworkCore;
+using Ouvidoria.Domain.Abstractions;
 
 namespace Ouvidoria.Infrastructure.Data.Repositories;
 
-public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
+public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : EntidadeBase
 {
     private readonly DataContext _context;
 

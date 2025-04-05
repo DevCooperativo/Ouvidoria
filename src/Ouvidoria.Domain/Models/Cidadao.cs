@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Identity;
-
 namespace Ouvidoria.Domain.Models;
 public class Cidadao : UsuarioBase
 {

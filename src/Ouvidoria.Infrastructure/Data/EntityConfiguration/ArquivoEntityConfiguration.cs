@@ -7,9 +7,9 @@ public class ArquivoEntityConfiguration : IEntityTypeConfiguration<Arquivo>
     public void Configure(EntityTypeBuilder<Arquivo> builder)
     {
         builder.HasKey(a => a.Id);
-        builder.Property(a => a.Name)
+        builder.Property(a => a.Nome)
         .HasMaxLength(100);
-        builder.Property(a => a.NameS3);
-        builder.Property(a => a.FileType);
+        builder.Property(a => a.NomeS3);
+        builder.Property(a => a.TipoArquivo);
     }
 }

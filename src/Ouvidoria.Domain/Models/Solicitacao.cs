@@ -1,5 +1,6 @@
 
 using Ouvidoria.Domain.Abstractions;
+using Ouvidoria.Domain.Enums;
 
 namespace Ouvidoria.Domain.Models;
 public class Solicitacao : RegistroBase
@@ -8,7 +9,7 @@ public class Solicitacao : RegistroBase
     protected Solicitacao() { }
 
 
-    public Solicitacao(string tipo, string descricao, string status, Cidadao? autor, Administrador administrador) : base(tipo, descricao, status, autor, administrador)
+    public Solicitacao(string tipo, string descricao, StatusEnum status, Cidadao? autor, Administrador administrador) : base(tipo, descricao, status, autor, administrador)
     {
 
     }

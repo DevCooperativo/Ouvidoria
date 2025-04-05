@@ -3,16 +3,16 @@ using Ouvidoria.Domain.Models;
 
 namespace Ouvidoria.DTO;
 
-public record HistoricoRegistroDTO<T> where T : RegistroBase
+public record HistoricoRegistroDTO
 {
     public int Id { get; }
     public StatusEnum Status { get; }
     public string Feedback { get; } = string.Empty;
     public DateTime DataAtualizacao { get; }
-    public T RegistroBase { get; }
+    public RegistroBaseDTO RegistroBase { get; }
     public int RegistroId { get; }
 
-    public HistoricoRegistroDTO(int id, StatusEnum status, string feedback, DateTime dataAtualizacao, T registroBase)
+    public HistoricoRegistroDTO(int id, StatusEnum status, string feedback, DateTime dataAtualizacao, RegistroBaseDTO registroBase)
     {
         Id = id;
         Status = status;

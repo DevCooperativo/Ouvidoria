@@ -1,17 +1,17 @@
 
-namespace Ouvidoria.Domain.Models;
-public class Denuncia : BaseEntity
-{
-    private string _tipo { get; set; } = string.Empty;
-    private string _descricao { get; set; } = string.Empty;
-    private string _status { get; set; } = string.Empty;
-    private string _alvo { get; set; } = string.Empty;
-    private DateTime _dataCriacao { get; set; } = DateTime.Now;
-    private DateTime _dataAtualizacao { get; set; } = DateTime.Now;
-    private Usuario? _autor { get; set; }
+using Ouvidoria.Domain.Enums;
 
-    public Denuncia(string empty, string descricao, string status, string alvo, DateTime dataAtualizacao, Usuario? autor)
+namespace Ouvidoria.Domain.Models;
+public class Denuncia : RegistroBase
+{
+    // Referente à solicitação ou denuncia. Sobre o tema
+    protected Denuncia() { }
+
+
+    public Denuncia(string tipo, string descricao, StatusEnum status, Cidadao? autor, Administrador administrador) : base(tipo, descricao, status, autor, administrador)
     {
 
+
     }
+
 }

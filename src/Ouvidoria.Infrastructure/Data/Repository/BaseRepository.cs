@@ -47,7 +47,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         var query = _context.Set<TEntity>().AsQueryable();
         foreach (var include in includes)
             query = query.Include(include);
-        return await query.FirstOrDefaultAsync(x => x.id == id);
+        return await query.FirstOrDefaultAsync(x => x.Id == id);
     }
 
     public TEntity Update(TEntity entity)

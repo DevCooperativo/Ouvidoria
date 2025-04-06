@@ -4,32 +4,18 @@ using Ouvidoria.DTO;
 using Ouvidoria.Infrastructure.Data.Account;
 using Ouvidoria.Interfaces;
 
-public class UserService : IUsuarioService
+public class UsuarioService : IUsuarioService
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    public UserService(
+    public UsuarioService(
         UserManager<ApplicationUser> userManager)
     {
         _userManager = userManager;
     }
 
-    public async Task<IdentityResult> RegistrarAdministradorAsync(AdministradorDTO administradorDTO)
+    public async Task<IdentityResult> RegistrarAdministradorAsync(RegistrarAdministradorDTO administradorDTO)
     {
-        ApplicationUser user = new()
-        {
-            Email = administradorDTO.Email,
-            UserName = administradorDTO.Nome,
-        };
-
-        var claimName = new Claim("RealName", user.UserName);
-
-        IdentityResult result = await _userManager.CreateAsync(user, administradorDTO.Senha);
-
-        if (!result.Succeeded)
-        {
-            await _userManager.AddClaimAsync(user, claimName);
-            return result;
-        }
+        IdentityResult result = await CadastrarUsuarioAsync(administradorDTO.Nome, administradorDTO.Email, administradorDTO.Senha, ApplicationUser.TipoAdministrador);
 
         // string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         // string confirmationLink = _urlGenerator.GetEmailConfirmationLink(user.Id, token, "https");
@@ -38,27 +24,10 @@ public class UserService : IUsuarioService
         return result;
     }
 
-    public async Task<IdentityResult> RegistrarCidadaoAsync(CidadaoDTO cidadaoDTO)
+    public async Task<IdentityResult> RegistrarCidadaoAsync(RegistrarCidadaoDTO cidadaoDTO)
     {
-        ApplicationUser user = new()
-        {
-            Email = cidadaoDTO.Email,
-            UserName = cidadaoDTO.Nome,
-            Cpf = cidadaoDTO.Cpf,
-            Telefone = cidadaoDTO.Telefone,
-            Endereco = cidadaoDTO.Endereco,
-            DataNascimento = cidadaoDTO.DataNascimento
-        };
+        IdentityResult result = await CadastrarUsuarioAsync(cidadaoDTO.Nome, cidadaoDTO.Email, cidadaoDTO.Senha, ApplicationUser.TipoCidadao);
 
-        var claimName = new Claim("RealName", user.UserName);
-
-        IdentityResult result = await _userManager.CreateAsync(user, cidadaoDTO.Senha);
-
-        if (!result.Succeeded)
-        {
-            await _userManager.AddClaimAsync(user, claimName);
-            return result;
-        }
 
         // string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         // string confirmationLink = _urlGenerator.GetEmailConfirmationLink(user.Id, token, "https");
@@ -74,5 +43,24 @@ public class UserService : IUsuarioService
         var result = await _userManager.ConfirmEmailAsync(user, token);
         return result.Succeeded;
     }
-   
+
+    private async Task<IdentityResult> CadastrarUsuarioAsync(string nome, string email, string senha, string tipoUsuario)
+    {
+        ApplicationUser user = new(email, nome, tipoUsuario);
+
+        var claimName = new Claim("RealName", user.UserName ?? "");
+
+        IdentityResult result = await _userManager.CreateAsync(user, senha);
+
+        if (!result.Succeeded)
+        {
+            await _userManager.AddClaimAsync(user, claimName);
+            return result;
+        }
+
+        await _userManager.AddToRoleAsync(user, tipoUsuario);
+
+        return result;
+    }
+
 }

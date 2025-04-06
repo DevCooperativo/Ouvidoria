@@ -29,18 +29,18 @@ public class RegistrarCidadaoViewModel
     public string ConfirmPassword { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
-    public string Nome { get; set; } = string.Empty;
-
-    [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [StringLength(15, MinimumLength = 10, ErrorMessage = "O campo {0} deve ter pelo menos {2} e no máximo {1} caracteres")]
-    public string? Telefone { get; set; }
+    public string Telefone { get; set; } = string.Empty;
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [StringLength(14, MinimumLength = 14, ErrorMessage = "O cpf informado é inválido")]
+    public string Cpf { get; set; }
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
-    public string? Endereco { get; set; }
+    public string Endereco { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [DataType(DataType.DateTime)]
-    public DateTime? DataNascimento { get; set; }
+    public DateTime DataNascimento { get; set; }
 
     public RegistrarCidadaoViewModel() { }
 

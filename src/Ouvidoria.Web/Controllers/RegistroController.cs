@@ -1,7 +1,4 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.Extensions.Logging;
 using Ouvidoria.Web.ViewModels.Registro;
 
 namespace Ouvidoria.Web.Controllers;
@@ -31,10 +28,9 @@ public class RegistroController : Controller
     [HttpPost]
     public async Task<IActionResult> CriarRegistro(RegistroFormViewModel registroFormViewModel)
     {
-        if(!ModelState.IsValid) return View(registroFormViewModel);
+        if (!ModelState.IsValid) return View(registroFormViewModel);
         try
         {
-
             return RedirectToAction("Index");
         }
         catch (Exception ex)

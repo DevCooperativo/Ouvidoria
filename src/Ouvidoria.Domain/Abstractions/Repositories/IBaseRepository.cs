@@ -1,4 +1,4 @@
-namespace Ouvidoria.Domain;
+namespace Ouvidoria.Domain.Abstractions.Repositories;
 public interface IBaseRepository<TEntity>
 {
     IEnumerable<TEntity> GetAll(params string[] includes);

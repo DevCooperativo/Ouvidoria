@@ -12,7 +12,6 @@ builder.Services.ConfigureIdentity();
 builder.Services.ConfigureRepositories();
 builder.Services.ConfigureServices(builder.Configuration);
 
-
 string environment = builder.Environment.EnvironmentName;
 string? connectionString;
 
@@ -36,6 +35,12 @@ builder.Services.AddDbContext<DataContext>(options =>
 
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await IdentitySetup.SeedRolesAsync(services);
+}
 
 app.UseHttpsRedirection();
 app.UseAuthentication();

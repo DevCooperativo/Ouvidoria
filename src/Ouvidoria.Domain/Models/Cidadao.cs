@@ -11,7 +11,10 @@ public class Cidadao : UsuarioBase
 
     public Cidadao(string nome, string email, string cpf, string telefone, string endereco, DateTime dataNascimento) : base(nome, email)
     {
-
+        Cpf = cpf;
+        Telefone = telefone;
+        Endereco = endereco;
+        DataNascimento = dataNascimento;
     }
 
     public void Update(string nome, string email, string cpf, string telefone, string endereco, DateTime dataNascimento)

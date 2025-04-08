@@ -9,6 +9,11 @@ body {
     font-family: sans-serif;
     background-color: #ffffff;
     color: #2d2d2d;
+    height:100vh;
+}
+main{
+    height: 100%;
+    padding-top:64px;
 }
 
 /* Header */
@@ -18,6 +23,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position:fixed;
+    width: 100%;
 }
 
 .logo {
@@ -47,11 +54,6 @@ body {
     color: #065f46;
 }
 
-/* Main */
-.main {
-    text-align: center;
-    padding: 60px 20px;
-}
 
 .titulo {
     font-size: 32px;
@@ -61,7 +63,6 @@ body {
 
 .descricao {
     color: #b3dec1;
-    max-width: 600px;
     margin: 0 auto 40px auto;
     line-height: 1.5;
 }
@@ -71,6 +72,7 @@ body {
     flex-direction: column;
     gap: 16px;
     align-items: center;
+    justify-content: center;
 }
 
 .botao {

@@ -1,0 +1,31 @@
+@using Ouvidoria.Web.ViewModels.Registro
+@model IEnumerable<RegistroViewModel>
+
+<div class="table-responsive">
+    <table class="table table-primary">
+        <thead>
+            <tr>
+                <th scope="col">Titulo</th>
+                <th scope="col">Tipo</th>
+                <th scope="col">Natureza</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Count() > 0)
+            {
+                foreach (RegistroViewModel rm in Model)
+                {
+                    <tr class="">
+                        <td>@rm.Titulo</td>
+                        <td scope="row">@rm.Tipo</td>
+                    <td>@rm.Natureza</td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <h1>Não há registros</h1>
+            }
+        </tbody>
+    </table>
+</div>

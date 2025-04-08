@@ -5,8 +5,8 @@ using Ouvidoria.Web.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllersWithViews()
-    .AddRazorRuntimeCompilation();
+builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
 builder.Services.ConfigureIdentity();
 builder.Services.ConfigureRepositories();
@@ -30,7 +30,10 @@ else
 }
 
 builder.Services.AddDbContext<DataContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+{
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+}
+
     );
 
 

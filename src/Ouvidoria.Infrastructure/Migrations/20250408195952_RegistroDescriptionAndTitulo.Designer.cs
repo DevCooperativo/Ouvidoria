@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Ouvidoria.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using Ouvidoria.Infrastructure.Data;
 namespace Ouvidoria.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250408195952_RegistroDescriptionAndTitulo")]
+    partial class RegistroDescriptionAndTitulo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,13 +374,13 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AdministradorId")
+                    b.Property<int>("AdministradorId")
                         .HasColumnType("int");
 
                     b.Property<int?>("AlvoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("AutorId")
+                    b.Property<int>("AutorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataAtualizacao")
@@ -584,7 +587,9 @@ namespace Ouvidoria.Infrastructure.Migrations
                 {
                     b.HasOne("Ouvidoria.Domain.Models.Administrador", "Administrador")
                         .WithMany()
-                        .HasForeignKey("AdministradorId");
+                        .HasForeignKey("AdministradorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Ouvidoria.Domain.Models.Entidade", "Alvo")
                         .WithMany()
@@ -592,7 +597,9 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasOne("Ouvidoria.Domain.Models.Cidadao", "Autor")
                         .WithMany()
-                        .HasForeignKey("AutorId");
+                        .HasForeignKey("AutorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Administrador");
 

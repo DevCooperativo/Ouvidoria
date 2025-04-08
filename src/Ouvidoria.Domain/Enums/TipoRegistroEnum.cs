@@ -1,7 +1,13 @@
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+
 namespace Ouvidoria.Domain.Enums;
 
 public enum TipoRegistroEnum
 {
-    denuncia=1,
-    solicitacao=2
+    [Display(Name = "Denúncia")]
+    denuncia = 1,
+
+    [Display(Name = "Solicitação")]
+    solicitacao = 2
 }

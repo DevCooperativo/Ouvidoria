@@ -1,34 +1,38 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Ouvidoria.Domain.Enums;
+using Ouvidoria.Domain.Extensions;
 using Ouvidoria.DTO;
 
 namespace Ouvidoria.Web.ViewModels.Registro;
 
 public class RegistroFormViewModel
 {
-    public int Id { get; }
-    public string Tipo { get; } = string.Empty;
-    public string Descricao { get; } = string.Empty;
-    public StatusEnum Status { get; }
-    public CidadaoDTO? Autor { get; }
-    public int AutorId { get; }
-    public EntidadeDTO? Alvo { get; }
-    public int? AlvoId { get; }
-    public AdministradorDTO Administrador { get; } = default!;
-    public int AdministradorId { get; }
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [Display(Name = "Tipo")]
+    [StringLength(40, ErrorMessage = "{0} deve ter até {1} caracteres")]
+    public string Tipo { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [Display(Name = "Título")]
+    [StringLength(80, ErrorMessage = "{0} deve ter até {1} caracteres")]
+    public string Titulo { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [Display(Name = "Natureza")]
+    public string Natureza { get; set; } = string.Empty;
+
+    public SelectList NaturezaList { get; set; } = new SelectList(from TipoRegistroEnum f in Enum.GetValues(typeof(TipoRegistroEnum)) select new { ID = (int)f, Name = f.GetDisplayName() }, "ID", "Name");
+
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [StringLength(400, ErrorMessage = "{0} deve ter até {1} caracteres")]
+    [Display(Name="Descrição")]
+    public string Descricao { get; set; } = string.Empty;
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [Display(Name="Arquivo")]
+
+    public RegistroArquivoFormViewModel Arquivo { get; set; } = new();
 
     public RegistroFormViewModel() { }
 
-    public RegistroFormViewModel(RegistroDTO registroDTO)
-    {
-        Id = registroDTO.Id;
-        Tipo = registroDTO.Tipo;
-        Descricao = registroDTO.Descricao;
-        Status = registroDTO.Status;
-        Autor = registroDTO.Autor;
-        AutorId = registroDTO.AutorId;
-        Alvo = registroDTO.Alvo;
-        AlvoId = registroDTO.AlvoId;
-        Administrador = registroDTO.Administrador;
-        AdministradorId = registroDTO.AdministradorId;
-    }
 }

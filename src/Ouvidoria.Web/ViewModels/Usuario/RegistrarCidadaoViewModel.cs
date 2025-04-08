@@ -33,7 +33,7 @@ public class RegistrarCidadaoViewModel
     public string Telefone { get; set; } = string.Empty;
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [StringLength(14, MinimumLength = 14, ErrorMessage = "O cpf informado é inválido")]
-    public string Cpf { get; set; }
+    public string Cpf { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     public string Endereco { get; set; } = string.Empty;

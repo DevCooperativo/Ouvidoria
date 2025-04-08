@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Ouvidoria.Domain.Abstractions.Repositories;
 using Ouvidoria.Domain.Models;
@@ -15,7 +16,11 @@ public class CidadaoRepository : BaseRepository<Cidadao>, ICidadaoRepository
 
     public Task<Cidadao?> GetByEmailAsync(string email)
     {
-        return _context.Set<Cidadao>().FirstOrDefaultAsync(a => a.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        return _context.Set<Cidadao>().FirstOrDefaultAsync(a => a.Email.ToLower() == email.ToLower());
+    }
+    public async Task<Cidadao?> GetCidadaoByClaimsAsync(ClaimsPrincipal claimsPrincipal)
+    {
+        return await GetByEmailAsync(claimsPrincipal.Claims.FirstOrDefault(x => x.Type == "email")?.Value ?? "");
     }
 }
 

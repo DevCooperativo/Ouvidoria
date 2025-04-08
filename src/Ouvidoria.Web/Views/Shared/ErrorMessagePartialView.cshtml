@@ -1,0 +1,38 @@
+@using Ouvidoria.Web.ViewModels.Error
+@model ErrorAlertViewModel
+
+@if (Model != null)
+{
+    <section class="warning">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <section class="warnings pt-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-danger align-items-start d-flex justify-content-between w-100">
+                                        <div>
+                                            <p>
+                                                Ocorreu um ou mais erros ao processar sua requisição.
+                                            </p>
+                                            <ul>
+                                                @foreach (string erro in Model.Errors)
+                                                {
+                                                    <li>@erro</li>
+                                                }
+                                            </ul>
+                                        </div>
+                                        <button class="modal-close-btn px-1 py-0">
+                                            <img width="15" src="~/svg/xmark-solid.svg">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+}

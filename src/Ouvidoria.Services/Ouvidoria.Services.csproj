@@ -7,6 +7,10 @@
     <ProjectReference Include="..\Ouvidoria.DTO\Ouvidoria.DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.S3" Version="3.7.416.9" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

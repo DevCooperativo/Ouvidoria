@@ -6,7 +6,6 @@ using Ouvidoria.Web.ViewModels.Registro;
 
 namespace Ouvidoria.Web.Controllers;
 
-[Route("[controller]")]
 public class AdministradorController : Controller
 {
     private readonly IRegistroService _registroService;
@@ -18,10 +17,10 @@ public class AdministradorController : Controller
         _logger = logger;
     }
 
-    public async IActionResult Index()
+    public IActionResult Index()
     {
-        IEnumerable<RegistroViewModel> registroViewModels = _registroService.GetAllAsync().Select(x => (RegistroViewModel)x);
-        return View();
+        IEnumerable<RegistroViewModel> registroViewModels = _registroService.GetAll().Select(x => (RegistroViewModel)x);
+        return View(registroViewModels);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

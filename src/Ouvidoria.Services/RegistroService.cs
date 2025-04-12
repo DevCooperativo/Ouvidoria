@@ -67,9 +67,9 @@ public class RegistroService : IRegistroService
         throw new NotImplementedException();
     }
 
-    public Task<RegistroDTO> GetDTOByIdAsync(int id)
+    public async Task<RegistroDTO> GetDTOByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        return new RegistroDTO(await _registroRepository.GetByIdAsync(id) ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
     }
 
     public Task UpdateAsync(RegistroDTO registro)

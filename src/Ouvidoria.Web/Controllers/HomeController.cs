@@ -36,9 +36,9 @@ public class HomeController : Controller
             {
                 Titulo = registroFormViewModel.Titulo,
                 Tipo = registroFormViewModel.Tipo,
-                TipoRegistro = (TipoRegistroEnum)Enum.Parse(typeof(TipoRegistroEnum), registroFormViewModel.Natureza),
+                TipoRegistro = registroFormViewModel.TipoRegistro,
                 Descricao = registroFormViewModel.Descricao,
-                Arquivo = registroFormViewModel.Arquivo.ConvertToArquivoDTO(),
+                Arquivo = registroFormViewModel.Arquivo.ConvertToImageDTO(),
             };
             await _registroService.CreateAsync(registroDTO, User);
             return RedirectToAction("Index");

@@ -1,31 +1,58 @@
 @using Ouvidoria.Web.ViewModels.Registro
 @model IEnumerable<RegistroViewModel>
 
-<div class="table-responsive">
-    <table class="table table-primary">
-        <thead>
-            <tr>
-                <th scope="col">Titulo</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Natureza</th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model.Count() > 0)
+<div>
+    <div class="row table_header">
+        <div class="col">Titulo</div>
+        <div class="col">Tipo</div>
+        <div class="col">Natureza</div>
+        <div class="col">Ações</div>
+    </div>
+    <div>
+        @if (Model.Count() > 0)
+        {
+            foreach (RegistroViewModel rm in Model)
             {
-                foreach (RegistroViewModel rm in Model)
-                {
-                    <tr class="">
-                        <td>@rm.Titulo</td>
-                        <td scope="row">@rm.Tipo</td>
-                    <td>@rm.Natureza</td>
-                    </tr>
-                }
+                <div class="row table_row">
+                    <div class="col">@rm.Titulo</div>
+                    <div class="col">@rm.Tipo</div>
+                    <div class="col">@rm.TipoRegistro</div>
+                    <div class="col"><a asp-action="Detalhes" asp-controller="Registro" asp-route-id=@rm.Id><img width=25
+                                height=25 src="~/svg/circle-info-solid.svg" /></a></div>
+                </div>
             }
-            else
-            {
-                <h1>Não há registros</h1>
-            }
-        </tbody>
+        }
+        else
+        {
+            <h1>Não há registros</h1>
+        }
+    </div>
     </table>
 </div>
+
+@section Scripts {
+
+}
+
+@section Styles {
+
+    <style>
+        .table_header {
+            background-color: #555;
+            color: white;
+            padding: 10px 0;
+        }
+
+        .table_row {
+            padding: 10px 0;
+        }
+
+        .table_row:nth-child(even) {
+            background-color: #999;
+        }
+
+        .table_row:nth-child(odd) {
+            background-color: #aaa;
+        }
+    </style>
+}

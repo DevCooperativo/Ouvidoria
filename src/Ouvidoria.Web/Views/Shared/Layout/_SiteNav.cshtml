@@ -5,7 +5,7 @@
     <nav class="nav-desktop">
         <a asp-action="Registro">Registro</a>
         <a asp-action="RegistrarCidadao" asp-controller="User">Cadastrar-se</a>
-        <a href="#">Login</a>
+        <a asp-action="Login" asp-controller="User">Login</a>
     </nav>
 </header>
 
@@ -13,5 +13,5 @@
 <nav class="nav-mobile">
     <a asp-action="Registro">Registro</a>
     <a asp-action="RegistrarCidadao" asp-controller="User">Cadastro</a>
-    <a href="#">Login</a>
+    <a asp-action="Login" asp-controller="User">Login</a>
 </nav>

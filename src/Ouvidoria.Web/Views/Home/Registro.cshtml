@@ -20,10 +20,10 @@
         <div class="d-flex col-12 gap-2">
             <div class="w-100 mb-3 form-group">
                 <label for="" class="form-label">Natureza</label>
-                <select class="form-select" asp-for=@Model.Natureza asp-items=@Model.NaturezaList>
+                <select class="form-select" asp-for=@Model.TipoRegistro asp-items=@Model.TipoRegistroList>
                     <option value="">Escolha a</option>
                 </select>
-                <span class="text-danger form-text" asp-validation-for="@Model.Natureza"></span>
+                <span class="text-danger form-text" asp-validation-for="@Model.TipoRegistro"></span>
             </div>
             <div class="w-100 mb-3 form-group">
                 <label for="" class="form-label">Tipo</label>

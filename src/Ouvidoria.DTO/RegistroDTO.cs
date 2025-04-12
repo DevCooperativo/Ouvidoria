@@ -18,7 +18,7 @@ public record RegistroDTO
     public AdministradorDTO? Administrador { get; init; } = default!;
     public int? AdministradorId { get; init; }
     public IReadOnlyCollection<RegistroDTO> Historico { get; init; } = [];
-    public ArquivoDTO Arquivo { get; init; } = default!;
+    public ImagemDTO Arquivo { get; init; } = default!;
 
     public RegistroDTO() { }
 

@@ -11,10 +11,10 @@ public class RegistroViewModel
     public string Tipo { get; set; } = string.Empty;
     public string Titulo { get; set; } = string.Empty;
     public TipoRegistroEnum TipoRegistro { get; set; }
-    public SelectList NaturezaList { get; set; } = new SelectList(from TipoRegistroEnum f in Enum.GetValues(typeof(TipoRegistroEnum)) select new { ID = (int)f, Name = f.GetDisplayName() }, "ID", "Name");
+    public SelectList TipoRegistroList { get; set; } = new SelectList(from TipoRegistroEnum f in Enum.GetValues(typeof(TipoRegistroEnum)) select new { ID = (int)f, Name = f.GetDisplayName() }, "ID", "Name");
     public string Descricao { get; set; } = string.Empty;
 
-    public RegistroArquivoFormViewModel Arquivo { get; set; } = new();
+    public RegistroImagemFormViewModel Arquivo { get; set; } = new();
 
     public RegistroViewModel(RegistroDTO registroDTO)
     {

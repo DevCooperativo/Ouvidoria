@@ -1,7 +1,9 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Ouvidoria.DTO;
+using Ouvidoria.Infrastructure.Data.Account;
 using Ouvidoria.Interfaces;
 using Ouvidoria.Web.ViewModels.Usuario;
 
@@ -13,13 +15,15 @@ public class UserController : Controller
     private readonly IUsuarioService _usuarioService;
     private readonly ICidadaoService _cidadaoService;
     private readonly IAdministradorService _administradorService;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public UserController(ILogger<UserController> logger, IUsuarioService usuarioService, ICidadaoService cidadaoService, IAdministradorService administradorService)
+    public UserController(ILogger<UserController> logger, IUsuarioService usuarioService, ICidadaoService cidadaoService, IAdministradorService administradorService, SignInManager<ApplicationUser> signInManager)
     {
         _logger = logger;
         _usuarioService = usuarioService;
         _cidadaoService = cidadaoService;
         _administradorService = administradorService;
+        _signInManager = signInManager;
     }
 
     public IActionResult Index()
@@ -33,17 +37,33 @@ public class UserController : Controller
         return View();
     }
     [HttpPost]
-    public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+    public async Task<IActionResult> Login(LoginViewModel loginViewModel, string? returnUrl = null)
     {
         if (!ModelState.IsValid) return View(loginViewModel);
         try
         {
 
-            return RedirectToAction("Index", "Cidadao");
+            var result = await _signInManager.PasswordSignInAsync(loginViewModel.Email, loginViewModel.Password ?? "", true, true);
+            if (!result.Succeeded)
+            {
+                if (result.IsLockedOut)
+                {
+                    ModelState.AddModelError("Login", "Sua conta está bloqueada. Por favor tente novamente mais tarde.");
+                }
+                else
+                {
+                    ModelState.AddModelError("Login", "O e-mail ou a senha estão incorretos.");
+                }
+                return View(loginViewModel);
+            }
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+                return Redirect(returnUrl);
+            return RedirectToAction("Index", "Admin");
         }
         catch (Exception ex)
         {
-            Console.Write(ex.Message);
+            Console.WriteLine(ex.Message);
+            ModelState.AddModelError("", "Ocorreu um erro durante o login. Por favor tente novamente.");
             return View(loginViewModel);
         }
     }

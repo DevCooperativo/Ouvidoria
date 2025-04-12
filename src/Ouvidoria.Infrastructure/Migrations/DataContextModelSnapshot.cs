@@ -180,7 +180,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Administradores", (string)null);
+                    b.ToTable("Administradores");
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Arquivo", b =>
@@ -211,7 +211,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("RegistroId");
 
-                    b.ToTable("Arquivos", (string)null);
+                    b.ToTable("Arquivos");
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Cidadao", b =>
@@ -258,7 +258,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cidadoes", (string)null);
+                    b.ToTable("Cidadoes");
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Entidade", b =>
@@ -292,7 +292,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Entidades", (string)null);
+                    b.ToTable("Entidades");
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.HistoricoRegistro", b =>
@@ -321,7 +321,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("RegistroId");
 
-                    b.ToTable("HistoricoRegistros", (string)null);
+                    b.ToTable("HistoricoRegistros");
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Notificacao", b =>
@@ -360,7 +360,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("RegistroId");
 
-                    b.ToTable("Notificacaos", (string)null);
+                    b.ToTable("Notificacaos");
                 });
 
             modelBuilder.Entity("Ouvidoria.Domain.Models.Registro", b =>
@@ -371,13 +371,13 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AdministradorId")
+                    b.Property<int?>("AdministradorId")
                         .HasColumnType("int");
 
                     b.Property<int?>("AlvoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AutorId")
+                    b.Property<int?>("AutorId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("DataAtualizacao")
@@ -388,7 +388,8 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(400)
+                        .HasColumnType("varchar(400)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -401,6 +402,11 @@ namespace Ouvidoria.Infrastructure.Migrations
                     b.Property<int>("TipoRegistro")
                         .HasColumnType("int");
 
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("varchar(80)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AdministradorId");
@@ -409,7 +415,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasIndex("AutorId");
 
-                    b.ToTable("Registros", (string)null);
+                    b.ToTable("Registros");
                 });
 
             modelBuilder.Entity("Ouvidoria.Infrastructure.Data.Account.ApplicationUser", b =>
@@ -578,9 +584,7 @@ namespace Ouvidoria.Infrastructure.Migrations
                 {
                     b.HasOne("Ouvidoria.Domain.Models.Administrador", "Administrador")
                         .WithMany()
-                        .HasForeignKey("AdministradorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AdministradorId");
 
                     b.HasOne("Ouvidoria.Domain.Models.Entidade", "Alvo")
                         .WithMany()
@@ -588,9 +592,7 @@ namespace Ouvidoria.Infrastructure.Migrations
 
                     b.HasOne("Ouvidoria.Domain.Models.Cidadao", "Autor")
                         .WithMany()
-                        .HasForeignKey("AutorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AutorId");
 
                     b.Navigation("Administrador");
 

@@ -48,19 +48,21 @@ public class UsuarioService : IUsuarioService
     {
         ApplicationUser user = new(email, nome, tipoUsuario);
 
-        var claimName = new Claim("RealName", user.UserName ?? "");
-
+        List<Claim> claimList = [
+            new Claim("RealName", user.UserName ?? ""),
+            new Claim("email", user.Email ?? "")];
         IdentityResult result = await _userManager.CreateAsync(user, senha);
 
         if (!result.Succeeded)
         {
-            await _userManager.AddClaimAsync(user, claimName);
             return result;
         }
 
+        await _userManager.AddClaimsAsync(user, claimList);
         await _userManager.AddToRoleAsync(user, tipoUsuario);
 
         return result;
     }
+
 
 }

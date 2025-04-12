@@ -1,17 +1,35 @@
+@{
+    ViewData["Title"] = "Sistema de Ouvidoria";
+    string title = ViewData["Title"]!.ToString()!;
+    if (ViewData["Subtitle"] is not null)
+    {
+        title = $"{title} - {ViewData["Subtitle"]}";
+    }
+
+}
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Ouvidoria</title>
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <title>@title</title>
     @await RenderSectionAsync("Imports", required: false)
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 
 <body>
     <partial name="Layout/_SiteNav" />
-    @RenderBody()
+    <main>
+        <div class="container">
+            @RenderBody()
+
+        </div>
+    </main>
     @await RenderSectionAsync("Scripts", required: false)
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

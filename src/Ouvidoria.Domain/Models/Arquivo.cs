@@ -6,16 +6,16 @@ public record Arquivo
 {
     private IReadOnlyCollection<string> tipoArquivo = ["png", "jpg", "jpeg", "pdf", "webp", "bmp"];
 
-    public int Id { get; }
-    public string Nome { get; } = string.Empty;
-    public string NomeS3 { get; } = string.Empty;
-    public string TipoArquivo { get; } = string.Empty;
-    public int? RegistroId { get; }
-    public virtual Registro? Registro { get; }
+    public int Id { get; init; }
+    public string Nome { get; init; } = string.Empty;
+    public string NomeS3 { get; init; } = string.Empty;
+    public string TipoArquivo { get; init; } = string.Empty;
+    public int? RegistroId { get; init; }
+    public virtual Registro? Registro { get; init; }
 
     protected Arquivo() { }
 
-    public Arquivo(string nome, string nomeS3, string tipoArquivo, int registroId) : base()
+    public Arquivo(string nome, string nomeS3, string tipoArquivo, int? registroId = null) : base()
     {
         EntityException.When(nome.Length > 100, "O nome do arquivo não pode passar de 100 caracteres");
         Nome = nome;
@@ -25,6 +25,8 @@ public record Arquivo
         EntityException.When(!tipoArquivo.Contains(tipoArquivo), "O tipo do arquivo deve ser de um tipo válido");
         TipoArquivo = tipoArquivo;
 
-        RegistroId = registroId;
+        if (registroId is not null)
+            RegistroId = registroId;
     }
+
 }

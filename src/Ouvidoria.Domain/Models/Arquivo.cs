@@ -10,8 +10,8 @@ public record Arquivo
     public string Nome { get; } = string.Empty;
     public string NomeS3 { get; } = string.Empty;
     public string TipoArquivo { get; } = string.Empty;
-    public int? RegistroId { get; }
-    public virtual Registro? Registro { get; }
+    public int RegistroId { get; }
+    public virtual Registro Registro { get; } = default!;
 
     protected Arquivo() { }
 

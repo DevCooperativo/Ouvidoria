@@ -1,3 +1,5 @@
+using Ouvidoria.Domain.Models;
+
 namespace Ouvidoria.DTO;
 
 public class EntidadeDTO
@@ -13,5 +15,13 @@ public class EntidadeDTO
         Nome = nome;
         Telefone = telefone;
         Cnpj = cnpj;
+    }
+
+    public EntidadeDTO(Entidade entidade)
+    {
+        Id = entidade.Id;
+        Nome = entidade.Nome;
+        Telefone = entidade.Telefone;
+        Cnpj = entidade.Cnpj;
     }
 }

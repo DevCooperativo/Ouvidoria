@@ -5,23 +5,23 @@ namespace Ouvidoria.Web.ViewModels.Registro;
 
 public class RegistroFormViewModel
 {
-    public int Id { get; }
-    public string Tipo { get; } = string.Empty;
-    public string Descricao { get; } = string.Empty;
-    public StatusEnum Status { get; }
-    public CidadaoDTO? Autor { get; }
-    public int AutorId { get; }
-    public EntidadeDTO? Alvo { get; }
-    public int? AlvoId { get; }
-    public AdministradorDTO Administrador { get; } = default!;
-    public int AdministradorId { get; }
+    public int Id { get; set; }
+    public TipoRegistroEnum Tipo { get; set; }
+    public string Descricao { get; set; } = string.Empty;
+    public StatusEnum Status { get; set; }
+    public CidadaoDTO? Autor { get; set; }
+    public int AutorId { get; set; }
+    public EntidadeDTO? Alvo { get; set; }
+    public int? AlvoId { get; set; }
+    public AdministradorDTO Administrador { get; set; } = default!;
+    public int AdministradorId { get; set; }
 
     public RegistroFormViewModel() { }
 
     public RegistroFormViewModel(RegistroDTO registroDTO)
     {
         Id = registroDTO.Id;
-        Tipo = registroDTO.Tipo;
+        Tipo = registroDTO.TipoRegistro;
         Descricao = registroDTO.Descricao;
         Status = registroDTO.Status;
         Autor = registroDTO.Autor;

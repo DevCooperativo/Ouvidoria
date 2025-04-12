@@ -7,7 +7,7 @@ public class RegistroEntityConfiguration : IEntityTypeConfiguration<Registro>
     public void Configure(EntityTypeBuilder<Registro> builder)
     {
         builder.HasKey(d => d.Id);
-        builder.Property(d => d.Tipo).HasMaxLength(40);
+        builder.Property(d => d.Descricao).HasMaxLength(500);
         builder.Property(d => d.Status);
         builder.Property(d => d.TipoRegistro);
         builder.HasOne(d => d.Autor).WithMany().HasForeignKey(d => d.AutorId);

@@ -2,7 +2,7 @@ using Ouvidoria.DTO;
 
 namespace Ouvidoria.Interfaces;
 
-public interface IDenunciaService
+public interface IRegistroService
 
 {
     IEnumerable<RegistroDTO> GetAllAsync();
@@ -10,6 +10,4 @@ public interface IDenunciaService
     Task UpdateAsync(RegistroDTO denuncia);
     Task<RegistroDTO> GetDTOByIdAsync(int id);
     Task DeleteAsync(int id);
-    Task ChangeVisibility(int id);
-    IEnumerable<RegistroDTO> GetAllVisible();
 }

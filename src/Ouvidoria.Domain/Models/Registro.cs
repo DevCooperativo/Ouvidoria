@@ -1,11 +1,20 @@
 
 using Ouvidoria.Domain.Enums;
+using Ouvidoria.Domain.Exceptions;
 
 namespace Ouvidoria.Domain.Models;
 public class Registro : EntidadeBase
 {
-    public string Tipo { get; private set; } = string.Empty;
-    public string Descricao { get; private set; } = string.Empty;
+    private string _descricao = string.Empty;
+    public string Descricao
+    {
+        get => _descricao;
+        private set
+        {
+            EntityException.When(value.Length > 500, "A descrição não pode passar de 500 caracteres.");
+            _descricao = value;
+        }
+    }
     public TipoRegistroEnum TipoRegistro { get; private set; }
     public StatusEnum Status { get; private set; }
     public Cidadao? Autor { get; private set; }
@@ -21,11 +30,10 @@ public class Registro : EntidadeBase
     protected Registro() { }
 
 
-    public Registro(string tipo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status, Cidadao? autor, Administrador administrador) : base()
+    public Registro(string descricao, TipoRegistroEnum tipoRegistro, Cidadao? autor, Administrador administrador) : base()
     {
-        Tipo = tipo;
         Descricao = descricao;
-        Status = status;
+        Status = StatusEnum.Pendente;
         TipoRegistro = tipoRegistro;
         if (autor is not null)
         {
@@ -37,9 +45,11 @@ public class Registro : EntidadeBase
 
     }
 
-    public void Update(string empty, string descricao, string status)
+    public void Update(string descricao, StatusEnum status, Administrador administrador)
     {
-
+        Descricao = descricao;
+        Status = status;
+        Administrador = administrador;
     }
 
     public void AtualizarAlvo(Entidade alvo)

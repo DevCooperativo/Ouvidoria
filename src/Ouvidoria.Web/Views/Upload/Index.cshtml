@@ -1,0 +1,10 @@
+@using Ouvidoria.Web.ViewModels.Files
+@model FileUploadViewModel
+
+<form asp-action="Index" asp-controller="Upload" style="padding-top: 100px;" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Selecione o arquivo:</label>
+        <input type="file" name="File" id="file" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>

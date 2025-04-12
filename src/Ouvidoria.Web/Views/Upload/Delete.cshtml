@@ -1,0 +1,10 @@
+@using Ouvidoria.Web.ViewModels.Files
+@model FileDeleteViewModel
+
+<form asp-action="Delete" asp-controller="Upload" style="padding-top: 100px;" method="post" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="file">Digite o nome do arquivo no amazon s3:</label>
+        <input asp-for="@Model.FileName" />
+    </div>
+    <button type="submit" class="btn btn-primary">Enviar</button>
+</form>

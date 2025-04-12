@@ -11,22 +11,22 @@ public class RegistroImagemFormViewModel
 
     public RegistroImagemFormViewModel() { }
 
-    public ImagemDTO ConvertToImageDTO(int? registroId = null)
+    public ArquivoDTO ConvertToImageDTO(int? registroId = null)
     {
         using MemoryStream itemMemoryStream = new MemoryStream();
         Image?.CopyTo(itemMemoryStream);
 
-        ImagemDTO imagemDTO = new()
+        ArquivoDTO imagemDTO = new()
         {
             Id = Id,
             Nome = Image?.FileName ?? string.Empty,
             TipoArquivo = Image?.ContentType ?? string.Empty,
-            ArquivoDTO = new ArquivoDTO
-            {
-                Nome = Image?.FileName ?? string.Empty,
-                Extensao = Image?.ContentType.Split("/")[1] ?? string.Empty,
-                Bytes = itemMemoryStream.ToArray()
-            },
+            // ArquivoDTO = new ArquivoDTO
+            // {
+            //     Nome = Image?.FileName ?? string.Empty,
+            //     Extensao = Image?.ContentType.Split("/")[1] ?? string.Empty,
+            //     Bytes = itemMemoryStream.ToArray()
+            // },
         };
         return imagemDTO;
     }

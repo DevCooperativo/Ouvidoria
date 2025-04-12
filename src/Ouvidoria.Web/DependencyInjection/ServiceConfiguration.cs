@@ -1,3 +1,4 @@
+using Ouvidoria.Infrastructure.ObjectStorage;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Ouvidoria.Infrastructure.Data;
 using Ouvidoria.Interfaces;
@@ -19,5 +20,16 @@ public static class ServiceConfiguration
         services.AddScoped<IAdministradorService, AdministradorService>();
         services.AddScoped<ICidadaoService, CidadaoService>();
         services.AddScoped<IUsuarioService, UsuarioService>();
+
+        services.AddScoped<IObjectStorageService, ObjectStorageService>();
+        ObjectStorageProviderSettings objectStorageProviderSettings = new();
+        configuration.GetSection("ObjectStorage").Bind(objectStorageProviderSettings);
+        services.Configure<ObjectStorageProviderSettings>(options =>
+        {
+            options.ServiceUrl = Environment.GetEnvironmentVariable("OBJECT_STORAGE_URL") ?? objectStorageProviderSettings.ServiceUrl;
+            options.AccessKey = Environment.GetEnvironmentVariable("OBJECT_STORAGE_ACCESS_KEY") ?? objectStorageProviderSettings.AccessKey;
+            options.SecretKey = Environment.GetEnvironmentVariable("OBJECT_STORAGE_SECRET_KEY") ?? objectStorageProviderSettings.SecretKey;
+            options.Bucket = Environment.GetEnvironmentVariable("OBJECT_STORAGE_BUCKET") ?? objectStorageProviderSettings.Bucket;
+        });
     }
 }

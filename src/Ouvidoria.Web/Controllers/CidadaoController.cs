@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ouvidoria.Web.Controllers;
 
-[Route("[controller]")]
+
 public class CidadaoController : Controller
 {
     private readonly ILogger<CidadaoController> _logger;

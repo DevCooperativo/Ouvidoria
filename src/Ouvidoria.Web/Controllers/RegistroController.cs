@@ -29,12 +29,6 @@ public class RegistroController : Controller
         return View("Criar");
     }
 
-    public async Task<IActionResult> Detalhes(int id)
-    {
-        RegistroFormViewModel rm = new(await _registroService.GetDTOByIdAsync(id));
-        return View(rm);
-    }
-
     [HttpPost]
     public async Task<IActionResult> CriarRegistro(RegistroFormViewModel registroFormViewModel)
     {

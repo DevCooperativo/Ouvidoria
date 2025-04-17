@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Ouvidoria.Domain;
 using Ouvidoria.Domain.Abstractions.Repositories;
+using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Models;
 using Ouvidoria.DTO;
 using Ouvidoria.Interfaces;
@@ -44,7 +45,12 @@ public class RegistroService : IRegistroService
         {
             cidadao = await _cidadaoRepository.GetCidadaoByClaimsAsync(claimsPrincipal);
         }
-        Registro newRegistro = new(registro.Tipo, registro.Titulo, registro.Descricao, registro.TipoRegistro, registro.Status, cidadao);
+        Registro newRegistro = new(registro.Tipo,
+            registro.Titulo,
+            registro.Descricao,
+            registro.TipoRegistro,
+            registro.Status,
+            cidadao);
 
         Arquivo arquivo = new(registro.Arquivo.Nome, registro.Arquivo.NomeS3, registro.Arquivo.TipoArquivo);
         newRegistro.AdicionarArquivo(arquivo);
@@ -69,11 +75,22 @@ public class RegistroService : IRegistroService
 
     public async Task<RegistroDTO> GetDTOByIdAsync(int id)
     {
-        return new RegistroDTO(await _registroRepository.GetByIdAsync(id) ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
+        RegistroDTO registroDTO = new(await _registroRepository.GetByIdAsync(id, "Historico") ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
+        return registroDTO;
     }
 
-    public Task UpdateAsync(RegistroDTO registro)
+    public async Task UpdateAsync(RegistroDTO registro)
     {
-        throw new NotImplementedException();
+        Registro oldRegistro = await _registroRepository.GetByIdAsync(registro.Id) ?? throw new Exception("Nenhum registro encontrado");
+
+        if (oldRegistro.Status is StatusEnum.Cancelado or StatusEnum.Concluido) throw new Exception("O registro já foi fechado e não pode mais ser editado");
+
+        HistoricoRegistroDTO historico = registro.Historicos.Last();
+
+        oldRegistro.AddHistorico(historico.Status, historico.Feedback);
+
+        _registroRepository.Update(oldRegistro);
+
+        _ = await _unitOfWork.Commit();
     }
 }

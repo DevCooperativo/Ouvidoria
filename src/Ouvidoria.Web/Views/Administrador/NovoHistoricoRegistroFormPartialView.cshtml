@@ -1,0 +1,20 @@
+@using Ouvidoria.Web.ViewModels.Registro
+@model HistoricoRegistroFormViewModel
+@{
+    var teste = Model.StatusList;
+}
+<form method="POST" action="/Administrador/Registro" class="col-6">
+    <input type="hidden" asp-for=@Model.RegistroId />
+    <div class="d-flex col">
+        <label class="col-3" for="">Alterar Status</label>
+        <select asp-for="@Model.Status" asp-items=Model.StatusList>
+        </select>
+    </div>
+    <div class="d-flex col">
+        <label class="col-3" for="">Descreva a atualização</label>
+        <textarea class="w-100" asp-for=@Model.Feedback></textarea>
+    </div>
+    <div class="d-flex justify-content-center py-4">
+        <button class="botao verde">Enviar</button>
+    </div>
+</form>

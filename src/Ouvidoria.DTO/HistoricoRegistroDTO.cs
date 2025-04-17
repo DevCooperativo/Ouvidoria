@@ -9,16 +9,21 @@ public record HistoricoRegistroDTO
     public StatusEnum Status { get; }
     public string Feedback { get; } = string.Empty;
     public DateTime DataAtualizacao { get; }
-    public RegistroDTO RegistroBase { get; }
     public int RegistroId { get; }
 
-    public HistoricoRegistroDTO(int id, StatusEnum status, string feedback, DateTime dataAtualizacao, RegistroDTO registroBase)
+    public HistoricoRegistroDTO(StatusEnum status, string feedback)
     {
-        Id = id;
         Status = status;
-        DataAtualizacao = dataAtualizacao;
-        RegistroBase = registroBase;
-        RegistroId = registroBase.Id;
+        Feedback=feedback;
+    }
+
+    public HistoricoRegistroDTO(HistoricoRegistro historicoRegistro)
+    {
+        Id = historicoRegistro.Id;
+        Status = historicoRegistro.Status;
+        Feedback=historicoRegistro.Feedback;
+        DataAtualizacao = historicoRegistro.DataAtualizacao;
+        RegistroId = historicoRegistro.Registro.Id;
     }
 
 }

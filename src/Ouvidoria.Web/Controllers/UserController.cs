@@ -58,7 +58,9 @@ public class UserController : Controller
             }
             if (!string.IsNullOrWhiteSpace(returnUrl))
                 return Redirect(returnUrl);
-            return RedirectToAction("Index", "Admin");
+            if (User.IsInRole(ApplicationUser.TipoAdministrador))
+                return RedirectToAction("Index", "Administrador");
+            return RedirectToAction("Index", "Cidadao");
         }
         catch (Exception ex)
         {

@@ -18,7 +18,7 @@ public record RegistroDTO
     public AdministradorDTO? Administrador { get; init; } = default!;
     public int? AdministradorId { get; init; }
     public List<HistoricoRegistroDTO> Historicos { get; set; } = [];
-    public ArquivoDTO Arquivo { get; init; } = default!;
+    public ArquivoDTO? Arquivo { get; init; }
 
     public RegistroDTO() { }
 
@@ -46,6 +46,7 @@ public record RegistroDTO
         TipoRegistro = registro.TipoRegistro;
         Descricao = registro.Descricao;
         Status = registro.Status;
+        Arquivo = registro.Arquivos.Count > 0 ? registro.Arquivos.Select(a => new ArquivoDTO(a)).First() : null;
         Autor = registro.Autor is null ? null : new CidadaoDTO(registro.Autor);
         AutorId = registro.AutorId;
         Alvo = registro.Alvo is null ? null : new EntidadeDTO(registro.Alvo);

@@ -12,11 +12,13 @@ public class AdministradorController : Controller
 {
     private readonly IRegistroService _registroService;
     private readonly ILogger<AdministradorController> _logger;
+    private readonly IObjectStorageService _objectStorageService;
 
-    public AdministradorController(IRegistroService registroService, ILogger<AdministradorController> logger)
+    public AdministradorController(IRegistroService registroService, ILogger<AdministradorController> logger, IObjectStorageService objectStorageService)
     {
         _registroService = registroService;
         _logger = logger;
+        _objectStorageService = objectStorageService;
     }
     /// <summary>
     /// A dashboard principal do usuário administrador, contendo uma listagem de todos os registros
@@ -37,7 +39,11 @@ public class AdministradorController : Controller
     [HttpGet("/Administrador/Registro/{id}")]
     public async Task<IActionResult> Detalhes(int id)
     {
-        AdminRegistroFormViewModel viewModel = new(await _registroService.GetDTOByIdAsync(id));
+        RegistroDTO registroDTO = await _registroService.GetDTOByIdAsync(id);
+        AdminRegistroFormViewModel viewModel = new(registroDTO)
+        {
+            DownloadAnexoUrl = registroDTO.Arquivo?.NomeS3 != null ? _objectStorageService.GetFileUrlAsync(registroDTO.Arquivo.NomeS3) : string.Empty
+        };
         return View(viewModel);
     }
 

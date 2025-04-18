@@ -48,7 +48,7 @@ public class RegistroFormViewModel
     public EntidadeFormViewModel? Alvo { get; set; }
     public int? AlvoId { get; set; }
 
-    public HistoricoRegistroFormViewModel NovoRegistro { get; set; } = default!;
+    public HistoricoRegistroFormViewModel? NovoRegistro { get; set; }
     public List<HistoricoRegistroViewModel> HistoricosAntigos { get; set; } = [];
 
 

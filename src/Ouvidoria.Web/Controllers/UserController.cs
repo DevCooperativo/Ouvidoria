@@ -32,6 +32,12 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    public IActionResult Perfil()
+    {
+        return View();
+    }
+
+    [HttpGet]
     public IActionResult Login()
     {
         return View();

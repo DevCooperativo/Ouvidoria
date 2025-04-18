@@ -12,19 +12,16 @@ public static class EnumHelper
     /// </summary>
     /// <typeparam name="T">Enum</typeparam>
     /// <returns>SelectList</returns>
-    public static IEnumerable<SelectListItem> RecuperarSelectListItemEnum<T>() where T : Enum
+    public static SelectList RecuperarSelectListItemEnum<T>() where T : Enum
     {
-        return Enum.GetValues(typeof(T))
+        var values = Enum.GetValues(typeof(T))
             .Cast<T>()
-            .Select(f =>
+            .Select(e => new
             {
-                bool isPendente = f.GetDisplayName() == "Pendente";
-                return new SelectListItem
-                {
-                    Value = f.ToString(),
-                    Text = f.GetDisplayName(),
-                    Disabled = isPendente
-                };
-            });;
+                ID = Convert.ToInt32(e),
+                Name = e.GetDisplayName()
+            });
+
+        return new SelectList(values, "ID", "Name");
     }
 }

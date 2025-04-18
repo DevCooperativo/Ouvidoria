@@ -1,0 +1,45 @@
+@if (!string.IsNullOrWhiteSpace(@ViewBag.SuccessMessage))
+{
+    <section class="warning">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <section class="warnings pt-4">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-success align-items-start d-flex justify-content-between w-100">
+                                        @ViewBag.SuccessMessage
+                                        <button class="modal-close-btn px-1 py-0">
+                                            <img width="15" src="~/svg/xmark-solid.svg">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        section.warning {
+            padding-top: 0;
+            position: fixed;
+            top: 59px;
+            z-index: 6;
+            width: 100%;
+
+            .alert.alert-danger,
+            .alert.alert-success {
+                border-radius: 0;
+            }
+
+            button {
+                background: none;
+                border: none;
+
+            }
+        }
+    </style>
+}

@@ -20,13 +20,8 @@ public class RegistroImagemFormViewModel
         {
             Id = Id,
             Nome = Image?.FileName ?? string.Empty,
-            TipoArquivo = Image?.ContentType ?? string.Empty,
-            // ArquivoDTO = new ArquivoDTO
-            // {
-            //     Nome = Image?.FileName ?? string.Empty,
-            //     Extensao = Image?.ContentType.Split("/")[1] ?? string.Empty,
-            //     Bytes = itemMemoryStream.ToArray()
-            // },
+            TipoArquivo = Image?.ContentType.Split("/")[1] ?? string.Empty,
+            Bytes = itemMemoryStream.ToArray()
         };
         return imagemDTO;
     }

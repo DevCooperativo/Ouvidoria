@@ -13,7 +13,7 @@ public class HistoricoRegistroFormViewModel
     public int Id { get; set; }
     public string Feedback { get; set; } = string.Empty;
     public StatusEnum Status { get; set; }
-    public SelectList StatusList { get; init; } = new SelectList(EnumHelper.RecuperarSelectListItemEnum<StatusEnum>().ToList(), "ID", "Name", "Pendente", StatusEnum.Pendente.ToString());
+    public SelectList StatusList { get; init; } = EnumHelper.RecuperarSelectListItemEnum<StatusEnum>();
     // public SelectList StatusList { get; init; } = new SelectList(teste, "ID", "Name");
     public int RegistroId { get; set; }
 

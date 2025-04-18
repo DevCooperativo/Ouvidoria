@@ -25,6 +25,11 @@
             <h2>Detalhes</h2>
             <p style="text-align:justify">@Model.Descricao</p>
         </hgroup>
+
+        <hgroup>
+            <h2>Anexo:</h2>
+            <a href="@Model.DownloadAnexoUrl" target="_blank">Baixar arquivo</a>
+        </hgroup>
     </div>
     @if (!(Model.Status is StatusEnum.Concluido or StatusEnum.Cancelado))
     {

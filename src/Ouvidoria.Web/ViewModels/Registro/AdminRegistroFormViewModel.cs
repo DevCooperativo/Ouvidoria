@@ -46,7 +46,7 @@ public class AdminRegistroFormViewModel
 
     public EntidadeFormViewModel? Alvo { get; set; }
     public int? AlvoId { get; set; }
-
+    public string DownloadAnexoUrl { get; set; } = string.Empty;
     public HistoricoRegistroFormViewModel NovoRegistro { get; set; }
     public List<HistoricoRegistroViewModel> HistoricosAntigos { get; set; } = [];
 

@@ -2,15 +2,18 @@
     <div class="col-8 sm-col-12">
         <div class="d-flex justify-content-between align-items-center">
             <h1>Registros</h1>
-            <a asp-action="NovoRegistro"><img width=24 height=24 src="~/svg/plus-solid.svg"/></a>
+            <a asp-controller="Registro" asp-action="CriarRegistro"><img width=24 height=24
+                    src="~/svg/plus-solid.svg" /></a>
         </div>
         <div>
-            <input class="w-100 border-1 rounded-4 py-1 ps-2" style="background-color: #F0F2F5" placeholder="&#128270; Pesquisar" type="text">
+            <input class="w-100 border-1 rounded-4 py-1 ps-2" style="background-color: #F0F2F5"
+                placeholder="&#128270; Pesquisar" type="text">
         </div>
         <div class="d-flex flex-column gap-y-3">
-            <a asp-action="DetalhesRegistro" asp-route-id="1" class="d-flex justify-content-between align-items-center col-12 py-4 text-decoration-none text-black">
+            <a asp-action="DetalhesRegistro" asp-route-id="1"
+                class="d-flex justify-content-between align-items-center col-12 py-4 text-decoration-none text-black">
                 <div class="d-flex align-items-center">
-                    <img width=40 height=40 src="~/svg/file-plus.svg"/>
+                    <img width=40 height=40 src="~/svg/file-plus.svg" />
                     <hgroup>
                         <h3 class="p-0 m-0">Nome</h3>
                         <p class="p-0 m-0">Endereço</p>
@@ -22,7 +25,7 @@
 
             <div class="d-flex justify-content-between align-items-center col-12 py-4">
                 <div class="d-flex align-items-center">
-                    <img width=40 height=40 src="~/svg/file-plus.svg"/>
+                    <img width=40 height=40 src="~/svg/file-plus.svg" />
                     <hgroup>
                         <h3 class="p-0 m-0">Nome</h3>
                         <p class="p-0 m-0">Endereço</p>

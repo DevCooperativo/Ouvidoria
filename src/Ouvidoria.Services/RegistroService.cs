@@ -11,19 +11,19 @@ namespace Ouvidoria.Services;
 public class RegistroService : IRegistroService
 {
     private readonly ICidadaoService _cidadaoService;
-    private readonly IBaseRepository<Registro> _registroRepository = default!;
+    private readonly IObjectStorageService _objectStorageService;
+    private readonly IBaseRepository<Registro> _registroRepository;
     private readonly ICidadaoRepository _cidadaoRepository;
-    private readonly IUnitOfWork _unitOfWork = default!;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RegistroService(ICidadaoService cidadaoService, IBaseRepository<Registro> registroRepository, ICidadaoRepository cidadaoRepository, IUnitOfWork unitOfWork)
+    public RegistroService(ICidadaoService cidadaoService, IBaseRepository<Registro> registroRepository, ICidadaoRepository cidadaoRepository, IUnitOfWork unitOfWork, IObjectStorageService objectStorageService)
     {
         _cidadaoService = cidadaoService;
         _registroRepository = registroRepository;
         _cidadaoRepository = cidadaoRepository;
         _unitOfWork = unitOfWork;
+        _objectStorageService = objectStorageService;
     }
-
-    public RegistroService() { }
 
     public Task ChangeVisibility(int id)
     {
@@ -52,8 +52,14 @@ public class RegistroService : IRegistroService
             registro.Status,
             cidadao);
 
-        Arquivo arquivo = new(registro.Arquivo.Nome, registro.Arquivo.NomeS3, registro.Arquivo.TipoArquivo);
-        newRegistro.AdicionarArquivo(arquivo);
+
+        if (registro.Arquivo.Bytes.Length > 0)
+        {
+            string nomeS3 = await _objectStorageService.UploadFileAsync(registro.Arquivo);
+            Arquivo arquivo = new(registro.Arquivo.Nome, nomeS3, registro.Arquivo.TipoArquivo);
+            newRegistro.AdicionarArquivo(arquivo);
+        }
+
         _registroRepository.Add(newRegistro);
         _ = await _unitOfWork.Commit();
     }
@@ -75,7 +81,8 @@ public class RegistroService : IRegistroService
 
     public async Task<RegistroDTO> GetDTOByIdAsync(int id)
     {
-        RegistroDTO registroDTO = new(await _registroRepository.GetByIdAsync(id, "Historico") ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
+        var teste = await _registroRepository.GetByIdAsync(id, "Historico", "Autor", "Arquivos");
+        RegistroDTO registroDTO = new(teste ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
         return registroDTO;
     }
 

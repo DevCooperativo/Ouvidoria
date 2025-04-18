@@ -24,11 +24,12 @@ public record HistoricoRegistro
     protected HistoricoRegistro() { }
 
 
-    public HistoricoRegistro(StatusEnum status, string feedback, int registroId)
+    public HistoricoRegistro(StatusEnum status, string feedback, Registro registro)
     {
         Status = status;
         Feedback = feedback;
-        RegistroId = registroId;
+        Registro = registro;
+        RegistroId = registro.Id;
         DataAtualizacao = DateTime.Now;
     }
 

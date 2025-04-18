@@ -3,58 +3,60 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Extensions;
 using Ouvidoria.DTO;
+using Ouvidoria.Web.Helpers;
 using Ouvidoria.Web.ViewModels.Cidadao;
 using Ouvidoria.Web.ViewModels.Entidade;
 
 namespace Ouvidoria.Web.ViewModels.Registro;
 
-public class RegistroFormViewModel
+public class AdminRegistroFormViewModel
 {
-    public int? Id { get; set; }
+    public int? Id { get; init; }
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Tipo")]
     [StringLength(40, ErrorMessage = "{0} deve ter até {1} caracteres")]
-    public string Tipo { get; set; } = string.Empty;
+    public string Tipo { get; init; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Título")]
     [StringLength(80, ErrorMessage = "{0} deve ter até {1} caracteres")]
-    public string Titulo { get; set; } = string.Empty;
+    public string Titulo { get; init; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Status")]
     public StatusEnum Status { get; set; }
 
-    public SelectList StatusList { get; set; } = new SelectList(from StatusEnum f in Enum.GetValues(typeof(StatusEnum)) select new { ID = (int)f, Name = f.GetDisplayName() }, "ID", "Name");
-
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Tipo do Registro")]
-    public TipoRegistroEnum TipoRegistro { get; set; }
+    public TipoRegistroEnum TipoRegistro { get; init; }
 
-    public SelectList TipoRegistroList { get; set; } = new SelectList(from TipoRegistroEnum f in Enum.GetValues(typeof(TipoRegistroEnum)) select new { ID = (int)f, Name = f.GetDisplayName() }, "ID", "Name");
+    public List<SelectListItem> TipoRegistroList { get; init; } = EnumHelper.RecuperarSelectListItemEnum<TipoRegistroEnum>().ToList();
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [StringLength(400, ErrorMessage = "{0} deve ter até {1} caracteres")]
     [Display(Name = "Descrição")]
-    public string Descricao { get; set; } = string.Empty;
+    public string Descricao { get; init; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Arquivo")]
-    public RegistroImagemFormViewModel Arquivo { get; set; } = new();
+    public RegistroImagemFormViewModel Arquivo { get; init; } = new();
 
-    public CidadaoFormViewModel? Autor { get; set; }
-    public int? AutorId { get; set; }
+    public CidadaoFormViewModel? Autor { get; init; }
+    public int? AutorId { get; init; }
 
     public EntidadeFormViewModel? Alvo { get; set; }
     public int? AlvoId { get; set; }
 
-    public HistoricoRegistroFormViewModel NovoRegistro { get; set; } = default!;
+    public HistoricoRegistroFormViewModel NovoRegistro { get; set; }
     public List<HistoricoRegistroViewModel> HistoricosAntigos { get; set; } = [];
 
 
-    public RegistroFormViewModel() { }
+    public AdminRegistroFormViewModel()
+    {
+        NovoRegistro = new();
+    }
 
-    public RegistroFormViewModel(RegistroDTO registroDTO)
+    public AdminRegistroFormViewModel(RegistroDTO registroDTO)
     {
         Id = registroDTO.Id;
         Tipo = registroDTO.Tipo;
@@ -73,7 +75,9 @@ public class RegistroFormViewModel
             Autor = new CidadaoFormViewModel(registroDTO.Autor);
             AutorId = registroDTO.Autor.Id;
         }
+        NovoRegistro = new HistoricoRegistroFormViewModel(registroDTO.Id);
         HistoricosAntigos = [.. registroDTO.Historicos.Select(x => new HistoricoRegistroViewModel(x))];
+
 
     }
 

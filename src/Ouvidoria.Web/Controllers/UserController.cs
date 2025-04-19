@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using Ouvidoria.DTO;
 using Ouvidoria.Infrastructure.Data.Account;
 using Ouvidoria.Interfaces;
+using Ouvidoria.Web.ViewModels.Cidadao;
+using Ouvidoria.Web.ViewModels.Error;
 using Ouvidoria.Web.ViewModels.Usuario;
 
 namespace Ouvidoria.Web.Controllers;
@@ -45,7 +47,12 @@ public class UserController : Controller
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel loginViewModel, string? returnUrl = null)
     {
-        if (!ModelState.IsValid) return View(loginViewModel);
+        if (!ModelState.IsValid)
+        {
+            var ModelErrors = ModelState.Select(x => x.Value.Errors).Where(x => x.Count > 0).ToList();
+            ViewBag.ErrorMessage = new ErrorAlertViewModel("Error", [.. ModelErrors.SelectMany(x => x.Select(y => y.ErrorMessage).ToList())]);
+            return View(loginViewModel);
+        }
         try
         {
 
@@ -54,12 +61,14 @@ public class UserController : Controller
             {
                 if (result.IsLockedOut)
                 {
-                    ModelState.AddModelError("Login", "Sua conta está bloqueada. Por favor tente novamente mais tarde.");
+                    ModelState.AddModelError("Email", "Sua conta está bloqueada. Por favor tente novamente mais tarde.");
                 }
                 else
                 {
-                    ModelState.AddModelError("Login", "O e-mail ou a senha estão incorretos.");
+                    ModelState.AddModelError("Email", "O e-mail ou a senha estão incorretos.");
                 }
+                var ModelErrors = ModelState.Select(x => x.Value.Errors).Where(x => x.Count > 0).ToList();
+                ViewBag.ErrorMessage = new ErrorAlertViewModel("Error", [.. ModelErrors.SelectMany(x => x.Select(y => y.ErrorMessage).ToList())]);
                 return View(loginViewModel);
             }
             if (!string.IsNullOrWhiteSpace(returnUrl))
@@ -79,20 +88,26 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult RegistrarCidadao()
     {
-        return View();
+        RegistrarCidadaoViewModel vm = new();
+        return View(vm);
     }
 
 
     [HttpPost]
     public async Task<IActionResult> RegistrarCidadao(RegistrarCidadaoViewModel cidadaoVM)
     {
-        if (!ModelState.IsValid) return View(cidadaoVM);
+        if (!ModelState.IsValid)
+        {
+            var ModelErrors = ModelState.Select(x => x.Value.Errors).Where(x => x.Count > 0).ToList();
+            ViewBag.ErrorMessage = new ErrorAlertViewModel("Error", [.. ModelErrors.SelectMany(x => x.Select(y => y.ErrorMessage).ToList())]);
+            return View(cidadaoVM);
+        }
         try
         {
             RegistrarCidadaoDTO cidadaoDTO = new(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Password, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.DataNascimento);
 
             await _usuarioService.RegistrarCidadaoAsync(cidadaoDTO);
-            await _cidadaoService.CreateAsync(new CidadaoDTO(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.DataNascimento));
+            await _cidadaoService.CreateAsync(new CidadaoDTO(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.Sexo, cidadaoVM.DataNascimento));
 
             return RedirectToAction("Login");
         }

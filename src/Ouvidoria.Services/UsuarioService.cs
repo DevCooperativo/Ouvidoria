@@ -49,7 +49,7 @@ public class UsuarioService : IUsuarioService
         ApplicationUser user = new(email, nome, tipoUsuario);
 
         List<Claim> claimList = [
-            new Claim("RealName", user.UserName ?? ""),
+            new Claim("RealName", user.RealName ?? ""),
             new Claim("email", user.Email ?? "")];
         IdentityResult result = await _userManager.CreateAsync(user, senha);
 

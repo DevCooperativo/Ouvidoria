@@ -1,0 +1,6 @@
+<div class="d-flex flex-column" style="max-width:270px; width:100%">
+    <div>
+        <img id="sidebarProfilePic" src="~/svg/user-tie-solid.svg" width="88px" height="88px" alt="">
+        <label for="sidebarProfilePic">@User.Claims.FirstOrDefault(x => x.Type.Equals("RealName"))?.Value</label>
+    </div>
+</div>

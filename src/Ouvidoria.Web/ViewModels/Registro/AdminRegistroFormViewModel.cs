@@ -24,7 +24,7 @@ public class AdminRegistroFormViewModel
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Status")]
-    public StatusEnum Status { get; set; }
+    public string Status { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Tipo do Registro")]
@@ -62,7 +62,7 @@ public class AdminRegistroFormViewModel
         Id = registroDTO.Id;
         Tipo = registroDTO.Tipo;
         Titulo = registroDTO.Titulo;
-        Status = registroDTO.Status;
+        Status = registroDTO.Status.GetDisplayName();
         TipoRegistro = registroDTO.TipoRegistro;
         Descricao = registroDTO.Descricao;
         Arquivo = new RegistroImagemFormViewModel();

@@ -1,3 +1,4 @@
+using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Models;
 
 namespace Ouvidoria.DTO;
@@ -10,14 +11,16 @@ public record CidadaoDTO
     public string Cpf { get; } = string.Empty;
     public string Telefone { get; } = string.Empty;
     public string Endereco { get; } = string.Empty;
+    public SexoEnum Sexo { get; } = default!;
     public DateTime DataNascimento { get; }
-    public CidadaoDTO(string nome, string email, string cpf, string telefone, string endereco, DateTime dataNascimento)
+    public CidadaoDTO(string nome, string email, string cpf, string telefone, string endereco, SexoEnum sexo, DateTime dataNascimento)
     {
         Nome = nome;
         Email = email;
         Cpf = cpf;
         Telefone = telefone;
         Endereco = endereco;
+        Sexo = sexo;
         DataNascimento = dataNascimento;
     }
 
@@ -29,6 +32,7 @@ public record CidadaoDTO
         Cpf = cidadao.Cpf;
         Telefone = cidadao.Telefone;
         Endereco = cidadao.Endereco;
+        Sexo = cidadao.Sexo;
         DataNascimento = cidadao.DataNascimento;
     }
 }

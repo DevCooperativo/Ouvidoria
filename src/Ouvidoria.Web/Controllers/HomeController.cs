@@ -33,7 +33,12 @@ public class HomeController : Controller
     [HttpPost]
     public async Task<IActionResult> Registro(RegistroFormViewModel registroFormViewModel)
     {
-        if (!ModelState.IsValid) return View(registroFormViewModel);
+        if (!ModelState.IsValid)
+        {
+            var ModelErrors = ModelState.Select(x => x.Value.Errors).Where(x => x.Count > 0).ToList();
+            ViewBag.ErrorMessage = new ErrorAlertViewModel("Error", [.. ModelErrors.SelectMany(x => x.Select(y => y.ErrorMessage).ToList())]);
+            return View(registroFormViewModel);
+        }
         try
         {
             RegistroDTO registroDTO = new()

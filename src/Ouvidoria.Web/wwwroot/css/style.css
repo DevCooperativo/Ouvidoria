@@ -9,11 +9,40 @@ body {
     font-family: sans-serif;
     background-color: #ffffff;
     color: #2d2d2d;
-    height:100vh;
+    height: 100vh;
 }
-main{
+
+main {
     height: 100%;
-    padding-top:64px;
+    padding-top: 64px;
+
+    @media (min-width:576px) {
+        padding-left: 270px
+    }
+}
+
+.auth_sidebar {
+    background-color: #DCFFF5;
+    display: none;
+    padding: 1.25rem 0;
+    height: 100%;
+    position: fixed;
+    max-width: 270px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (min-width:576px) {
+        display: flex;
+    }
+}
+
+.warning_alert {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    z-index: 100000;
 }
 
 /* Header */
@@ -23,7 +52,8 @@ main{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position:fixed;
+    z-index: 1000;
+    position: fixed;
     width: 100%;
 }
 

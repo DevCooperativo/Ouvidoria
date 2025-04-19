@@ -1,9 +1,18 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Ouvidoria.Domain.Enums;
+using Ouvidoria.Domain.Extensions;
+using Ouvidoria.Web.Helpers;
 
 namespace Ouvidoria.Web.ViewModels.Usuario;
 
 public class RegistrarCidadaoViewModel
 {
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [StringLength(256, MinimumLength = 6, ErrorMessage = "O campo {0} deve ter pelo menos {2} e no máximo {1} caracteres")]
+    [Display(Name = "Nome")]
+    public string Nome { get; set; } = string.Empty;
+
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [StringLength(128, MinimumLength = 6, ErrorMessage = "O campo {0} deve ter pelo menos {2} e no máximo {1} caracteres")]
     [Display(Name = "Nome de Usuário")]
@@ -37,6 +46,12 @@ public class RegistrarCidadaoViewModel
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     public string Endereco { get; set; } = string.Empty;
+
+    [Required(ErrorMessage = "O campo {0} é obrigatório")]
+    [Display(Name = "Sexo")]
+    public SexoEnum Sexo { get; set; }
+
+    public SelectList SexoList { get; set; } = new SelectList(from SexoEnum f in Enum.GetValues(typeof(SexoEnum)) select new { ID = (int)f, Name = f.GetDisplayName() }, "ID", "Name");
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [DataType(DataType.DateTime)]

@@ -35,7 +35,7 @@
             </hgroup>
         }
     </div>
-    @if (!(Model.Status is StatusEnum.Concluido or StatusEnum.Cancelado))
+    @if (!(Model.Status is "Concluido" or "Cancelado"))
     {
         <partial name="NovoHistoricoRegistroFormPartialView" model=@Model.NovoRegistro />
     }

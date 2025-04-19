@@ -40,6 +40,7 @@ public class AdminRegistroFormViewModel
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Arquivo")]
     public RegistroImagemFormViewModel Arquivo { get; init; } = new();
+    public bool TemArquivo { get; set; } = false;
 
     public CidadaoFormViewModel? Autor { get; init; }
     public int? AutorId { get; init; }
@@ -75,6 +76,7 @@ public class AdminRegistroFormViewModel
             Autor = new CidadaoFormViewModel(registroDTO.Autor);
             AutorId = registroDTO.Autor.Id;
         }
+        TemArquivo = registroDTO.Arquivo != null;
         NovoRegistro = new HistoricoRegistroFormViewModel(registroDTO.Id);
         HistoricosAntigos = [.. registroDTO.Historicos.Select(x => new HistoricoRegistroViewModel(x))];
 

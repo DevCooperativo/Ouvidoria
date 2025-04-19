@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Ouvidoria.Domain;
 using Ouvidoria.Domain.Abstractions.Repositories;
 using Ouvidoria.Domain.Models;
@@ -14,6 +15,12 @@ public class CidadaoService : ICidadaoService
     {
         _repositorio = repositorio;
         _unitOfWork = unitOfWork;
+    }
+
+    public async Task<CidadaoDTO> GetCidadaoByClaimsAsync(ClaimsPrincipal claimsPrincipal)
+    {
+        Cidadao cidadao = await _repositorio.GetCidadaoByClaimsAsync(claimsPrincipal) ?? throw new Exception("Não foi possível encontrar um cidadão");
+        return new CidadaoDTO(cidadao);
     }
     public async Task CreateAsync(CidadaoDTO cidadao)
     {

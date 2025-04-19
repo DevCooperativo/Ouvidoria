@@ -18,6 +18,42 @@ public class ObjectStorageService : IObjectStorageService
     {
         _storageProvider = storageProvider.Value;
     }
+    public async Task<byte[]> GetFileBytesAsync(string nomeS3)
+    {
+        try
+        {
+            AmazonS3Client s3Client = new(_storageProvider.AccessKey, _storageProvider.SecretKey, new AmazonS3Config
+            {
+                ServiceURL = _storageProvider.ServiceUrl,
+                ForcePathStyle = true,
+                UseHttp = true
+            });
+
+            var metadataRequest = new GetObjectMetadataRequest
+            {
+                BucketName = _storageProvider.Bucket,
+                Key = nomeS3
+            };
+
+            await s3Client.GetObjectMetadataAsync(metadataRequest);
+
+            using var response = await s3Client.GetObjectAsync(_storageProvider.Bucket, nomeS3);
+            using var memoryStream = new MemoryStream();
+            await response.ResponseStream.CopyToAsync(memoryStream);
+            return memoryStream.ToArray();
+        }
+        catch (AmazonS3Exception ex)
+        {
+            if (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
+                throw new FileNotFoundException($"O arquivo '{nomeS3}' não foi encontrado no bucket '{_storageProvider.Bucket}'.");
+
+            throw new AmazonS3Exception("Não foi possível acessar o provedor de armazenamento. Se o erro persistir contate o suporte.");
+        }
+        catch (Exception)
+        {
+            throw new Exception("Algo deu errado ao tentar baixar o arquivo. Se o erro persistir contate o suporte.");
+        }
+    }
 
     public async Task<string> UploadFileAsync(ArquivoDTO arquivoDTO)
     {

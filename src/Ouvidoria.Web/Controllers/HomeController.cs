@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Ouvidoria.Domain.Enums;
+using Newtonsoft.Json;
 using Ouvidoria.DTO;
 using Ouvidoria.Interfaces;
+using Ouvidoria.Web.ViewModels.Error;
 using Ouvidoria.Web.ViewModels.Registro;
 
 namespace Ouvidoria.Web.Controllers;
@@ -19,6 +19,10 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Index()
     {
+        ViewBag.SuccessMessage = TempData["SuccessMessage"];
+        var errorMessageJson = TempData["ErrorMessage"]?.ToString();
+        if (errorMessageJson is not null)
+            ViewBag.ErrorMessage = JsonConvert.DeserializeObject<ErrorAlertViewModel>(errorMessageJson);
         return View();
     }
     [HttpGet]
@@ -41,13 +45,14 @@ public class HomeController : Controller
                 Arquivo = registroFormViewModel.Arquivo.ConvertToImageDTO(),
             };
             await _registroService.CreateAsync(registroDTO, User);
-            return RedirectToAction("Index");
         }
         catch (Exception ex)
         {
-            Console.Write(ex.Message);
+            ViewBag.ErrorMessage = new ErrorAlertViewModel("registro", [ex.Message]);
             return View(registroFormViewModel);
         }
+        TempData["SuccessMessage"] = "Sua denúncia foi enviada com sucesso.";
+        return RedirectToAction("Index");
     }
 
 }

@@ -19,7 +19,7 @@ public class ObjectStorageService : IObjectStorageService
         _storageProvider = storageProvider.Value;
     }
 
-    public async Task<string> UploadFileAsync(ArquivoDTO arquivoDTO, bool isThumbnail = false)
+    public async Task<string> UploadFileAsync(ArquivoDTO arquivoDTO)
     {
         try
         {

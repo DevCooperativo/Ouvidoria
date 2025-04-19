@@ -5,6 +5,7 @@
     <div class="row table_header">
         <div class="col">Titulo</div>
         <div class="col">Tipo</div>
+        <div class="col">Status</div>
         <div class="col">Natureza</div>
         <div class="col">Ações</div>
     </div>
@@ -16,8 +17,9 @@
                 <div class="row table_row">
                     <div class="col">@rm.Titulo</div>
                     <div class="col">@rm.Tipo</div>
+                    <div class="col">@rm.Status</div>
                     <div class="col">@rm.TipoRegistro</div>
-                    <div class="col"><a asp-action="Detalhes" asp-controller="Registro" asp-route-id=@rm.Id><img width=25
+                    <div class="col"><a asp-action="Registro" asp-controller="Administrador" asp-route-id=@rm.Id><img width=25
                                 height=25 src="~/svg/circle-info-solid.svg" /></a></div>
                 </div>
             }

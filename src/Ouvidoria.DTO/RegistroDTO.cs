@@ -17,8 +17,8 @@ public record RegistroDTO
     public int? AlvoId { get; init; }
     public AdministradorDTO? Administrador { get; init; } = default!;
     public int? AdministradorId { get; init; }
-    public IReadOnlyCollection<RegistroDTO> Historico { get; init; } = [];
-    public ArquivoDTO Arquivo { get; init; } = default!;
+    public List<HistoricoRegistroDTO> Historicos { get; set; } = [];
+    public ArquivoDTO? Arquivo { get; init; }
 
     public RegistroDTO() { }
 
@@ -46,12 +46,19 @@ public record RegistroDTO
         TipoRegistro = registro.TipoRegistro;
         Descricao = registro.Descricao;
         Status = registro.Status;
+        Arquivo = registro.Arquivos.Count > 0 ? registro.Arquivos.Select(a => new ArquivoDTO(a)).First() : null;
         Autor = registro.Autor is null ? null : new CidadaoDTO(registro.Autor);
         AutorId = registro.AutorId;
         Alvo = registro.Alvo is null ? null : new EntidadeDTO(registro.Alvo);
         AlvoId = registro.AlvoId;
         Administrador = registro.Administrador is null ? null : new AdministradorDTO(registro.Administrador);
         AdministradorId = registro.AdministradorId;
+        Historicos = [.. registro.Historico.Select(x => new HistoricoRegistroDTO(x))];
+    }
+
+    public void AddHistorico(HistoricoRegistroDTO historicoRegistroDTO)
+    {
+        Historicos.Add(historicoRegistroDTO);
     }
 
     public static explicit operator RegistroDTO(Registro registro)

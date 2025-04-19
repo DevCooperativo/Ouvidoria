@@ -1,0 +1,50 @@
+@using Ouvidoria.Web.ViewModels.Registro
+@model RegistroFormViewModel
+
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4 position-relative">
+                        <!-- Ícone de voltar -->
+                        <a href="Login.html" class="text-dark text-decoration-none position-absolute top-0 start-0 m-3">
+                            <i class="bi bi-arrow-left fs-4"></i>
+                        </a>
+                        <form id="denunciaForm" asp-action="CriarRegistro" method="post">
+                            <!-- Campo de texto -->
+                            <div class="mb-4">
+                                <label for="denunciaTexto" class="form-label">Descreva a ocorrência:</label>
+                                <textarea class="form-control" id="denunciaTexto" rows="4" maxlength="144" asp-for="@Model.Descricao"
+                                    required></textarea>
+                                <small class="text-muted float-end mt-1"><span id="charCount">0</span>/144</small>
+                            </div>
+
+                            <!-- Anexos -->
+                            <div class="mb-4">
+                                <label class="form-label">Anexar arquivos (PNG, JPEG, MP4):</label>
+                                <div class="input-group">
+                                    <input type="file" asp-for="@Model.Arquivo" class="form-control" id="anexos" accept=".png,.jpeg,.jpg,.mp4"
+                                        multiple>
+                                </div>
+                                <small class="text-muted">Máximo de 5 arquivos (10MB cada)</small>
+                            </div>
+
+                            @* <!-- Data do ocorrido -->
+                            <div class="mb-4">
+                                <label for="dataOcorrido" class="form-label">Data do ocorrido:</label>
+                                <input type="date" asp-for="@Model." class="form-control" id="dataOcorrido" required>
+                            </div> *@
+
+                            <div class="d-grid gap-2">
+                                <a href="Index.html">
+                                    <button type="submit" class="btn btn-primary">Enviar Denúncia</button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

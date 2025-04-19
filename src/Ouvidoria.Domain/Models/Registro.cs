@@ -67,6 +67,7 @@ public class Registro : EntidadeBase
             Autor = autor;
             AutorId = autor.Id;
         }
+        AddHistorico(StatusEnum.Pendente, "Registro criado no sistema");
     }
 
     public Registro(string tipo, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status) : base()
@@ -76,6 +77,7 @@ public class Registro : EntidadeBase
         Descricao = descricao;
         Status = status;
         TipoRegistro = tipoRegistro;
+        AddHistorico(StatusEnum.Pendente, "Registro criado no sistema");
 
     }
 
@@ -101,9 +103,10 @@ public class Registro : EntidadeBase
         AlvoId = alvo.Id;
     }
 
-    public void addHistorico(HistoricoRegistro historico)
+    public void AddHistorico(StatusEnum status, string feedback)
     {
-        _historico.Add(historico);
+        _historico.Add(new HistoricoRegistro(status, feedback, this));
+        Status = status;
     }
 
     public void AlterarStatus(StatusEnum status)

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Ouvidoria.Domain;
 using Ouvidoria.Domain.Abstractions.Repositories;
+using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Models;
 using Ouvidoria.DTO;
 using Ouvidoria.Interfaces;
@@ -10,19 +11,19 @@ namespace Ouvidoria.Services;
 public class RegistroService : IRegistroService
 {
     private readonly ICidadaoService _cidadaoService;
-    private readonly IBaseRepository<Registro> _registroRepository = default!;
+    private readonly IObjectStorageService _objectStorageService;
+    private readonly IBaseRepository<Registro> _registroRepository;
     private readonly ICidadaoRepository _cidadaoRepository;
-    private readonly IUnitOfWork _unitOfWork = default!;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RegistroService(ICidadaoService cidadaoService, IBaseRepository<Registro> registroRepository, ICidadaoRepository cidadaoRepository, IUnitOfWork unitOfWork)
+    public RegistroService(ICidadaoService cidadaoService, IBaseRepository<Registro> registroRepository, ICidadaoRepository cidadaoRepository, IUnitOfWork unitOfWork, IObjectStorageService objectStorageService)
     {
         _cidadaoService = cidadaoService;
         _registroRepository = registroRepository;
         _cidadaoRepository = cidadaoRepository;
         _unitOfWork = unitOfWork;
+        _objectStorageService = objectStorageService;
     }
-
-    public RegistroService() { }
 
     public Task ChangeVisibility(int id)
     {
@@ -44,10 +45,21 @@ public class RegistroService : IRegistroService
         {
             cidadao = await _cidadaoRepository.GetCidadaoByClaimsAsync(claimsPrincipal);
         }
-        Registro newRegistro = new(registro.Tipo, registro.Titulo, registro.Descricao, registro.TipoRegistro, registro.Status, cidadao);
+        Registro newRegistro = new(registro.Tipo,
+            registro.Titulo,
+            registro.Descricao,
+            registro.TipoRegistro,
+            registro.Status,
+            cidadao);
 
-        Arquivo arquivo = new(registro.Arquivo.Nome, registro.Arquivo.NomeS3, registro.Arquivo.TipoArquivo);
-        newRegistro.AdicionarArquivo(arquivo);
+
+        if (registro.Arquivo.Bytes.Length > 0)
+        {
+            string nomeS3 = await _objectStorageService.UploadFileAsync(registro.Arquivo);
+            Arquivo arquivo = new(registro.Arquivo.Nome, nomeS3, registro.Arquivo.TipoArquivo);
+            newRegistro.AdicionarArquivo(arquivo);
+        }
+
         _registroRepository.Add(newRegistro);
         _ = await _unitOfWork.Commit();
     }
@@ -69,11 +81,23 @@ public class RegistroService : IRegistroService
 
     public async Task<RegistroDTO> GetDTOByIdAsync(int id)
     {
-        return new RegistroDTO(await _registroRepository.GetByIdAsync(id) ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
+        var teste = await _registroRepository.GetByIdAsync(id, "Historico", "Autor", "Arquivos");
+        RegistroDTO registroDTO = new(teste ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
+        return registroDTO;
     }
 
-    public Task UpdateAsync(RegistroDTO registro)
+    public async Task UpdateAsync(RegistroDTO registro)
     {
-        throw new NotImplementedException();
+        Registro oldRegistro = await _registroRepository.GetByIdAsync(registro.Id) ?? throw new Exception("Nenhum registro encontrado");
+
+        if (oldRegistro.Status is StatusEnum.Cancelado or StatusEnum.Concluido) throw new Exception("O registro já foi fechado e não pode mais ser editado");
+
+        HistoricoRegistroDTO historico = registro.Historicos.Last();
+
+        oldRegistro.AddHistorico(historico.Status, historico.Feedback);
+
+        _registroRepository.Update(oldRegistro);
+
+        _ = await _unitOfWork.Commit();
     }
 }

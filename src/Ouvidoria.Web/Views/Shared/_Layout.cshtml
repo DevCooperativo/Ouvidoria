@@ -1,6 +1,6 @@
 @{
     ViewData["Title"] = "Sistema de Ouvidoria";
-    string title = ViewData["Title"]!.ToString()!;
+    string title = ViewData["Title"]?.ToString() ?? string.Empty;
     if (ViewData["Subtitle"] is not null)
     {
         title = $"{title} - {ViewData["Subtitle"]}";
@@ -22,6 +22,8 @@
 
 <body>
     <partial name="Layout/_SiteNav" />
+    <partial name="_SuccessMessagePartialView.cshtml" model="@ViewBag.SuccessMessage" />
+    <partial name="_ErrorMessagePartialView.cshtml" model="@ViewBag.ErrorMessage" />
     <main>
         <div class="container">
             @RenderBody()
@@ -30,6 +32,7 @@
     </main>
     @await RenderSectionAsync("Scripts", required: false)
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/Utils/errorAndSuccesModals.js"></script>
 </body>
 
 </html>

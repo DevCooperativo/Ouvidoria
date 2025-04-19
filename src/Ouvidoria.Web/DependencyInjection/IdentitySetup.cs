@@ -29,9 +29,9 @@ public static class IdentitySetup
 
         services.ConfigureApplicationCookie(options =>
         {
-            options.LoginPath = "/Account/Login";
-            options.LogoutPath = "/Account/Logout";
-            options.AccessDeniedPath = "/Account/AccessDenied";
+            options.LoginPath = "/User/Login";
+            options.LogoutPath = "/User/Logout";
+            options.AccessDeniedPath = "/User/AccessDenied";
         });
 
         services.AddAuthorizationBuilder()

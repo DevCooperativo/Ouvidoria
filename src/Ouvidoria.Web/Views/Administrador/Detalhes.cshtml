@@ -1,0 +1,91 @@
+@using Ouvidoria.Domain.Enums
+@using Ouvidoria.Web.ViewModels.Registro;
+@model AdminRegistroFormViewModel
+
+<div class="row py-5">
+    <div class="col-6">
+        <hgroup>
+            <h2>Denunciante</h2>
+            <p>@if(Model.Autor is not null){
+                @Model.Autor.Nome
+                                }
+                                else
+                {
+                    @:Autor não identificado
+                }
+            </p>
+        </hgroup>
+
+        <hgroup>
+            <h2>Título</h2>
+            <p>@Model.Titulo</p>
+        </hgroup>
+
+        <hgroup>
+            <h2>Detalhes</h2>
+            <p style="text-align:justify">@Model.Descricao</p>
+        </hgroup>
+
+        <hgroup>
+            <h2>Anexo:</h2>
+            <a href="@Model.DownloadAnexoUrl" target="_blank">Baixar arquivo</a>
+        </hgroup>
+    </div>
+    @if (!(Model.Status is StatusEnum.Concluido or StatusEnum.Cancelado))
+    {
+        <partial name="NovoHistoricoRegistroFormPartialView" model=@Model.NovoRegistro />
+    }
+</div>
+<div class="row">
+    <div>
+        <div class="row table_header">
+            <h1 class="text-white text-center">Histórico de atualizações</h1>
+        </div>
+        <div class="row table_header">
+            <div class="col">Data de atualização</div>
+            <div class="col">Status</div>
+            <div class="col">Feedback</div>
+        </div>
+        <div>
+            @if (Model.HistoricosAntigos.Count() > 0)
+            {
+                foreach (HistoricoRegistroViewModel hr in Model.HistoricosAntigos)
+                {
+                    <div class="row table_row">
+                        <div class="col">@hr.DataAtualizacao</div>
+                        <div class="col">@hr.Status</div>
+                        <div class="col">@hr.Feedback</div>
+                    </div>
+                }
+            }
+            else
+            {
+                <h1 class="row table_row justify-content-center">Não há registros</h1>
+            }
+        </div>
+        </table>
+    </div>
+</div>
+
+@section Styles {
+
+    <style>
+        .table_header {
+            background-color: #555;
+            color: white;
+            padding: 10px 0;
+        }
+
+        .table_row {
+            padding: 10px 0;
+        }
+
+        .table_row:nth-child(even) {
+            background-color: #999;
+        }
+
+        .table_row:nth-child(odd) {
+            background-color: #aaa;
+        }
+    </style>
+}

@@ -32,6 +32,12 @@ public class UserController : Controller
     }
 
     [HttpGet]
+    public IActionResult Perfil()
+    {
+        return View();
+    }
+
+    [HttpGet]
     public IActionResult Login()
     {
         return View();
@@ -58,7 +64,9 @@ public class UserController : Controller
             }
             if (!string.IsNullOrWhiteSpace(returnUrl))
                 return Redirect(returnUrl);
-            return RedirectToAction("Index", "Admin");
+            if (User.IsInRole(ApplicationUser.TipoAdministrador))
+                return RedirectToAction("Index", "Administrador");
+            return RedirectToAction("Index", "Cidadao");
         }
         catch (Exception ex)
         {

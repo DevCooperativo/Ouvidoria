@@ -5,25 +5,25 @@
 namespace Ouvidoria.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class addsexocidadao : Migration
+    public partial class IsAnonima : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "Sexo",
-                table: "Cidadoes",
-                type: "int",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsAnonima",
+                table: "Registros",
+                type: "tinyint(1)",
                 nullable: false,
-                defaultValue: 0);
+                defaultValue: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Sexo",
-                table: "Cidadoes");
+                name: "IsAnonima",
+                table: "Registros");
         }
     }
 }

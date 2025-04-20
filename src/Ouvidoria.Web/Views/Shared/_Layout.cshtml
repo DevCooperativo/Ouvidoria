@@ -37,7 +37,7 @@
     }
     <partial name="_SuccessMessagePartialView.cshtml" model="@ViewBag.SuccessMessage" />
     <partial name="_ErrorMessagePartialView.cshtml" model="@ViewBag.ErrorMessage" />
-    <main class="h-100" style="@(User.Identity.IsAuthenticated?"padding-top:0;":"")">
+    <main class="h-100" style="@(User.Identity.IsAuthenticated ? "padding-top:0;" : "")">
         <div class="container h-100">
             @RenderBody()
 
@@ -49,3 +49,15 @@
 </body>
 
 </html>
+
+<style>
+    main {
+        @if(User.Identity.IsAuthenticated){
+            @:@@media(min-width:576px) {
+                @:padding-left: 270px
+            }
+
+        }
+
+    }
+</style>

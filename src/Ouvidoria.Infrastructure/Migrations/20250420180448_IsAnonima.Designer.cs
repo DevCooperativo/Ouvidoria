@@ -12,8 +12,8 @@ using Ouvidoria.Infrastructure.Data;
 namespace Ouvidoria.Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250419140707_add sexo cidadao")]
-    partial class addsexocidadao
+    [Migration("20250420180448_IsAnonima")]
+    partial class IsAnonima
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -254,9 +254,6 @@ namespace Ouvidoria.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<int>("Sexo")
-                        .HasColumnType("int");
-
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasMaxLength(11)
@@ -396,6 +393,9 @@ namespace Ouvidoria.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(400)
                         .HasColumnType("varchar(400)");
+
+                    b.Property<bool>("IsAnonima")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");

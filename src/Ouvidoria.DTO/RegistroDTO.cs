@@ -1,3 +1,4 @@
+using System.Data;
 using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Models;
 
@@ -8,6 +9,9 @@ public record RegistroDTO
     public int Id { get; init; }
     public string Titulo { get; init; } = string.Empty;
     public string Tipo { get; init; } = string.Empty;
+    public bool IsAnonima { get; init; } = false;
+    public DateTime DataCriacao { get; init; }
+    public DateTime DataAtualizacao { get; init; }
     public TipoRegistroEnum TipoRegistro { get; init; }
     public string Descricao { get; init; } = string.Empty;
     public StatusEnum Status { get; init; }
@@ -22,11 +26,14 @@ public record RegistroDTO
 
     public RegistroDTO() { }
 
-    public RegistroDTO(int id, string titulo, string tipo, TipoRegistroEnum tipoRegistro, string descricao, StatusEnum status, CidadaoDTO? autor, int autorId, EntidadeDTO? alvo, int? alvoId, AdministradorDTO administrador, int administradorId)
+    public RegistroDTO(int id, string titulo, string tipo, bool isAnonima, DateTime dataCriacao, DateTime dataAtualizacao, TipoRegistroEnum tipoRegistro, string descricao, StatusEnum status, CidadaoDTO? autor, int autorId, EntidadeDTO? alvo, int? alvoId, AdministradorDTO administrador, int administradorId, List<HistoricoRegistroDTO> historicosRegistros)
     {
         Id = id;
         Titulo = titulo;
         Tipo = tipo;
+        IsAnonima = isAnonima;
+        DataCriacao = dataCriacao;
+        DataAtualizacao = dataAtualizacao;
         TipoRegistro = tipoRegistro;
         Descricao = descricao;
         Status = status;
@@ -36,6 +43,7 @@ public record RegistroDTO
         AlvoId = alvoId;
         Administrador = administrador;
         AdministradorId = administradorId;
+        Historicos = historicosRegistros;
     }
 
     public RegistroDTO(Registro registro)
@@ -43,6 +51,9 @@ public record RegistroDTO
         Id = registro.Id;
         Titulo = registro.Titulo;
         Tipo = registro.Tipo;
+        IsAnonima = registro.IsAnonima;
+        DataCriacao = registro.DataCriacao;
+        DataAtualizacao = registro.DataAtualizacao;
         TipoRegistro = registro.TipoRegistro;
         Descricao = registro.Descricao;
         Status = registro.Status;

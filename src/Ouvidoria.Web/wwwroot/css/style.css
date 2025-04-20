@@ -16,9 +16,6 @@ main {
     height: 100%;
     padding-top: 64px;
 
-    @media (min-width:576px) {
-        padding-left: 270px
-    }
 }
 
 .auth_sidebar {

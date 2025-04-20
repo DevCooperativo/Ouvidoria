@@ -74,8 +74,8 @@ public class UserController : Controller
             if (!string.IsNullOrWhiteSpace(returnUrl))
                 return Redirect(returnUrl);
             if (User.IsInRole(ApplicationUser.TipoAdministrador))
-                return RedirectToAction("Index", "Administrador");
-            return RedirectToAction("Index", "Cidadao");
+                return RedirectToAction("Registros", "Administrador");
+            return RedirectToAction("Registros", "Cidadao");
         }
         catch (Exception ex)
         {
@@ -107,7 +107,7 @@ public class UserController : Controller
             RegistrarCidadaoDTO cidadaoDTO = new(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Password, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.DataNascimento);
 
             await _usuarioService.RegistrarCidadaoAsync(cidadaoDTO);
-            await _cidadaoService.CreateAsync(new CidadaoDTO(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.Sexo, cidadaoVM.DataNascimento));
+            await _cidadaoService.CreateAsync(new CidadaoDTO(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.DataNascimento));
 
             return RedirectToAction("Login");
         }
@@ -145,6 +145,14 @@ public class UserController : Controller
     }
 
 
+    [HttpGet]
+    public async Task<IActionResult> Logout(string returnUrl = null)
+    {
+        await _signInManager.SignOutAsync();
+        if (!string.IsNullOrEmpty(returnUrl))
+            return RedirectToAction(returnUrl);
+        return RedirectToAction("Index", "Home");
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

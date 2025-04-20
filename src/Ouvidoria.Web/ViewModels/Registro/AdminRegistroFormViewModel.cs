@@ -42,12 +42,12 @@ public class AdminRegistroFormViewModel
     public RegistroImagemFormViewModel Arquivo { get; init; } = new();
     public bool TemArquivo { get; set; } = false;
 
+
     public CidadaoFormViewModel? Autor { get; init; }
     public int? AutorId { get; init; }
 
     public EntidadeFormViewModel? Alvo { get; set; }
     public int? AlvoId { get; set; }
-    public string DownloadAnexoUrl { get; set; } = string.Empty;
     public HistoricoRegistroFormViewModel NovoRegistro { get; set; }
     public List<HistoricoRegistroViewModel> HistoricosAntigos { get; set; } = [];
 

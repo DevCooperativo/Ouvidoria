@@ -47,11 +47,6 @@ public class RegistrarCidadaoViewModel
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     public string Endereco { get; set; } = string.Empty;
 
-    [Required(ErrorMessage = "O campo {0} é obrigatório")]
-    [Display(Name = "Sexo")]
-    public SexoEnum Sexo { get; set; }
-
-    public SelectList SexoList { get; set; } = new SelectList(from SexoEnum f in Enum.GetValues(typeof(SexoEnum)) select new { ID = (int)f, Name = f.GetDisplayName() }, "ID", "Name");
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [DataType(DataType.DateTime)]

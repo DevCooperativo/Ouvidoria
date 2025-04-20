@@ -1,0 +1,67 @@
+@using Ouvidoria.Web.ViewModels.Registro
+@model IEnumerable<RegistroViewModel>
+
+
+<div class="d-flex w-100 justify-content-center">
+    <div class="table-responsive align-self-end">
+        <table class="table table-secondary">
+            <thead>
+                <tr>
+                    <th scope="col">Data da denúncia</th>
+                    <th scope="col">Data de atualização</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Detalhes</th>
+                    <th scope="col">Natureza</th>
+                    <th scope="col">Responsável</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Count() > 0)
+                {
+                    foreach (RegistroViewModel rm in Model)
+                    {
+                        string descricao = @rm.Descricao;
+                        char aux = '0';
+                        if (descricao.Length > 50)
+                            for (int i = 50; i >= 0; i--)
+                            {
+                                aux = descricao.ElementAt(i);
+                                if (aux == ' ')
+                                {
+                                    descricao = descricao.Substring(0, 50);
+                                    descricao += "...";
+                                    break;
+                                }
+                            }
+                        <tr class="">
+                            <td>@rm.DataCriacao</td>
+                            <td>@rm.DataAtualizacao</td>
+                            <td>@rm.Autor</td>
+                            <td>@rm.Titulo</td>
+                            <td>@rm.Status</td>
+                            <td>@descricao</td>
+                            <td>@rm.TipoRegistro</td>
+                            <td>@rm.Responsavel</td>
+                            <td style="height:100px" class="col overflow-hidden"><a asp-action="Registro"
+                                    asp-controller="Administrador" asp-route-id=@rm.Id><img width=25 height=25
+                                        src="~/svg/circle-info-solid.svg" /></a></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <div class="table_row">
+                        <h1 class="text-center">Não há registros</h1>
+                    </div>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+
+}

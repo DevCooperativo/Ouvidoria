@@ -40,13 +40,16 @@ public class RegistroFormViewModel
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Arquivo")]
-    public RegistroImagemFormViewModel Arquivo { get; set; } = new();
+    public RegistroImagemFormViewModel Arquivo { get; init; } = new();
+    public bool TemArquivo { get; set; } = false;
 
     public CidadaoFormViewModel? Autor { get; set; }
     public int? AutorId { get; set; }
 
     public EntidadeFormViewModel? Alvo { get; set; }
     public int? AlvoId { get; set; }
+
+    public bool IsAnonima { get; set; } = false;
 
     public HistoricoRegistroFormViewModel? NovoRegistro { get; set; }
     public List<HistoricoRegistroViewModel> HistoricosAntigos { get; set; } = [];
@@ -68,6 +71,7 @@ public class RegistroFormViewModel
             Alvo = new EntidadeFormViewModel(registroDTO.Alvo);
             AlvoId = registroDTO.Alvo.Id;
         }
+        TemArquivo = registroDTO.Arquivo != null;
         if (registroDTO.Autor is not null)
         {
             Autor = new CidadaoFormViewModel(registroDTO.Autor);

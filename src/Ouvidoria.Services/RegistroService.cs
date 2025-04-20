@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using Ouvidoria.Domain;
 using Ouvidoria.Domain.Abstractions.Repositories;
 using Ouvidoria.Domain.Enums;
@@ -30,7 +32,7 @@ public class RegistroService : IRegistroService
         throw new NotImplementedException();
     }
 
-    public async Task CreateAsync(RegistroDTO registro, ClaimsPrincipal claimsPrincipal)
+    public async Task<string> CreateAsync(RegistroDTO registro, ClaimsPrincipal claimsPrincipal)
     {
         ArgumentNullException.ThrowIfNull(registro);
         if (registro.Arquivo is null)
@@ -41,11 +43,13 @@ public class RegistroService : IRegistroService
 
         Cidadao? cidadao = null;
 
-        if (claimsPrincipal.Identity?.IsAuthenticated ?? false)
+        if ((claimsPrincipal.Identity?.IsAuthenticated ?? false) && !registro.IsAnonima)
         {
             cidadao = await _cidadaoRepository.GetCidadaoByClaimsAsync(claimsPrincipal);
         }
-        Registro newRegistro = new(registro.Tipo,
+        Registro newRegistro = new(
+            registro.Tipo,
+            registro.IsAnonima,
             registro.Titulo,
             registro.Descricao,
             registro.TipoRegistro,
@@ -62,6 +66,7 @@ public class RegistroService : IRegistroService
 
         _registroRepository.Add(newRegistro);
         _ = await _unitOfWork.Commit();
+        return GenerateRegistryAccessToken(newRegistro.Id, registro.Titulo, registro.IsAnonima);
     }
 
     public Task DeleteAsync(int id)
@@ -71,7 +76,8 @@ public class RegistroService : IRegistroService
 
     public IEnumerable<RegistroDTO> GetAll()
     {
-        return _registroRepository.GetAll().Select(x => (RegistroDTO)x);
+        var teste = _registroRepository.GetAll().Select(x => (RegistroDTO)x);
+        return teste;
     }
 
     public IEnumerable<RegistroDTO> GetAllVisible()
@@ -81,9 +87,14 @@ public class RegistroService : IRegistroService
 
     public async Task<RegistroDTO> GetDTOByIdAsync(int id)
     {
-        var teste = await _registroRepository.GetByIdAsync(id, "Historico", "Autor", "Arquivos");
-        RegistroDTO registroDTO = new(teste ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
-        return registroDTO;
+        return new RegistroDTO(await _registroRepository.GetByIdAsync(id, "Historico", "Autor", "Arquivos") ?? throw new Exception("Não foi encontrado nenhum registro com esse id"));
+    }
+
+    public RegistroDTO GetDTOByTokenAsync(string token)
+    {
+        string ret = CompareHash(token) ?? "";
+        int id = Convert.ToInt32(ret.Split("|")[0]);
+        return new RegistroDTO(_registroRepository.GetAllReadOnly("Historico", "Arquivos").Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Não foi encontrado nenhum registro ou este registro está indisponível para consulta"));
     }
 
     public async Task UpdateAsync(RegistroDTO registro)
@@ -99,5 +110,40 @@ public class RegistroService : IRegistroService
         _registroRepository.Update(oldRegistro);
 
         _ = await _unitOfWork.Commit();
+    }
+
+
+    private static string GenerateRegistryAccessToken(int id, string titulo, bool isAnonima)
+    {
+        string Key = "o0P2VLbTMQJMig1zU64Zs27KpW8i3yIm";
+        string IV = "Cwk66EmgH0k1Gfsr";
+        StringBuilder InfoParaToken = new StringBuilder();
+        InfoParaToken.AppendJoin("|", [id, titulo, isAnonima]);
+        using Aes aesAlg = Aes.Create();
+        aesAlg.Key = Encoding.UTF8.GetBytes(Key);
+        aesAlg.IV = Encoding.UTF8.GetBytes(IV);
+
+        ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+        byte[] inputBytes = Encoding.UTF8.GetBytes(InfoParaToken.ToString());
+        byte[] encryptedBytes = encryptor.TransformFinalBlock(inputBytes, 0, inputBytes.Length);
+
+        return Convert.ToBase64String(encryptedBytes);
+    }
+
+    private static string CompareHash(string encryptedText)
+    {
+        string Key = "o0P2VLbTMQJMig1zU64Zs27KpW8i3yIm";
+        string IV = "Cwk66EmgH0k1Gfsr";
+        using Aes aesAlg = Aes.Create();
+        aesAlg.Key = Encoding.UTF8.GetBytes(Key);
+        aesAlg.IV = Encoding.UTF8.GetBytes(IV);
+
+        ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+        byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
+        byte[] decryptedBytes = decryptor.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
+
+        return Encoding.UTF8.GetString(decryptedBytes);
     }
 }

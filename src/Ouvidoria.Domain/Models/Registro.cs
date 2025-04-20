@@ -17,6 +17,8 @@ public class Registro : EntidadeBase
         }
     }
 
+    public bool IsAnonima { get; private set; } = false;
+
     private string _titulo { get; set; } = string.Empty;
     public string Titulo
     {
@@ -55,9 +57,10 @@ public class Registro : EntidadeBase
     protected Registro() { }
 
 
-    public Registro(string tipo, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status, Cidadao? autor) : base()
+    public Registro(string tipo, bool isAnonima, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status, Cidadao? autor) : base()
     {
         Tipo = tipo;
+        IsAnonima = isAnonima;
         Titulo = titulo;
         Descricao = descricao;
         Status = status;
@@ -70,9 +73,10 @@ public class Registro : EntidadeBase
         AddHistorico(StatusEnum.Pendente, "Registro criado no sistema");
     }
 
-    public Registro(string tipo, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status) : base()
+    public Registro(string tipo, bool isAnonima, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status) : base()
     {
         Tipo = tipo;
+        IsAnonima = isAnonima;
         Titulo = titulo;
         Descricao = descricao;
         Status = status;

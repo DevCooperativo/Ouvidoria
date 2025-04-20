@@ -1,0 +1,121 @@
+@using Ouvidoria.Web.ViewModels.Registro
+@model IEnumerable<RegistroViewModel>
+@{
+    string ValorPesquisa = ViewContext.HttpContext.Request.Query["tituloPesquisa"].ToString() ?? "";
+}
+<div class="row justify-content-center">
+    <div class="col-11 col-sm-8">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1>Registros</h1>
+            <a asp-controller="Registro" asp-action="CriarRegistro"><img width=24 height=24
+                    src="~/svg/plus-solid.svg" /></a>
+        </div>
+        <div>
+            <form method="GET" asp-action="Registros" class="d-flex gap-3">
+                <input value="@ValorPesquisa" id="tituloPesquisa" name="tituloPesquisa"
+                    class="col border-1 rounded-4 py-1 ps-2" style="background-color: #F0F2F5"
+                    placeholder="&#128270; Pesquisar" type="text">
+                <a class="btn btn-secondary" asp-action="Registros" type="button">Limpar filtro</a>
+            </form>
+        </div>
+
+
+
+        <div class="d-flex flex-column gap-y-3">
+            @if (Model.Count() > 0)
+            {
+                foreach (RegistroViewModel rm in Model)
+                {
+                    int dias = (DateTime.Now - rm.DataAtualizacao).Days;
+                    string dataPercorrida = "Há {0} atrás";
+                    if (dias < 1)
+                        dataPercorrida = string.Format(dataPercorrida, "menos de 1 dia");
+                    if (dias < 30)
+                    {
+                        dataPercorrida = string.Format(dataPercorrida, $"{dias} dias atrás");
+                    }
+                    else if (dias < 60)
+                    {
+                        dataPercorrida = string.Format(dataPercorrida, $"cerca de {dias / 30} mês");
+                    }
+                    else
+                    {
+                        dataPercorrida = string.Format(dataPercorrida, $"cerca de {dias / 30} meses");
+                    }
+
+                    <a onclick="AbrirModal(@rm.Id)"
+                        class="d-flex justify-content-between align-items-center col-12 py-4 text-decoration-none text-black">
+                        <div class="d-flex align-items-center">
+                            <img width=40 height=40 src="~/svg/file-plus.svg" />
+                            <hgroup>
+                                <h3 class="p-0 m-0">@rm.Titulo</h3>
+                                <p class="p-0 m-0">@rm.TipoRegistro</p>
+                            </hgroup>
+                        </div>
+                        <span>@dataPercorrida</span>
+                    </a>
+                }
+            }
+            else
+            {
+                <h2>Não há registros</h2>
+            }
+
+        </div>
+    </div>
+</div>
+
+<partial name="_RegistroDetalheModal" />
+
+@section Scripts {
+    <script>
+
+        async function AbrirModal(id) {
+            let dados = await ObterDados(id)
+            document.getElementById("modalTitleId").innerText = dados.titulo
+            document.getElementById("modalDescricaoText").innerText = dados.descricao
+            if (dados.temArquivo) {
+                document.getElementById("modalArquivo").innerHTML = `
+                        <hgroup>
+                            <h4>Anexo:</h4>
+                            <a class="btn btn-secondary" href="/Registro/DownloadArquivo/${dados.id}">Baixar arquivo</a>
+                        </hgroup>
+                `
+            }
+            let tableBody = document.getElementById("modalTableBody")
+            let rowContainer = ""
+            dados.historicosAntigos.forEach(element => {
+                rowContainer +=
+                    `<tr>
+                            <td class="text-start">${element.dataAtualizacaoExibicao}</td>
+                            <td class="text-start">${element.status}</td>
+                            <td class="text-start">${element.feedback}</td>
+                        </tr>`
+            })
+            tableBody.innerHTML = rowContainer
+            const htmlModal = document.getElementById("modalId")
+            htmlModal.addEventListener("hidden.bs.modal", () => {
+                document.getElementById("modalTitleId").innerText = ""
+                document.getElementById("modalDescricaoText").innerText = ""
+                document.getElementById("modalTableBody").innerHTML = ''
+            })
+            const bootstrapModal = new bootstrap.Modal(htmlModal)
+            bootstrapModal.toggle()
+
+        }
+        async function ObterDados(id) {
+            const data = await fetch(`/Cidadao/Registro/${id}`, {
+                method: "GET"
+            })
+            const res = await data.json()
+            console.log(res)
+            return res
+        }
+
+
+    </script>
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/table.css">
+}

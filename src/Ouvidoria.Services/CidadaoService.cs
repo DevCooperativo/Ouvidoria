@@ -67,7 +67,7 @@ public class CidadaoService : ICidadaoService
 
         Cidadao currentCidadao = await _repositorio.GetByIdAsync(cidadao.Id) ?? throw new Exception("Não foi possível encontrar a cor");
 
-        currentCidadao.Update(cidadao.Nome, cidadao.Email, cidadao.Cpf, cidadao.Telefone, cidadao.Endereco, cidadao.DataNascimento);
+        currentCidadao.Update(cidadao.Nome, cidadao.Email, cidadao.Telefone, cidadao.Endereco);
 
         var cidadaoSaved = _repositorio.Update(currentCidadao);
 

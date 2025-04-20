@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Ouvidoria.DTO;
 using Ouvidoria.Infrastructure.Data.Account;
 using Ouvidoria.Interfaces;
+using Ouvidoria.Web.ViewModels.Error;
+using Ouvidoria.Web.ViewModels.Registro;
 
 
 namespace Ouvidoria.Web.Controllers;
@@ -54,24 +56,51 @@ public class RegistroController : Controller
 		}
 	}
 
-	// [HttpGet]
-	// public IActionResult CriarRegistro()
-	// {
-	//     return View();
-	// }
+	[HttpGet]
+	public IActionResult CriarRegistro()
+	{
+		RegistroFormViewModel vm = new();
+		return View(vm);
+	}
 
-	// [HttpPost]
-	// public async Task<IActionResult> CriarRegistro(RegistroFormViewModel registroFormViewModel)
-	// {
-	//     if (!ModelState.IsValid) return View(registroFormViewModel);
-	//     try
-	//     {
-	//         return RedirectToAction("Index");
-	//     }
-	//     catch (Exception ex)
-	//     {
-	//         Console.Write(ex);
-	//         return View(registroFormViewModel);
-	//     }
-	// }
+	[HttpPost]
+	public async Task<IActionResult> CriarRegistro(RegistroFormViewModel registroFormViewModel)
+	{
+		if (!ModelState.IsValid)
+		{
+			var ModelErrors = ModelState.Select(x => x.Value.Errors).Where(x => x.Count > 0).ToList();
+			ViewBag.ErrorMessage = new ErrorAlertViewModel("Error", [.. ModelErrors.SelectMany(x => x.Select(y => y.ErrorMessage).ToList())]);
+			return View(registroFormViewModel);
+		}
+		string tokenAcesso=string.Empty;
+		try
+		{
+			RegistroDTO registroDTO = new()
+			{
+				Titulo = registroFormViewModel.Titulo,
+				IsAnonima = registroFormViewModel.IsAnonima,
+				Tipo = registroFormViewModel.Tipo,
+				TipoRegistro = registroFormViewModel.TipoRegistro,
+				Descricao = registroFormViewModel.Descricao,
+				Arquivo = registroFormViewModel.Arquivo.ConvertToImageDTO(),
+			};
+			tokenAcesso = await _registroService.CreateAsync(registroDTO, User);
+		}
+		catch (Exception ex)
+		{
+			ViewBag.ErrorMessage = new ErrorAlertViewModel("registro", [ex.Message]);
+			return View(registroFormViewModel);
+		}
+		TempData["SuccessMessage"] = "Sua denúncia foi enviada com sucesso.";
+
+		return RedirectToAction("RegistroCriado", new { tokenAcesso });
+	}
+
+
+	[HttpGet]
+	public IActionResult RegistroCriado(string tokenAcesso)
+	{
+		ViewData["TokenAcesso"] = tokenAcesso;
+		return View();
+	}
 }

@@ -1,3 +1,4 @@
+using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Models;
 
 namespace Ouvidoria.DTO;

@@ -24,8 +24,8 @@ public class AdministradorController : Controller
     /// A dashboard principal do usuário administrador, contendo uma listagem de todos os registros
     /// </summary>
     /// <returns></returns>
-    [HttpGet("/Administrador/Registros")]
-    public IActionResult Index()
+    [HttpGet]
+    public IActionResult Registros()
     {
         IEnumerable<RegistroViewModel> registroViewModels = _registroService.GetAll().Select(x => (RegistroViewModel)x);
         return View(registroViewModels);
@@ -40,10 +40,7 @@ public class AdministradorController : Controller
     public async Task<IActionResult> Detalhes(int id)
     {
         RegistroDTO registroDTO = await _registroService.GetDTOByIdAsync(id);
-        AdminRegistroFormViewModel viewModel = new(registroDTO)
-        {
-            DownloadAnexoUrl = registroDTO.Arquivo?.NomeS3 != null ? _objectStorageService.GetFileUrlAsync(registroDTO.Arquivo.NomeS3) : string.Empty
-        };
+        AdminRegistroFormViewModel viewModel = new(registroDTO);
         return View(viewModel);
     }
 

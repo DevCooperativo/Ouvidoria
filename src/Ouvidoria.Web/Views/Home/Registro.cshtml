@@ -1,94 +1,80 @@
-@* @{
-    ViewData["Subtitle"] = "Regitro";
-}  *@
-@using Ouvidoria.Web.ViewModels.Registro
-@model RegistroFormViewModel;
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Ouvidoria - Denúncia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="ouvidoria-login\css\style.css">
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-md-8 col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-body p-4 position-relative">
+                        <!-- Ícone de voltar -->
+                        <a href="Login.html" class="text-dark text-decoration-none position-absolute top-0 start-0 m-3">
+                            <i class="bi bi-arrow-left fs-4"></i>
+                        </a>
 
-<form method="POST" asp-action="Registro" enctype="multipart/form-data"
-    class="h-100 row align-items-center justify-content-center">
-    <hgroup class="text-center">
-        <h2>Enviar Denúncia</h2>
-        <p>Digite abaixo a sua denuncia</p>
-    </hgroup>
+                        <h1 class="h4 text-center mb-4">Registro de Denúncia</h1>
+                        
+                        <form id="denunciaForm">
+                            <!-- Campo de texto -->
+                            <div class="mb-4">
+                                <label for="denunciaTexto" class="form-label">Descreva a ocorrência:</label>
+                                <textarea 
+                                    class="form-control" 
+                                    id="denunciaTexto" 
+                                    rows="4" 
+                                    maxlength="144"
+                                    required
+                                ></textarea>
+                                <small class="text-muted float-end mt-1"><span id="charCount">0</span>/144</small>
+                            </div>
 
-    <div class="d-flex flex-column col-8">
-        <div class="col-12 mb-3 form-group">
-            <label for="">Título de Denúncia</label>
-            <input type="text" asp-for=@Model.Titulo class="form-control" placeholder="" />
-            <span class="text-danger form-text" asp-validation-for="@Model.Titulo"></span>
-        </div>
-        <div class="d-flex col-12 gap-2">
-            <div class="w-100 mb-3 form-group">
-                <label for="" class="form-label">Natureza</label>
-                <select class="form-select" asp-for=@Model.TipoRegistro asp-items=@Model.TipoRegistroList>
-                    <option value="">Escolha a</option>
-                </select>
-                <span class="text-danger form-text" asp-validation-for="@Model.TipoRegistro"></span>
+                            <!-- Anexos -->
+                            <div class="mb-4">
+                                <label class="form-label">Anexar arquivos (PNG, JPEG, MP4):</label>
+                                <div class="input-group">
+                                    <input 
+                                        type="file" 
+                                        class="form-control" 
+                                        id="anexos"
+                                        accept=".png,.jpeg,.jpg,.mp4"
+                                        multiple
+                                    >
+                                </div>
+                                <small class="text-muted">Máximo de 5 arquivos (10MB cada)</small>
+                            </div>
+
+                            <!-- Data do ocorrido -->
+                            <div class="mb-4">
+                                <label for="dataOcorrido" class="form-label">Data do ocorrido:</label>
+                                <input 
+                                    type="date" 
+                                    class="form-control" 
+                                    id="dataOcorrido" 
+                                    required
+                                >
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <a href="Index.html">
+                                    <button type="submit" class="btn btn-primary">Enviar Denúncia</button>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-            <div class="w-100 mb-3 form-group">
-                <label for="" class="form-label">Tipo</label>
-                <input class="form-control" type="text" asp-for=@Model.Tipo />
-                <span class="text-danger form-text" asp-validation-for="@Model.Tipo"></span>
-            </div>
-        </div>
-        <div class="col-12 mb-3 form-group">
-            <label for="" class="form-label">Descrição</label>
-            <textarea class="form-control" rows="7" asp-for=@Model.Descricao></textarea>
-            <span class="text-danger form-text" asp-validation-for="@Model.Descricao"></span>
         </div>
     </div>
-    <div class="col-8">
-        <div onclick="document.querySelector('#Arquivo_Image').click()" class="d-flex align-items-center">
-            <img id="arquivosImg" width="50px" height="50px" src="~/svg/file-plus.svg" alt="">
-            <hgroup>
-                <h5 id="h5FileName">
-                    @if (!string.IsNullOrWhiteSpace(Model.Arquivo?.ImageName))
-                    {
-                        @Model.Arquivo?.ImageName
-                    }
-                    else
-                    {
-                        @:Inserir anexo
-                    }
-                </h5>
-                <span id="spanFileDescription">
-                    @if (string.IsNullOrWhiteSpace(Model.Arquivo?.ImageName))
-                    {
-                        @:Caso possua vários arquivos, junte-os em um único arquivo para enviar o anexo
-                    }
-                    else
-                    {
 
-                    }
-                </span>
-            </hgroup>
-            <input type="file" class="visually-hidden" accept=".jpg, .jpeg, .pdf, .png, .webp, .docx, .odt" asp-for=@Model.Arquivo!.Image
-                onchange=changeSvgAndFileName(this)>
-
-        </div>
-        <span class="text-danger form-text" asp-validation-for="@Model.Arquivo"></span>
-
-    </div>
-    <div class="col-12 d-flex justify-content-center py-3">
-        <button type="submit" class="botao verde">Enviar
-    </div>
-    </div>
-</form>
-
-@section Scripts {
-    <script src="~/js/"></script>
-    <script>
-        function changeSvgAndFileName(element) {
-            if (element.files.length === 0) {
-                document.getElementById('arquivosImg').src = '/svg/file-plus.svg';
-
-            }
-            else {
-                document.getElementById('arquivosImg').src = '/svg/file-check.svg'
-                console.log(element.files)
-                document.getElementById('h5FileName').innerText = element.files[0].name
-                document.getElementById('spanFileDescription').innerText = ""
-            }
-        }
-    </script>
-}
+    <!-- Bootstrap 5 JS Bundle + Bootstrap Icons -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="ouvidoria-login\js\script.js"></script>
+</body>
+</html>

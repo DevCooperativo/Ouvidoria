@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title - Ouvidoria</title>
+    <link href="~/css/style_2.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <div style="display: flex; min-height: 100vh;">
+        <!-- Sidebar -->
+        <div style="width: 220px; background-color: #D1FAE5; display: flex; flex-direction: column; align-items: center; padding-top: 20px;">
+            <img src="https://via.placeholder.com/80" alt="Avatar" style="border-radius: 50%;" />
+            <p>Lorem Ipsum da Silva</p>
+
+            <nav style="margin-top: 40px; display: flex; flex-direction: column; gap: 20px;">
+                <a href="/Denuncias" class="sidebar-link"><i class="fas fa-user"></i> Denúncias</a>
+                <a href="/Perfil" class="sidebar-link"><i class="fas fa-user-circle"></i> Meu perfil</a>
+                <a href="/Logout" class="sidebar-link"><i class="fas fa-sign-out-alt"></i> Sair</a>
+            </nav>
+        </div>
+
+        <!-- Conteúdo principal -->
+        <main style="flex-grow: 1; padding: 40px;">
+            @RenderBody()
+        </main>
+    </div>
+</body>
+</html>

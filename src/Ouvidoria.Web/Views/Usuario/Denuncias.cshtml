@@ -1,0 +1,43 @@
+@{
+    ViewBag.Title = "Minhas Denúncias";
+    Layout = "~/Views/Shared/_LayoutInterno.cshtml";
+}
+
+
+<div class="container-denuncias">
+    <h2>Denúncias</h2>
+    <input type="text" class="input-pesquisa" placeholder="Pesquisar" />
+
+    <div class="lista-denuncias">
+        @foreach (var denuncia in Model)
+        {
+            <div class="item-denuncia">
+                <div class="icone-status">
+                    @if (denuncia.Status == "Em andamento")
+                    {
+                        <i class="fa fa-spinner"></i>
+                    }
+                    else if (denuncia.Status == "Concluída")
+                    {
+                        <i class="fa fa-check-circle"></i>
+                    }
+                    else if (denuncia.Status == "Cancelada")
+                    {
+                        <i class="fa fa-times-circle"></i>
+                    }
+                    else
+                    {
+                        <i class="fa fa-envelope"></i>
+                    }
+                </div>
+                <div class="info-denuncia">
+                    <strong>@denuncia.Titulo @if (denuncia.Anonima) { <span>(Denúncia anônima)</span> }</strong>
+                    <p>@denuncia.Endereco</p>
+                </div>
+                <div class="data-denuncia">
+                    <span>@denuncia.TempoDecorrido</span>
+                </div>
+            </div>
+        }
+    </div>
+</div>

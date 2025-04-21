@@ -7,7 +7,8 @@ using Ouvidoria.Interfaces;
 using Ouvidoria.Web.ViewModels.Registro;
 
 namespace Ouvidoria.Web.Controllers;
-[Authorize]
+
+[Authorize(Policy = "RequireAdministratorRole")]
 public class AdministradorController : Controller
 {
     private readonly IRegistroService _registroService;

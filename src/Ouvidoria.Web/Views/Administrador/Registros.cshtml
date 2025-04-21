@@ -1,0 +1,95 @@
+@using Ouvidoria.Web.ViewModels.Administrador
+@using Ouvidoria.Web.ViewModels.Registro
+@model AdministradorRegistrosWithChartDataViewModel
+
+
+<div class="d-flex flex-column align-items-center w-100 justify-content-between">
+    <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+    <div class="table-responsive">
+        <table class="table table-secondary">
+            <thead>
+                <tr>
+                    <th scope="col">Data da denúncia</th>
+                    <th scope="col">Data de atualização</th>
+                    <th scope="col">Autor</th>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Detalhes</th>
+                    <th scope="col">Natureza</th>
+                    <th scope="col">Responsável</th>
+                    <th scope="col">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.Registros.Count() > 0)
+                {
+                    foreach (RegistroViewModel rm in Model.Registros)
+                    {
+                        string descricao = @rm.Descricao;
+                        char aux = '0';
+                        if (descricao.Length > 50)
+                            for (int i = 50; i >= 0; i--)
+                            {
+                                aux = descricao.ElementAt(i);
+                                if (aux == ' ')
+                                {
+                                    descricao = descricao.Substring(0, 50);
+                                    descricao += "...";
+                                    break;
+                                }
+                            }
+                        <tr class="">
+                            <td>@rm.DataCriacao</td>
+                            <td>@rm.DataAtualizacao</td>
+                            <td>@rm.Autor</td>
+                            <td>@rm.Titulo</td>
+                            <td>@rm.Status</td>
+                            <td>@descricao</td>
+                            <td>@rm.TipoRegistro</td>
+                            <td>@rm.Responsavel?.Nome</td>
+                            <td style="height:100px" class="col overflow-hidden"><a asp-action="Registro"
+                                    asp-controller="Administrador" asp-route-id=@rm.Id><img width=25 height=25
+                                        src="~/svg/circle-info-solid.svg" /></a></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <div class="table_row">
+                        <h1 class="text-center">Não há registros</h1>
+                    </div>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+<script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
+"></script>
+
+<script type="text/javascript">
+(async function() {
+  const data = @Html.Raw(Json.Serialize(Model.ChartData.Labels.Zip(Model.ChartData.Data, (x,y) => new {label=x, data=y}).ToList()));
+
+  new Chart(
+    document.getElementById('acquisitions'),
+    {
+      type: 'line',
+      data: {
+        labels: data.map(row => row.label.charAt(0).toUpperCase()+row.label.slice(1)),
+        datasets: [
+          {
+            label: 'Registros pro mês',
+            data: data.map(row => row.data)
+          }
+        ]
+      }
+    }
+  );
+})();
+
+</script>
+
+}

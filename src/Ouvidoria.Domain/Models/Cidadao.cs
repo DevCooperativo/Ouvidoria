@@ -1,3 +1,5 @@
+using Ouvidoria.Domain.Enums;
+
 namespace Ouvidoria.Domain.Models;
 public class Cidadao : UsuarioBase
 {
@@ -17,14 +19,12 @@ public class Cidadao : UsuarioBase
         DataNascimento = dataNascimento;
     }
 
-    public void Update(string nome, string email, string cpf, string telefone, string endereco, DateTime dataNascimento)
+    public void Update(string nome, string email, string telefone, string endereco)
     {
         Nome = nome;
         Email = email;
-        Cpf = cpf;
         Telefone = telefone;
         Endereco = endereco;
-        DataNascimento = dataNascimento;
     }
 
 

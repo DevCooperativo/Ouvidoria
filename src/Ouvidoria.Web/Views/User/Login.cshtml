@@ -7,36 +7,63 @@
         returnUrl = Context.Request.Query["returnUrl"].ToString();
     }
 }
-<section class="login">
-    <div class="container py-5">
-        <div class="row">
-            <div class="col-12 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-                <form asp-action="Login" class="px-2 py-5 px-sm-5 bg-light rounded-3">
-                    <input type="hidden" name="ReturnUrl" id="ReturnUrl" value="@returnUrl">
-                    <h2 class="text-dark text-center mb-3">Login</h2>
-                    <div class="col-12 mb-3 email">
-                        <p class="mb-0">
-                            <label class="form-label" asp-for="@Model.Email">E-mail: </label>
-                        </p>
-                        <input class="form-control" type="text" asp-for=@Model.Email>
-                        @* <span class="text-danger form-text" asp-validation-for="@Model.Email"></span> *@
+<div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h1 class="h4 text-center mb-4">Sistema de Ouvidoria</h1>
+                <h2 class="h5 text-center mb-4 text-muted">Login:</h2>
+
+                <form method="POST" asp-action="Login">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Email</label>
+                        <input type="text" class="form-control" asp-for=@Model.Email placeholder="exemplo@gmail.com"
+                            required>
+                        <span class="text-danger" asp-validation-for="@Model.Email"></span>
                     </div>
-                    <div class="col-12 mb-3 password">
-                        <p class="mb-0">
-                            <label class="form-label" asp-for="@Model.Password"><span>Senha: </span></label>
-                        </p>
-                        <input class="form-control" type="password" asp-for=@Model.Password>
-                        @* <span class="text-danger form-text" asp-validation-for="@Model.Password"></span> *@
+
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Senha:</label>
+                        <div class="input-group">
+                            <input type="password" class="form-control" asp-for=@Model.Password required>
+                            <button class="btn btn-outline-secondary toggle-password" type="button">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <span class="text-danger" asp-validation-for="@Model.Password"></span>
                     </div>
-                    <div class="text-danger" asp-validation-summary="All"></div>
-                    <input type="hidden" id="RecaptchaResponse" name="RecaptchaResponse" />
-                    <div
-                        class="col-12 text-center mt-5 d-flex flex-column justify-content-center align-items-center gap-4">
-                        <button type="submit" class="botao verde" title="Login">Confirmar</button>
-                        <p><a asp-action="ForgotPassword" asp-controller="Account" class="link-verde">Esqueci a senha</a></p>
+
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="remember">
+                        <label class="form-check-label" for="remember">Lembre-se de mim</label>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a asp-controller="User" asp-action="RegistrarCidadao" class="custom-link text-decoration-none">
+                            Efetuar cadastro
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a href="Senha.html" class="custom-link text-decoration-none">
+                            Esqueci minha senha
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        @if (ViewBag.InLineErrors is not null)
+                            @foreach (var item in ViewBag.InLineErrors)
+                            {
+                                <span>@item</span>
+                            }
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <button type="button" class="btn btn-outline-secondary" id="cancelBtn">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Login</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-</section>
+</div>

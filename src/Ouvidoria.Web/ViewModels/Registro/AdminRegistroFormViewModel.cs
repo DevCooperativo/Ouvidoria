@@ -24,7 +24,7 @@ public class AdminRegistroFormViewModel
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Status")]
-    public StatusEnum Status { get; set; }
+    public string Status { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Tipo do Registro")]
@@ -40,13 +40,14 @@ public class AdminRegistroFormViewModel
     [Required(ErrorMessage = "O campo {0} é obrigatório")]
     [Display(Name = "Arquivo")]
     public RegistroImagemFormViewModel Arquivo { get; init; } = new();
+    public bool TemArquivo { get; set; } = false;
+
 
     public CidadaoFormViewModel? Autor { get; init; }
     public int? AutorId { get; init; }
 
     public EntidadeFormViewModel? Alvo { get; set; }
     public int? AlvoId { get; set; }
-    public string DownloadAnexoUrl { get; set; } = string.Empty;
     public HistoricoRegistroFormViewModel NovoRegistro { get; set; }
     public List<HistoricoRegistroViewModel> HistoricosAntigos { get; set; } = [];
 
@@ -61,7 +62,7 @@ public class AdminRegistroFormViewModel
         Id = registroDTO.Id;
         Tipo = registroDTO.Tipo;
         Titulo = registroDTO.Titulo;
-        Status = registroDTO.Status;
+        Status = registroDTO.Status.GetDisplayName();
         TipoRegistro = registroDTO.TipoRegistro;
         Descricao = registroDTO.Descricao;
         Arquivo = new RegistroImagemFormViewModel();
@@ -75,6 +76,7 @@ public class AdminRegistroFormViewModel
             Autor = new CidadaoFormViewModel(registroDTO.Autor);
             AutorId = registroDTO.Autor.Id;
         }
+        TemArquivo = registroDTO.Arquivo != null;
         NovoRegistro = new HistoricoRegistroFormViewModel(registroDTO.Id);
         HistoricosAntigos = [.. registroDTO.Historicos.Select(x => new HistoricoRegistroViewModel(x))];
 

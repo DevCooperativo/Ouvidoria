@@ -1,9 +1,14 @@
 using System.Diagnostics;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Ouvidoria.DTO;
+using Ouvidoria.Infrastructure.Data.Account;
 using Ouvidoria.Interfaces;
+using Ouvidoria.Web.ViewModels.Administrador;
+using Ouvidoria.Web.ViewModels.ChartData;
 using Ouvidoria.Web.ViewModels.Registro;
 
 namespace Ouvidoria.Web.Controllers;
@@ -13,22 +18,28 @@ public class AdministradorController : Controller
     private readonly IRegistroService _registroService;
     private readonly ILogger<AdministradorController> _logger;
     private readonly IObjectStorageService _objectStorageService;
+    private readonly IAdministradorService _administradorService;
+    private readonly SignInManager<ApplicationUser> _signInManager;
 
-    public AdministradorController(IRegistroService registroService, ILogger<AdministradorController> logger, IObjectStorageService objectStorageService)
+
+    public AdministradorController(IRegistroService registroService, ILogger<AdministradorController> logger, IObjectStorageService objectStorageService, IAdministradorService administradorService, SignInManager<ApplicationUser> signInManager)
     {
         _registroService = registroService;
         _logger = logger;
         _objectStorageService = objectStorageService;
+        _administradorService = administradorService;
+        _signInManager = signInManager;
     }
     /// <summary>
     /// A dashboard principal do usuário administrador, contendo uma listagem de todos os registros
     /// </summary>
     /// <returns></returns>
-    [HttpGet("/Administrador/Registros")]
-    public IActionResult Index()
+    [HttpGet]
+    public async Task<IActionResult> Registros()
     {
-        IEnumerable<RegistroViewModel> registroViewModels = _registroService.GetAll().Select(x => (RegistroViewModel)x);
-        return View(registroViewModels);
+        AdministradorDTO adminDTO = await _administradorService.GetDTOByEmailAsync(User.Claims.Where(x=>x.Type==ClaimTypes.Email).Select(x=>x.Value).FirstOrDefault()??"");
+        AdministradorRegistrosWithChartDataViewModel rm = new(_registroService.GetAll().Where(x => x.AdministradorId == adminDTO.Id).Select(x => (RegistroViewModel)x), new ChartDataViewModel(_registroService.GetCountPerMonthToChartDataDTO()));
+        return View(rm);
     }
 
     /// <summary>
@@ -40,10 +51,9 @@ public class AdministradorController : Controller
     public async Task<IActionResult> Detalhes(int id)
     {
         RegistroDTO registroDTO = await _registroService.GetDTOByIdAsync(id);
-        AdminRegistroFormViewModel viewModel = new(registroDTO)
-        {
-            DownloadAnexoUrl = registroDTO.Arquivo?.NomeS3 != null ? _objectStorageService.GetFileUrlAsync(registroDTO.Arquivo.NomeS3) : string.Empty
-        };
+        AdministradorDTO adminDTO = await _administradorService.GetDTOByEmailAsync(User.Claims.Where(x=>x.Type==ClaimTypes.Email).Select(x=>x.Value).FirstOrDefault()??"");
+        if(registroDTO.AdministradorId != adminDTO.Id) throw new Exception("Você não pode acessar esse regitro");
+        AdminRegistroFormViewModel viewModel = new(registroDTO);
         return View(viewModel);
     }
 

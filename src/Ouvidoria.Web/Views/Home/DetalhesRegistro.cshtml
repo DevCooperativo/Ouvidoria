@@ -1,6 +1,6 @@
 @using Ouvidoria.Domain.Enums
 @using Ouvidoria.Web.ViewModels.Registro;
-@model AdminRegistroFormViewModel
+@model RegistroViewModel
 
 <div class="row h-100">
     <div class="d-flex py-5">
@@ -36,28 +36,24 @@
                 </hgroup>
             }
         </div>
-        @if (!(Model.Status is "Concluido" or "Cancelado"))
-        {
-            <partial name="NovoHistoricoRegistroFormPartialView" model=@Model.NovoRegistro />
-        }
     </div>
     <div class="align-self-end">
         <h1 class="text-black text-center">Histórico de atualizações</h1>
         <div class="table-responsive">
-            <table class="table table-secondary">
-                <thead>
-                    <tr>
-                        <th scope="col">Data de atualização</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">Feedback</th>
-                    </tr>
-                </thead>
-                <tbody>
+            @if (Model.HistoricosAntigos.Count() > 0)
+            {
+                <table class="table table-secondary">
+                    <thead>
+                        <tr>
+                            <th scope="col">Data de atualização</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Feedback</th>
+                        </tr>
+                    </thead>
 
 
-                    @if (Model.HistoricosAntigos.Count() > 0)
-                    {
-                        foreach (HistoricoRegistroViewModel hr in Model.HistoricosAntigos)
+                    <tbody>
+                        @foreach (HistoricoRegistroViewModel hr in Model.HistoricosAntigos)
                         {
                             <tr class="">
                                 <td scope="row">@hr.DataAtualizacao</td>
@@ -65,13 +61,13 @@
                                 <td>@hr.Feedback</td>
                             </tr>
                         }
-                    }
-                    else
-                    {
-                        <h1 class="row table_row justify-content-center">Não há registros</h1>
-                    }
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <h1 class="row table_row justify-content-center">Não houveram atualizações</h1>
+            }
         </div>
     </div>
 </div>

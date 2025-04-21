@@ -1,0 +1,41 @@
+@using Ouvidoria.Web.ViewModels.Registro
+<div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog"
+    aria-labelledby="modalTitleId" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitleId"></h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="modalDescricao pb-3">
+                    <h4 class="d-block" for="">Descrição: </h3>
+                        <p id="modalDescricaoText"></p>
+                </div>
+                <div id="modalArquivo" class="pb-3">
+                </div>
+                <div id="modalTable" class="align-self-end">
+                    <div class="table-responsive">
+                        <h4 class="text-center">Histórico de atualizações</h4>
+                        <table class="table table-secondary">
+                            <thead>
+                                <tr>
+                                    <th scope="col" class="text-start">Data de atualização</th>
+                                    <th scope="col" class="text-start">Status</th>
+                                    <th scope="col" class="text-start">Feedback</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

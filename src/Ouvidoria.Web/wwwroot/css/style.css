@@ -124,6 +124,7 @@ main {
 .botao.borda {
     border: 1px solid #b3dec1;
     color: #b3dec1;
+    background-color: #ffffff; 
 }
 
 .botao.borda:hover {
@@ -140,7 +141,6 @@ main {
     color: #5e8c6d;
     text-decoration: underline;
 }
-
 
 /* Responsivo */
 @media (min-width: 768px) {

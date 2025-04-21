@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Ouvidoria.DTO;
 using Ouvidoria.Interfaces;
+using Ouvidoria.Web.ViewModels.Administrador;
+using Ouvidoria.Web.ViewModels.ChartData;
 using Ouvidoria.Web.ViewModels.Registro;
 
 namespace Ouvidoria.Web.Controllers;
@@ -27,8 +29,8 @@ public class AdministradorController : Controller
     [HttpGet]
     public IActionResult Registros()
     {
-        IEnumerable<RegistroViewModel> registroViewModels = _registroService.GetAll().Select(x => (RegistroViewModel)x);
-        return View(registroViewModels);
+        AdministradorRegistrosWithChartDataViewModel rm = new(_registroService.GetAll().Select(x => (RegistroViewModel)x), new ChartDataViewModel(_registroService.GetCountPerMonthToChartDataDTO()));
+        return View(rm);
     }
 
     /// <summary>

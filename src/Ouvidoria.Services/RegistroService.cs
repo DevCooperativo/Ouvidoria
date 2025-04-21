@@ -4,6 +4,7 @@ using System.Text;
 using Ouvidoria.Domain;
 using Ouvidoria.Domain.Abstractions.Repositories;
 using Ouvidoria.Domain.Enums;
+using Ouvidoria.Domain.Extensions;
 using Ouvidoria.Domain.Models;
 using Ouvidoria.DTO;
 using Ouvidoria.Interfaces;
@@ -92,10 +93,20 @@ public class RegistroService : IRegistroService
 
     public RegistroDTO GetDTOByTokenAsync(string token)
     {
-        string ret = CompareHash(token) ?? "";
+        string ret = Decode(token) ?? "";
         int id = Convert.ToInt32(ret.Split("|")[0]);
         return new RegistroDTO(_registroRepository.GetAllReadOnly("Historico", "Arquivos").Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Não foi encontrado nenhum registro ou este registro está indisponível para consulta"));
     }
+
+
+    public ChartDataDTO GetCountPerMonthToChartDataDTO()
+    {
+        var teste = _registroRepository.GetAll().Where(x=>x.DataCriacao.Year == DateTime.Now.Year).OrderBy(x=>x.DataCriacao.Month).GroupBy(x => new { x.DataCriacao.Month });
+        List<string> Labels = [.. teste.Select(x => x.Key.Month.ToString())];
+        List<int> Data = [.. teste.Select(x=> x.Count())];
+        return new ChartDataDTO(Labels,Data);
+    }
+
 
     public async Task UpdateAsync(RegistroDTO registro)
     {
@@ -131,7 +142,7 @@ public class RegistroService : IRegistroService
         return Convert.ToBase64String(encryptedBytes);
     }
 
-    private static string CompareHash(string encryptedText)
+    private static string Decode(string encryptedText)
     {
         string Key = "o0P2VLbTMQJMig1zU64Zs27KpW8i3yIm";
         string IV = "Cwk66EmgH0k1Gfsr";
@@ -146,4 +157,6 @@ public class RegistroService : IRegistroService
 
         return Encoding.UTF8.GetString(decryptedBytes);
     }
+
+
 }

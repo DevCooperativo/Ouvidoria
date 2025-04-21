@@ -54,4 +54,6 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         return _context.Set<TEntity>().Update(entity).Entity;
     }
+
+    
 }

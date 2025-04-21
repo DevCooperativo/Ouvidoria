@@ -34,6 +34,9 @@ public class RegistroViewModel
         {
             Autor = new CidadaoFormViewModel(registroDTO.Autor);
         }
+        if(registroDTO.Administrador is not null){
+            Responsavel= new AdministradorViewModel(registroDTO.Administrador);
+        }
         TemArquivo = registroDTO.Arquivo != null;
         Status = registroDTO.Status.GetDisplayName();
         Titulo = registroDTO.Titulo;

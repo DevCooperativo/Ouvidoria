@@ -1,12 +1,14 @@
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 using Ouvidoria.Domain;
 using Ouvidoria.Domain.Abstractions.Repositories;
 using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Extensions;
 using Ouvidoria.Domain.Models;
 using Ouvidoria.DTO;
+using Ouvidoria.Infrastructure.Data.Account;
 using Ouvidoria.Interfaces;
 
 namespace Ouvidoria.Services;
@@ -17,15 +19,22 @@ public class RegistroService : IRegistroService
     private readonly IObjectStorageService _objectStorageService;
     private readonly IBaseRepository<Registro> _registroRepository;
     private readonly ICidadaoRepository _cidadaoRepository;
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IAdministradorService _administradorService;
+    private readonly IBaseRepository<Administrador> _administradorRepository;
 
-    public RegistroService(ICidadaoService cidadaoService, IBaseRepository<Registro> registroRepository, ICidadaoRepository cidadaoRepository, IUnitOfWork unitOfWork, IObjectStorageService objectStorageService)
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly UserManager<ApplicationUser> _userManager;
+
+    public RegistroService(ICidadaoService cidadaoService, IBaseRepository<Registro> registroRepository, ICidadaoRepository cidadaoRepository, IUnitOfWork unitOfWork, IObjectStorageService objectStorageService, IAdministradorService administradorService, UserManager<ApplicationUser> userManager, IBaseRepository<Administrador> administradorRepository)
     {
         _cidadaoService = cidadaoService;
         _registroRepository = registroRepository;
         _cidadaoRepository = cidadaoRepository;
         _unitOfWork = unitOfWork;
         _objectStorageService = objectStorageService;
+        _administradorService = administradorService;
+        _userManager = userManager;
+        _administradorRepository = administradorRepository;
     }
 
     public Task ChangeVisibility(int id)
@@ -48,6 +57,12 @@ public class RegistroService : IRegistroService
         {
             cidadao = await _cidadaoRepository.GetCidadaoByClaimsAsync(claimsPrincipal);
         }
+
+        Random rnd = new();
+        List<AdministradorDTO> listAdminDTO = _administradorService.GetAllAsync().ToList();
+        AdministradorDTO adminEscolhido = listAdminDTO[rnd.Next(listAdminDTO.Count)];
+        Administrador admin = await _administradorRepository.GetByIdAsync(adminEscolhido.Id) ?? throw new Exception("Usuário administrador não encontrado");
+
         Registro newRegistro = new(
             registro.Tipo,
             registro.IsAnonima,
@@ -55,7 +70,8 @@ public class RegistroService : IRegistroService
             registro.Descricao,
             registro.TipoRegistro,
             registro.Status,
-            cidadao);
+            cidadao, admin
+            );
 
 
         if (registro.Arquivo.Bytes.Length > 0)
@@ -77,7 +93,7 @@ public class RegistroService : IRegistroService
 
     public IEnumerable<RegistroDTO> GetAll()
     {
-        var teste = _registroRepository.GetAll().Select(x => (RegistroDTO)x);
+        var teste = _registroRepository.GetAll("Administrador").Select(x => (RegistroDTO)x);
         return teste;
     }
 
@@ -101,10 +117,10 @@ public class RegistroService : IRegistroService
 
     public ChartDataDTO GetCountPerMonthToChartDataDTO()
     {
-        var teste = _registroRepository.GetAll().Where(x=>x.DataCriacao.Year == DateTime.Now.Year).OrderBy(x=>x.DataCriacao.Month).GroupBy(x => new { x.DataCriacao.Month });
+        var teste = _registroRepository.GetAll().Where(x => x.DataCriacao.Year == DateTime.Now.Year).OrderBy(x => x.DataCriacao.Month).GroupBy(x => new { x.DataCriacao.Month });
         List<string> Labels = [.. teste.Select(x => x.Key.Month.ToString())];
-        List<int> Data = [.. teste.Select(x=> x.Count())];
-        return new ChartDataDTO(Labels,Data);
+        List<int> Data = [.. teste.Select(x => x.Count())];
+        return new ChartDataDTO(Labels, Data);
     }
 
 

@@ -1,3 +1,6 @@
+using System.Globalization;
+using System.Runtime.Serialization;
+
 namespace Ouvidoria.DTO;
 
 public class ChartDataDTO
@@ -9,7 +12,7 @@ public class ChartDataDTO
 
     public ChartDataDTO(List<string> labels, List<int> data)
     {
-        Labels = labels;
+        Labels = labels.Select(x=>CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(x))).ToList();
         Data = data;
     }
 }

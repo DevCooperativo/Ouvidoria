@@ -46,7 +46,7 @@
                             <td>@rm.Status</td>
                             <td>@descricao</td>
                             <td>@rm.TipoRegistro</td>
-                            <td>@rm.Responsavel</td>
+                            <td>@rm.Responsavel?.Nome</td>
                             <td style="height:100px" class="col overflow-hidden"><a asp-action="Registro"
                                     asp-controller="Administrador" asp-route-id=@rm.Id><img width=25 height=25
                                         src="~/svg/circle-info-solid.svg" /></a></td>
@@ -78,7 +78,7 @@ https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
     {
       type: 'line',
       data: {
-        labels: data.map(row => row.label),
+        labels: data.map(row => row.label.charAt(0).toUpperCase()+row.label.slice(1)),
         datasets: [
           {
             label: 'Registros pro mês',

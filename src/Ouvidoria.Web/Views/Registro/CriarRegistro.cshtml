@@ -1,109 +1,106 @@
 @using Ouvidoria.Web.ViewModels.Registro
 @model RegistroFormViewModel
 
-        <div class="row justify-content-center align-items-center min-vh-100">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="card-body p-4 position-relative">
-                        <!-- Ícone de voltar -->
-                        <a href="Login.html" class="text-dark text-decoration-none position-absolute top-0 start-0 m-3">
-                            <i class="bi bi-arrow-left fs-4"></i>
-                        </a>
-                        <form id="denunciaForm" asp-action="CriarRegistro" enctype="multipart/form-data" method="post">
-                            <!-- Campo de texto -->
-                            <div class="col-12 mb-3 form-group">
-                                <label for="">Título da ocorrência</label>
-                                <input type="text" asp-for=@Model.Titulo class="form-control" placeholder="" />
-                                <span class="text-danger form-text" asp-validation-for="@Model.Titulo"></span>
-                            </div>
-                            <div class="col-12 mb-3 form-group">
-                                <div>
-                                    <label for="">Fazer registro anonimamente? Você não será identificado de forma alguma</label>
-                                    <span class="d-block">*ESTEJA CIENTE QUE DENÚNCIAS ANÔNIMAS SÃO PÚBLICAS</span>
-                                </div>
-                                <div class="d-flex align-items-cented justify-content-center gap-1 py-3">
-                                    <span>Não</span>
-                                    <!-- From Uiverse.io by Galahhad -->
-                                    <label class="switch">
-                                        <input asp-for=@Model.IsAnonima type="checkbox">
-                                        <div class="slider">
-                                            <div class="circle">
-                                                <svg class="cross" xml:space="preserve"
-                                                    style="enable-background:new 0 0 512 512"
-                                                    viewBox="0 0 365.696 365.696" y="0" x="0" height="6" width="6"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <g>
-                                                        <path data-original="#000000" fill="currentColor"
-                                                            d="M243.188 182.86 356.32 69.726c12.5-12.5 12.5-32.766 0-45.247L341.238 9.398c-12.504-12.503-32.77-12.503-45.25 0L182.86 122.528 69.727 9.374c-12.5-12.5-32.766-12.5-45.247 0L9.375 24.457c-12.5 12.504-12.5 32.77 0 45.25l113.152 113.152L9.398 295.99c-12.503 12.503-12.503 32.769 0 45.25L24.48 356.32c12.5 12.5 32.766 12.5 45.247 0l113.132-113.132L295.99 356.32c12.503 12.5 32.769 12.5 45.25 0l15.081-15.082c12.5-12.504 12.5-32.77 0-45.25zm0 0">
-                                                        </path>
-                                                    </g>
-                                                </svg>
-                                                <svg class="checkmark" xml:space="preserve"
-                                                    style="enable-background:new 0 0 512 512" viewBox="0 0 24 24" y="0"
-                                                    x="0" height="10" width="10"
-                                                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <g>
-                                                        <path class="" data-original="#000000" fill="currentColor"
-                                                            d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z">
-                                                        </path>
-                                                    </g>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </label>
-                                    <span>Sim</span>
-                                </div>
-                            </div>
-                            <div class="mb-4">
-                                <label for="denunciaTexto" class="form-label">Descreva a ocorrência:</label>
-                                <textarea class="form-control" onkeydown="changeTextBasedOnCount(this.id, 'charCount')"
-                                    onkeyup="changeTextBasedOnCount(this.id, 'charCount')" id="denunciaTexto" rows="4"
-                                    maxlength="144" asp-for="@Model.Descricao" required></textarea>
-                                <small class="text-muted float-end mt-1"><span id="charCount">0</span>/144</small>
-                            </div>
+<div class="row">
+    <div class="col-md-7 offset-md-1 formulario-centralizado">
+        <!-- Ícone de voltar -->
+        <a href="Login.html" class="text-dark text-decoration-none position-absolute top-0 start-0 m-3">
+            <i class="bi bi-arrow-left fs-4"></i>
+        </a>
+        <form id="denunciaForm" asp-action="CriarRegistro" enctype="multipart/form-data" method="post">
+            <!-- Campo de texto -->
+            <div class="col-12 mb-3 form-group">
+                <label class="form-label fw-semibold">Título da ocorrência</label>
+                <input type="text" asp-for=@Model.Titulo class="form-control" placeholder="" />
+                <span class="text-danger form-text" asp-validation-for="@Model.Titulo"></span>
+            </div>
+            <div class="col-12 mb-3 form-group">
+                <div class="form-group mb-4">
+                    <label class="form-label fw-semibold">Deseja registrar essa denúncia de forma anônima?</label>
+                    <div class="form-text mb-2" style="font-size: 0.9rem; color: #777;">
+                        Ao optar por anonimato, seus dados pessoais não serão vinculados à denúncia.<br>
+                        <strong>Importante:</strong> Denúncias anônimas poderão ser tornadas públicas.
+                    </div>
+                </div>
 
-                            <div class="mb-4 form-group">
-                                <label for="" class="form-label">Natureza</label>
-                                <select class="form-select" asp-for=@Model.TipoRegistro
-                                    asp-items=@Model.TipoRegistroList>
-                                    <option value="">Escolha a</option>
-                                </select>
-                                <span class="text-danger form-text" asp-validation-for="@Model.TipoRegistro"></span>
+                <div class="d-flex align-items-cented justify-content-center gap-1 py-3">
+                    <span>Não</span>
+                    <!-- From Uiverse.io by Galahhad -->
+                    <label class="switch">
+                        <input asp-for=@Model.IsAnonima type="checkbox">
+                        <div class="slider">
+                            <div class="circle">
+                                <svg class="cross" xml:space="preserve" style="enable-background:new 0 0 512 512"
+                                    viewBox="0 0 365.696 365.696" y="0" x="0" height="6" width="6"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g>
+                                        <path data-original="#000000" fill="currentColor"
+                                            d="M243.188 182.86 356.32 69.726c12.5-12.5 12.5-32.766 0-45.247L341.238 9.398c-12.504-12.503-32.77-12.503-45.25 0L182.86 122.528 69.727 9.374c-12.5-12.5-32.766-12.5-45.247 0L9.375 24.457c-12.5 12.504-12.5 32.77 0 45.25l113.152 113.152L9.398 295.99c-12.503 12.503-12.503 32.769 0 45.25L24.48 356.32c12.5 12.5 32.766 12.5 45.247 0l113.132-113.132L295.99 356.32c12.503 12.5 32.769 12.5 45.25 0l15.081-15.082c12.5-12.504 12.5-32.77 0-45.25zm0 0">
+                                        </path>
+                                    </g>
+                                </svg>
+                                <svg class="checkmark" xml:space="preserve" style="enable-background:new 0 0 512 512"
+                                    viewBox="0 0 24 24" y="0" x="0" height="10" width="10"
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g>
+                                        <path class="" data-original="#000000" fill="currentColor"
+                                            d="M9.707 19.121a.997.997 0 0 1-1.414 0l-5.646-5.647a1.5 1.5 0 0 1 0-2.121l.707-.707a1.5 1.5 0 0 1 2.121 0L9 14.171l9.525-9.525a1.5 1.5 0 0 1 2.121 0l.707.707a1.5 1.5 0 0 1 0 2.121z">
+                                        </path>
+                                    </g>
+                                </svg>
                             </div>
+                        </div>
+                    </label>
+                    <span>Sim</span>
+                </div>
+            </div>
+            <div class="mb-4">
+                <label for="denunciaTexto" class="form-label fw-semibold">Descreva a ocorrência:</label>
+                <textarea class="form-control" onkeydown="changeTextBasedOnCount(this.id, 'charCount')"
+                    onkeyup="changeTextBasedOnCount(this.id, 'charCount')" id="denunciaTexto" rows="4" maxlength="144"
+                    asp-for="@Model.Descricao" required></textarea>
+                <small class="text-muted float-end mt-1"><span id="charCount">0</span>/144</small>
+            </div>
 
-                            <div class="mb-3 form-group">
-                                <label for="" class="form-label">Tipo</label>
-                                <input class="form-control" type="text" asp-for=@Model.Tipo />
-                                <span class="text-danger form-text" asp-validation-for="@Model.Tipo"></span>
-                            </div>
-                            <!-- Anexos -->
-                            <div class="mb-4">
-                                <label class="form-label">Anexar arquivos (PNG, JPEG, MP4):</label>
-                                <div class="input-group">
-                                    <input type="file" asp-for="@Model.Arquivo.Image" class="form-control" id="anexos"
-                                        accept=".png,.jpeg,.jpg,.mp4" multiple>
-                                </div>
-                                <small class="text-muted">Máximo de 5 arquivos (10MB cada)</small>
-                            </div>
+            <div class="mb-4 form-group">
+                <label for="" class="form-label fw-semibold">Natureza</label>
+                <select class="form-select" asp-for=@Model.TipoRegistro asp-items=@Model.TipoRegistroList>
+                    <option value="">Escolha a</option>
+                </select>
+                <span class="text-danger form-text" asp-validation-for="@Model.TipoRegistro"></span>
+            </div>
 
-                            @* <!-- Data do ocorrido -->
+            <div class="mb-3 form-group">
+                <label for="" class="form-label fw-semibold">Tipo</label>
+                <input class="form-control" type="text" asp-for=@Model.Tipo />
+                <span class="text-danger form-text" asp-validation-for="@Model.Tipo"></span>
+            </div>
+            <!-- Anexos -->
+            <div class="mb-4">
+                <label for="" class="form-label fw-semibold">Anexar arquivos (PNG, JPEG, MP4):</label>
+                <div class="input-group">
+                    <input type="file" asp-for="@Model.Arquivo.Image" class="form-control" id="anexos"
+                        accept=".png,.jpeg,.jpg,.mp4" multiple>
+                </div>
+                <small class="text-muted">Máximo de 5 arquivos (10MB cada)</small>
+            </div>
+
+            @* <!-- Data do ocorrido -->
                             <div class="mb-4">
                                 <label for="dataOcorrido" class="form-label">Data do ocorrido:</label>
                                 <input type="date" asp-for="@Model." class="form-control" id="dataOcorrido" required>
                             </div> *@
 
-                            <div class="d-grid gap-2">
-                                <a href="Index.html">
-                                    <button type="submit" class="btn btn-primary">Enviar Denúncia</button>
-                                </a>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+            <div class="d-grid gap-2">
+                <a href="Index.html">
+                    <button type="submit" class="botao verde">Enviar Denúncia</button>
+                </a>
             </div>
-        </div>
+        </form>
+    </div>
+</div>
 
 
 @section Scripts {

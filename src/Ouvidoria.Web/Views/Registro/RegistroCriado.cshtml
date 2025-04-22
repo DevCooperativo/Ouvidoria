@@ -1,9 +1,27 @@
 @{
-    Console.Write(ViewData["TokenAcesso"]);
+    var token = ViewData["TokenAcesso"];
 }
-<div class="h-100 d-flex align-items-center justify-content-center">
-    <div>
-        <h3>Seu registro foi criado com sucesso!</h3>
-        <h4>Segue o link para acesso do registro:</h4><a href='https://localhost:7171/Home/Registro/@ViewData["TokenAcesso"]'>https://localhost:7171/Home/Registro/@ViewData["TokenAcesso"]</a>
+
+<div class="d-flex align-items-center justify-content-center min-vh-100">
+    <div class="card p-5 shadow" style="max-width: 600px; text-align: center;">
+        <div class="mb-4">
+            <h2 class="text-success fw-bold">Registro criado com sucesso!</h2>
+            <p class="text-muted fs-5">Você pode acessar o seu registro clicando no link abaixo:</p>
+        </div>
+
+        <div class="mb-3">
+            <a class="botao verde" 
+               href="https://localhost:7171/Home/Registro/@token" 
+               target="_blank">
+                Acessar meu registro
+            </a>
+        </div>
+
+        <p style="font-size: 0.85rem; word-break: break-word;">
+            </br><strong>Link direto:</strong><br>
+            <a class="link-verde" href="https://localhost:7171/Home/Registro/@token" target="_blank">
+                https://localhost:7171/Home/Registro/@token
+            </a>
+        </p>
     </div>
 </div>

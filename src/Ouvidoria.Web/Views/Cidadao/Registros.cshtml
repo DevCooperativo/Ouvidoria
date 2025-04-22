@@ -15,53 +15,43 @@
                 <input value="@ValorPesquisa" id="tituloPesquisa" name="tituloPesquisa"
                     class="col border-1 rounded-4 py-1 ps-2" style="background-color: #F0F2F5"
                     placeholder="&#128270; Pesquisar" type="text">
-                <a class="btn btn-secondary" asp-action="Registros" type="button">Limpar filtro</a>
+                <a class="botao verde" asp-action="Registros" type="button">Limpar filtro</a>
             </form>
         </div>
 
 
 
-        <div class="d-flex flex-column gap-y-3">
-            @if (Model.Count() > 0)
+        <div class="lista-registros mt-4">
+            @if (Model.Any())
             {
-                foreach (RegistroViewModel rm in Model)
+                foreach (var rm in Model)
                 {
                     int dias = (DateTime.Now - rm.DataAtualizacao).Days;
-                    string dataPercorrida = "Há {0} atrás";
-                    if (dias < 1)
-                        dataPercorrida = string.Format(dataPercorrida, "menos de 1 dia");
-                    if (dias < 30)
-                    {
-                        dataPercorrida = string.Format(dataPercorrida, $"{dias} dias atrás");
-                    }
-                    else if (dias < 60)
-                    {
-                        dataPercorrida = string.Format(dataPercorrida, $"cerca de {dias / 30} mês");
-                    }
-                    else
-                    {
-                        dataPercorrida = string.Format(dataPercorrida, $"cerca de {dias / 30} meses");
-                    }
+                    string dataPercorrida = dias < 1 ? "Há menos de 1 dia" :
+                    dias < 30 ? $"Há {dias} dias" :
+                    dias < 60 ? $"Há cerca de {dias / 30} mês" :
+                    $"Há cerca de {dias / 30} meses";
 
-                    <a onclick="AbrirModal(@rm.Id)"
-                        class="d-flex justify-content-between align-items-center col-12 py-4 text-decoration-none text-black">
-                        <div class="d-flex align-items-center">
+                    <a onclick="AbrirModal(@rm.Id)" class="registro-item text-decoration-none">
+                        <div class="registro-icon">
                             <img width=40 height=40 src="~/svg/file-plus.svg" />
-                            <hgroup>
-                                <h3 class="p-0 m-0">@rm.Titulo</h3>
-                                <p class="p-0 m-0">@rm.TipoRegistro</p>
-                            </hgroup>
                         </div>
-                        <span>@dataPercorrida</span>
+                        <div class="registro-info">
+                            <strong>@rm.Titulo</strong>
+                            <p class="registro-tipo">@rm.TipoRegistro</p>
+                        </div>
+                        <div class="registro-data">
+                            <span>@dataPercorrida</span>
+                        </div>
                     </a>
                 }
             }
             else
             {
-                <h2>Não há registros</h2>
+                <h4 class="text-center mt-4">Nenhum registro encontrado.</h4>
             }
-
         </div>
+
     </div>
 </div>
 
@@ -76,21 +66,21 @@
             document.getElementById("modalDescricaoText").innerText = dados.descricao
             if (dados.temArquivo) {
                 document.getElementById("modalArquivo").innerHTML = `
-                        <hgroup>
-                            <h4>Anexo:</h4>
-                            <a class="btn btn-secondary" href="/Registro/DownloadArquivo/${dados.id}">Baixar arquivo</a>
-                        </hgroup>
-                `
+                                <hgroup>
+                                    <h4>Anexo:</h4>
+                                    <a class="btn btn-secondary" href="/Registro/DownloadArquivo/${dados.id}">Baixar arquivo</a>
+                                </hgroup>
+                        `
             }
             let tableBody = document.getElementById("modalTableBody")
             let rowContainer = ""
             dados.historicosAntigos.forEach(element => {
                 rowContainer +=
                     `<tr>
-                            <td class="text-start">${element.dataAtualizacaoExibicao}</td>
-                            <td class="text-start">${element.status}</td>
-                            <td class="text-start">${element.feedback}</td>
-                        </tr>`
+                                    <td class="text-start">${element.dataAtualizacaoExibicao}</td>
+                                    <td class="text-start">${element.status}</td>
+                                    <td class="text-start">${element.feedback}</td>
+                                </tr>`
             })
             tableBody.innerHTML = rowContainer
             const htmlModal = document.getElementById("modalId")
@@ -117,5 +107,6 @@
 }
 
 @section Styles {
+    <link rel="stylesheet" href="~/css/style_2.css">
     <link rel="stylesheet" href="~/css/table.css">
 }

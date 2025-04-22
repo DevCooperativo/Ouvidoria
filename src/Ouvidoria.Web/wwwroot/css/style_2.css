@@ -11,6 +11,7 @@ body {
 /* ========== BARRA LATERAL ========== */
 #sidebar {
     transition: all 0.3s ease;
+    
 }
 
 .active-menu {
@@ -27,6 +28,57 @@ body {
 .active-menu:hover:not(.active) {
     background-color: #c3e6cb !important;
 }
+
+.lista-registros {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.registro-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem;
+    border-radius: 12px;
+    background-color: #F8F9FA;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s;
+    color: #000;
+}
+
+.registro-item:hover {
+    background-color: #e7f0f8;
+}
+
+.registro-icon {
+    flex-shrink: 0;
+    margin-right: 16px;
+}
+
+.registro-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.registro-info strong {
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.registro-tipo {
+    font-size: 0.9rem;
+    color: #6c757d;
+    margin-top: 2px;
+}
+
+.registro-data {
+    white-space: nowrap;
+    font-size: 0.9rem;
+    color: #999;
+}
+
 
 /* Ícone de sair */
 .btn-link.text-danger:hover {
@@ -158,6 +210,96 @@ body {
     background-color: #d4edda;
     border-color: #85b39a;
 }
+
+.formulario-centralizado {
+    max-width: 700px;
+    margin-left: 220px;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Melhorar aparência dos campos */
+.formulario-centralizado input,
+.formulario-centralizado textarea,
+.formulario-centralizado select {
+    font-size: 1rem;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+/* Títulos centralizados */
+.formulario-centralizado h2,
+.formulario-centralizado label {
+    text-align: center;
+    display: block;
+}
+
+/* Centraliza botão */
+.formulario-centralizado .d-grid {
+    margin-top: 20px;
+}
+
+.botao {
+    padding: 12px 24px;
+    font-weight: 600;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.botao.verde {
+    background-color: #b3dec1;
+    color: #ffffff;
+    border: none;
+    outline: none;
+}
+
+.botao.verde:hover {
+    background-color: #76a786;
+}
+
+.botao.borda {
+    border: 1px solid #b3dec1;
+    color: #b3dec1;
+    background-color: #ffffff; 
+}
+
+.botao.borda:hover {
+    background-color: #f0fdfa;
+}
+
+.link-verde {
+    color: #76a786;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-verde:hover {
+    color: #5e8c6d;
+    text-decoration: underline;
+}
+
+.card {
+    background-color: #fdfefe;
+    border: 1px solid #e6f2ed;
+    border-radius: 12px;
+}
+
+.btn-outline-secondary {
+    background-color: #eafff2;
+    border-color: #b3dec1;
+    color: #210124;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #b3dec1;
+    color: #210124;
+    border-color: #9bc5ad;
+}
+
 
 /* ========== RESPONSIVIDADE ========== */
 @media (max-width: 767px) {

@@ -11,7 +11,7 @@ using Ouvidoria.Web.ViewModels.Registro;
 
 namespace Ouvidoria.Web.Controllers;
 
-[Authorize]
+[Authorize(Policy = "RequireCidadaoRole")]
 public class CidadaoController : Controller
 {
     private readonly ILogger<CidadaoController> _logger;
@@ -31,7 +31,7 @@ public class CidadaoController : Controller
         var errorMessageJson = TempData["ErrorMessage"]?.ToString();
         if (errorMessageJson is not null)
             ViewBag.ErrorMessage = JsonConvert.DeserializeObject<ErrorAlertViewModel>(errorMessageJson);
-            
+
         CidadaoDTO cidadaoDTO = await _cidadaoService.GetCidadaoByClaimsAsync(User);
         IEnumerable<RegistroDTO> quary = _registroService.GetAll().Where(x => x.AutorId == cidadaoDTO.Id);
         if (!string.IsNullOrWhiteSpace(tituloPesquisa))
@@ -46,9 +46,10 @@ public class CidadaoController : Controller
     public async Task<IActionResult> Detalhes(int id)
     {
         RegistroDTO registroDTO = await _registroService.GetDTOByIdAsync(id);
+        CidadaoDTO cidadaoDTO = await _cidadaoService.GetCidadaoByClaimsAsync(User);
+        if (registroDTO.AutorId != cidadaoDTO.Id) return StatusCode(StatusCodes.Status404NotFound);
         RegistroFormViewModel viewModel = new(registroDTO);
-        var teste = Json(viewModel);
-        return teste;
+        return Json(viewModel);
     }
 
 

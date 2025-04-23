@@ -154,9 +154,8 @@ public class UserController : Controller
         return RedirectToAction("Index", "Home");
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
+    public IActionResult AccessDenied()
     {
-        return View("Error!");
+        return View();
     }
 }

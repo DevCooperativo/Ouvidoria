@@ -35,8 +35,8 @@ public static class IdentitySetup
         });
 
         services.AddAuthorizationBuilder()
-            .AddPolicy("Administrador Policy", policy => policy.RequireRole(ApplicationUser.TipoAdministrador))
-            .AddPolicy("Cidadão Policy", policy => policy.RequireRole(ApplicationUser.TipoCidadao));
+            .AddPolicy("RequireAdministratorRole", policy => policy.RequireRole(ApplicationUser.TipoAdministrador))
+            .AddPolicy("RequireCidadaoRole", policy => policy.RequireRole(ApplicationUser.TipoCidadao));
 
         return services;
     }

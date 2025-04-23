@@ -113,6 +113,8 @@ main {
 .botao.verde {
     background-color: #b3dec1;
     color: #ffffff;
+    border: none;
+    outline: none;
 }
 
 .botao.verde:hover {
@@ -122,10 +124,22 @@ main {
 .botao.borda {
     border: 1px solid #b3dec1;
     color: #b3dec1;
+    background-color: #ffffff; 
 }
 
 .botao.borda:hover {
     background-color: #f0fdfa;
+}
+
+.link-verde {
+    color: #76a786;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.link-verde:hover {
+    color: #5e8c6d;
+    text-decoration: underline;
 }
 
 /* Responsivo */

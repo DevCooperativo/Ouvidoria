@@ -57,7 +57,7 @@ public class Registro : EntidadeBase
     protected Registro() { }
 
 
-    public Registro(string tipo, bool isAnonima, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status, Cidadao? autor) : base()
+    public Registro(string tipo, bool isAnonima, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status, Cidadao? autor, Administrador? administrador) : base()
     {
         Tipo = tipo;
         IsAnonima = isAnonima;
@@ -71,6 +71,10 @@ public class Registro : EntidadeBase
             AutorId = autor.Id;
         }
         AddHistorico(StatusEnum.Pendente, "Registro criado no sistema");
+        if(administrador is not null){
+            Administrador=administrador;
+            AdministradorId=administrador.Id;
+        }
     }
 
     public Registro(string tipo, bool isAnonima, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status) : base()

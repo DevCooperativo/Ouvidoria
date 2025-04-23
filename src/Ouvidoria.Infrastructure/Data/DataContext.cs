@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Ouvidoria.Domain.Enums;
 using Ouvidoria.Domain.Models;
 using Ouvidoria.Infrastructure.Data.Account;
 using Ouvidoria.Infrastructure.Data.EntityConfiguration;
@@ -19,6 +20,7 @@ public class DataContext : IdentityDbContext<ApplicationUser>
         builder.ApplyConfiguration(new RegistroEntityConfiguration());
         builder.ApplyConfiguration(new HistoricoRegistroEntityConfiguration());
         builder.ApplyConfiguration(new NotificacaoEntityConfiguration());
+        
         base.OnModelCreating(builder);
     }
 

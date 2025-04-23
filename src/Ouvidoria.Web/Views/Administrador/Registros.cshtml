@@ -1,9 +1,11 @@
+@using Ouvidoria.Web.ViewModels.Administrador
 @using Ouvidoria.Web.ViewModels.Registro
-@model IEnumerable<RegistroViewModel>
+@model AdministradorRegistrosWithChartDataViewModel
 
 
-<div class="d-flex w-100 justify-content-center">
-    <div class="table-responsive align-self-end">
+<div class="d-flex flex-column align-items-center w-100 justify-content-between">
+    <div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+    <div class="table-responsive">
         <table class="table table-secondary">
             <thead>
                 <tr>
@@ -19,9 +21,9 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model.Count() > 0)
+                @if (Model.Registros.Count() > 0)
                 {
-                    foreach (RegistroViewModel rm in Model)
+                    foreach (RegistroViewModel rm in Model.Registros)
                     {
                         string descricao = @rm.Descricao;
                         char aux = '0';
@@ -44,7 +46,7 @@
                             <td>@rm.Status</td>
                             <td>@descricao</td>
                             <td>@rm.TipoRegistro</td>
-                            <td>@rm.Responsavel</td>
+                            <td>@rm.Responsavel?.Nome</td>
                             <td style="height:100px" class="col overflow-hidden"><a asp-action="Registro"
                                     asp-controller="Administrador" asp-route-id=@rm.Id><img width=25 height=25
                                         src="~/svg/circle-info-solid.svg" /></a></td>
@@ -63,5 +65,31 @@
 </div>
 
 @section Scripts {
+<script src="
+https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js
+"></script>
+
+<script type="text/javascript">
+(async function() {
+  const data = @Html.Raw(Json.Serialize(Model.ChartData.Labels.Zip(Model.ChartData.Data, (x,y) => new {label=x, data=y}).ToList()));
+
+  new Chart(
+    document.getElementById('acquisitions'),
+    {
+      type: 'line',
+      data: {
+        labels: data.map(row => row.label.charAt(0).toUpperCase()+row.label.slice(1)),
+        datasets: [
+          {
+            label: 'Registros pro mês',
+            data: data.map(row => row.data)
+          }
+        ]
+      }
+    }
+  );
+})();
+
+</script>
 
 }

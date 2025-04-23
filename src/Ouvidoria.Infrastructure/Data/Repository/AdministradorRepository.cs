@@ -13,8 +13,9 @@ public class AdministradorRepository : BaseRepository<Administrador>, IAdministr
         _context = context;
     }
 
-    public Task<Administrador?> GetByEmailAsync(string email)
+    public async Task<Administrador?> GetByEmailAsync(string email)
     {
-        return _context.Set<Administrador>().FirstOrDefaultAsync(a => a.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+        var teste =  await _context.Set<Administrador>().FirstOrDefaultAsync(a => a.Email == email);
+        return teste;
     }
 }

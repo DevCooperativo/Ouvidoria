@@ -42,6 +42,7 @@ public class UserController : Controller
     [HttpGet]
     public IActionResult Login()
     {
+        ViewBag.SuccessMessage = TempData["SuccessMessage"];
         return View();
     }
     [HttpPost]
@@ -108,6 +109,8 @@ public class UserController : Controller
 
             await _usuarioService.RegistrarCidadaoAsync(cidadaoDTO);
             await _cidadaoService.CreateAsync(new CidadaoDTO(cidadaoVM.UserName, cidadaoVM.Email, cidadaoVM.Cpf, cidadaoVM.Telefone, cidadaoVM.Endereco, cidadaoVM.DataNascimento));
+
+            TempData["SuccessMessage"] = "Registro efetuado com sucesso.";
 
             return RedirectToAction("Login");
         }

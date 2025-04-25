@@ -3,18 +3,24 @@
 @{
     var teste = Model.StatusList;
 }
-<form method="POST" action="/Administrador/Registro" class="col-6">
-    <input type="hidden" asp-for=@Model.RegistroId />
-    <div class="d-flex col">
-        <label class="col-3" for="">Alterar Status</label>
-        <select asp-for="@Model.Status" asp-items=Model.StatusList>
-        </select>
+<form method="POST" action="/Administrador/Registro" class="col-md-6" novalidate>
+    <input type="hidden" asp-for="@Model.RegistroId" />
+
+    <div class="mb-3 row">
+        <label class="col-form-label col-3" for="Status">Alterar Status</label>
+        <div class="col-9">
+            <select class="form-select" asp-for="@Model.Status" asp-items="Model.StatusList" id="Status"></select>
+        </div>
     </div>
-    <div class="d-flex col">
-        <label class="col-3" for="">Descreva a atualização</label>
-        <textarea class="w-100" asp-for=@Model.Feedback></textarea>
+
+    <div class="mb-3 row">
+        <label class="col-form-label col-3" for="Feedback">Descreva a atualização</label>
+        <div class="col-9">
+            <textarea class="form-control" asp-for="@Model.Feedback" id="Feedback" rows="3"></textarea>
+        </div>
     </div>
+
     <div class="d-flex justify-content-center py-4">
-        <button class="botao verde">Enviar</button>
+        <button type="submit" class="btn btn-success">Enviar</button>
     </div>
 </form>

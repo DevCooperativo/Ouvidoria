@@ -1,7 +1,10 @@
 <!-- _SiteNav.cshtml -->
 
 <header class="header">
-    <h1 class="logo">Sistema de Ouvidoria</h1>
+    <a asp-action="Index" asp-controller="Home" class="text-decoration-none">
+        <h1 class="logo">Sistema de Ouvidoria</h1>
+
+    </a>
     <nav class="nav-desktop">
         <a asp-controller="Home" asp-action="Registro">Registro</a>
         <a asp-action="RegistrarCidadao" asp-controller="User">Cadastrar-se</a>

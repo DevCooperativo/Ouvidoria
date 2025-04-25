@@ -10,17 +10,15 @@
         </div>
 
         <div class="mb-3">
-            <a class="botao verde" 
-               href="https://localhost:7171/Home/Registro/@token" 
-               target="_blank">
+            <a class="botao verde" href="https://localhost:7171/Home/Registro/@token" target="_blank">
                 Acessar meu registro
             </a>
         </div>
 
         <p style="font-size: 0.85rem; word-break: break-word;">
             </br><strong>Link direto:</strong><br>
-            <a class="link-verde" href="https://localhost:7171/Home/Registro/@token" target="_blank">
-                https://localhost:7171/Home/Registro/@token
+            <a class="link-verde" href="@Url.Action("DetalhesRegistro", "Home", new { token = token })" target="_blank">
+                @Url.Action("DetalhesRegistro", "Home", new { token = token })
             </a>
         </p>
     </div>

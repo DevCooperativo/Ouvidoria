@@ -63,22 +63,6 @@
                     asp-for="@Model.Descricao" required></textarea>
                 <small class="text-muted float-end mt-1"><span id="charCount">0</span>/144</small>
             </div>
-
-                            <div class="mb-3 form-group">
-                                <label for="" class="form-label">Tipo</label>
-                                <input class="form-control" type="text" asp-for=@Model.Tipo />
-                                <span class="text-danger form-text" asp-validation-for="@Model.Tipo"></span>
-                            </div>
-                            <!-- Anexos -->
-                            <div class="mb-4">
-                                <label class="form-label">Anexar arquivos (PNG, JPEG, MP4):</label>
-                                <div class="input-group">
-                                    <input type="file" asp-for="@Model.Arquivo.Image" class="form-control" id="anexos"
-                                accept=".png,.jpeg,.jpg,.mp4,.docx,.doc,.pdf,.zip">
-                                </div>
-                        <small class="text-muted">Máximo de 1 arquivo (10MB)</small>
-                            </div>
-
             <div class="mb-3 form-group">
                 <label for="" class="form-label fw-semibold">Tipo</label>
                 <input class="form-control" type="text" asp-for=@Model.Tipo />
@@ -91,7 +75,7 @@
                     <input type="file" asp-for="@Model.Arquivo.Image" class="form-control" id="anexos"
                         accept=".png,.jpeg,.jpg,.mp4" multiple>
                 </div>
-                <small class="text-muted">Máximo de 5 arquivos (10MB cada)</small>
+                <small class="text-muted">Máximo de 1 (10MB)</small>
             </div>
 
             @* <!-- Data do ocorrido -->

@@ -50,6 +50,7 @@ public class Registro : EntidadeBase
     public int? AlvoId { get; private set; }
     public Administrador? Administrador { get; private set; } = default!;
     public int? AdministradorId { get; private set; }
+    public Guid AccessToken { get; private set; }
     private List<HistoricoRegistro> _historico = [];
     public IReadOnlyCollection<HistoricoRegistro> Historico => _historico.AsReadOnly();
     private List<Arquivo> _arquivos = [];
@@ -71,10 +72,12 @@ public class Registro : EntidadeBase
             AutorId = autor.Id;
         }
         AddHistorico(StatusEnum.Pendente, "Registro criado no sistema");
-        if(administrador is not null){
-            Administrador=administrador;
-            AdministradorId=administrador.Id;
+        if (administrador is not null)
+        {
+            Administrador = administrador;
+            AdministradorId = administrador.Id;
         }
+        AccessToken = Guid.NewGuid();
     }
 
     public Registro(string tipo, bool isAnonima, string titulo, string descricao, TipoRegistroEnum tipoRegistro, StatusEnum status) : base()

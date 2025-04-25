@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
+using Ouvidoria.DTO;
 using Ouvidoria.Infrastructure.Data;
 using Ouvidoria.Infrastructure.Data.Account;
+using Ouvidoria.Interfaces;
 
 namespace Ouvidoria.Web.DependencyInjection;
 public static class IdentitySetup
@@ -54,6 +56,23 @@ public static class IdentitySetup
             {
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
+        }
+    }
+
+    public static async Task SeedUsersAsync(IServiceProvider serviceProvider)
+    {
+        var usuarioService = serviceProvider.GetRequiredService<IUsuarioService>();
+        var adminService = serviceProvider.GetRequiredService<IAdministradorService>();
+
+        try
+        {
+            await adminService.GetDTOByEmailAsync("admin@email.com");
+            Console.WriteLine("O adminstrador padrão já existe no sistema.");
+        }
+        catch
+        {
+            await usuarioService.RegistrarAdministradorAsync(new RegistrarAdministradorDTO("Administrador", "admin@email.com", "@Admin1"));
+            await adminService.CreateAsync(new AdministradorDTO("Administrador", "admin@email.com"));
         }
     }
 

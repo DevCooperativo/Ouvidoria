@@ -83,7 +83,7 @@ public class RegistroService : IRegistroService
 
         _registroRepository.Add(newRegistro);
         _ = await _unitOfWork.Commit();
-        return GenerateRegistryAccessToken(newRegistro.Id, registro.Titulo, registro.IsAnonima);
+        return newRegistro.AccessToken.ToString();
     }
 
     public Task DeleteAsync(int id)
@@ -109,9 +109,7 @@ public class RegistroService : IRegistroService
 
     public RegistroDTO GetDTOByTokenAsync(string token)
     {
-        string ret = Decode(token) ?? "";
-        int id = Convert.ToInt32(ret.Split("|")[0]);
-        return new RegistroDTO(_registroRepository.GetAllReadOnly("Historico", "Arquivos").Where(x => x.Id == id).FirstOrDefault() ?? throw new Exception("Não foi encontrado nenhum registro ou este registro está indisponível para consulta"));
+        return new RegistroDTO(_registroRepository.GetAllReadOnly("Historico", "Arquivos").Where(x => x.AccessToken.ToString() == token).FirstOrDefault() ?? throw new Exception("Não foi encontrado nenhum registro ou este registro está indisponível para consulta"));
     }
 
 
@@ -138,41 +136,5 @@ public class RegistroService : IRegistroService
 
         _ = await _unitOfWork.Commit();
     }
-
-
-    private static string GenerateRegistryAccessToken(int id, string titulo, bool isAnonima)
-    {
-        string Key = "o0P2VLbTMQJMig1zU64Zs27KpW8i3yIm";
-        string IV = "Cwk66EmgH0k1Gfsr";
-        StringBuilder InfoParaToken = new StringBuilder();
-        InfoParaToken.AppendJoin("|", [id, titulo, isAnonima]);
-        using Aes aesAlg = Aes.Create();
-        aesAlg.Key = Encoding.UTF8.GetBytes(Key);
-        aesAlg.IV = Encoding.UTF8.GetBytes(IV);
-
-        ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
-
-        byte[] inputBytes = Encoding.UTF8.GetBytes(InfoParaToken.ToString());
-        byte[] encryptedBytes = encryptor.TransformFinalBlock(inputBytes, 0, inputBytes.Length);
-
-        return Convert.ToBase64String(encryptedBytes);
-    }
-
-    private static string Decode(string encryptedText)
-    {
-        string Key = "o0P2VLbTMQJMig1zU64Zs27KpW8i3yIm";
-        string IV = "Cwk66EmgH0k1Gfsr";
-        using Aes aesAlg = Aes.Create();
-        aesAlg.Key = Encoding.UTF8.GetBytes(Key);
-        aesAlg.IV = Encoding.UTF8.GetBytes(IV);
-
-        ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
-
-        byte[] encryptedBytes = Convert.FromBase64String(encryptedText);
-        byte[] decryptedBytes = decryptor.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
-
-        return Encoding.UTF8.GetString(decryptedBytes);
-    }
-
 
 }

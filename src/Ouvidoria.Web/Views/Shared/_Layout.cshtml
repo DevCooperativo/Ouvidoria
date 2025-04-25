@@ -37,12 +37,9 @@
     }
     <partial name="_SuccessMessagePartialView.cshtml" model="@ViewBag.SuccessMessage" />
     <partial name="_ErrorMessagePartialView.cshtml" model="@ViewBag.ErrorMessage" />
-    <main class="h-100" style="@(User.Identity.IsAuthenticated ? "padding-top:0;" : "")">
-        <div class="container h-100">
-    <main>
+    <main class="h-100" style="@(User.Identity?.IsAuthenticated ?? false ? "padding-top:0;" : "")">
         <div class="container h-100">
             @RenderBody()
-
         </div>
     </main>
     @await RenderSectionAsync("Scripts", required: false)
